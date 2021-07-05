@@ -1,0 +1,34 @@
+h1 {
+    color: blue;
+    text-align: center;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+}
+
+td {
+    text-align: center;
+    font-size: 50px;
+}
+
+td:hover {
+    background-color: lightsteelblue;
+}
+
+.dark-box {
+    background-color: burlywood;
+    width: 100px;
+    height: 100px;
+}
+
+.light-box {
+    background-color: whitesmoke;
+    width: 100px;
+    height: 100px;
+}
+
+.selectedCell {
+    background-color: steelblue;
+};
