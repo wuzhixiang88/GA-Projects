@@ -1,7 +1,16 @@
-// variable to hold all 64 cells of the chess board
-const allCells = document.querySelectorAll("td");
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ VARIABLES HOLDING AREA ------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
 
-// starting board state
+// variable for the whole chess board
+const chessBoard = document.querySelector("table");
+
+// variables to hold selected piece info
+let selectedPieceValue;
+let selectedPieceId;
+let selectedPieceElement;
+
+// starting board state - will change according to how the chess pieces move when the game is being played
 const boardStateObj = {
     "0": "Black Rook", "1": "Black Knight", "2": "Black Bishop", "3": "Black Queen", "4": "Black King", "5": "Black Bishop", "6": "Black Knight", "7": "Black Rook",
     "8": "Black Pawn", "9": "Black Pawn", "10": "Black Pawn", "11": "Black Pawn", "12": "Black Pawn", "13": "Black Pawn", "14": "Black Pawn", "15": "Black Pawn",
@@ -13,12 +22,13 @@ const boardStateObj = {
     "56": "White Rook", "57": "White Knight", "58": "White Bishop", "59": "White Queen", "60": "White King", "61": "White Bishop", "62": "White Knight", "63": "White Rook"
 };
 
-/*------------------------------ (2) Select Piece State ------------------------------*/
-// variables to hold selected piece info
-let selectedPieceValue;
-let selectedPieceId;
-let selectedPieceElement;
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ VARIABLES HOLDING AREA ------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (2) SELECT PIECE STATE ------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
 const selectPiece = (e) => {
     // proceed only if user select a non-empty cell
     if (boardStateObj[e.target.id] !== null) {
@@ -33,19 +43,20 @@ const selectPiece = (e) => {
         selectedPieceElement.classList.add("selectedCell");
 
         // remove event listener for selecting pieces
-        for (let i = 0; i < allCells.length; i++) {
-            allCells[i].removeEventListener("click", selectPiece);
-        };
+        chessBoard.removeEventListener("click", selectPiece);
         
         // attach event listener for placing pieces
-        for (let i = 0; i < allCells.length; i++) {
-            allCells[i].addEventListener("click", placePiece);
-        };
+        chessBoard.addEventListener("click", placePiece);
     };
 };
-/*------------------------------ (2) Select Piece State ------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (2) SELECT PIECE STATE ------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
 
-/*------------------------------ (3) Place Piece State ------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (3) PLACE PIECE STATE -------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
 const placePiece = (e) => {
     // change target cell's board value to be selected piece value
     e.target.innerText = selectedPieceValue;
@@ -64,20 +75,23 @@ const placePiece = (e) => {
     selectedPieceElement = null;
 
     // remove event listener for placing pieces
-    for (let i = 0; i < allCells.length; i++) {
-        allCells[i].removeEventListener("click", placePiece);
-    };
+    chessBoard.removeEventListener("click", placePiece);
 
     // attach event listener for selecting pieces
-    for (let i = 0; i < allCells.length; i++) {
-        allCells[i].addEventListener("click", selectPiece);
-    };
+    chessBoard.addEventListener("click", selectPiece);
 };
-/*------------------------------ (3) Place Piece State ------------------------------*/
 
-/*------------------------------ (1) Starting State ------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (3) PLACE PIECE STATE -------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (1) STARTING STATE ----------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
 // waiting for pieces to be selected
-for (let i = 0; i < allCells.length; i++) {
-    allCells[i].addEventListener("click", selectPiece);
-};
-/*------------------------------ (1) Starting State ------------------------------*/
+chessBoard.addEventListener("click", selectPiece);
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (1) STARTING STATE ----------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
