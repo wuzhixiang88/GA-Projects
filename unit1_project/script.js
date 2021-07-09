@@ -2,8 +2,8 @@
 /*------------------------------ VARIABLES HOLDING AREA ------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
 
-// variable for the whole chess board
-const chessBoard = document.querySelector("table");
+// variables for the chess board table
+const chessBoard = document.querySelector(".chess-board");
 
 // variables to hold selected piece info
 let selectedPieceValue;
@@ -41,11 +41,10 @@ const selectPiece = (e) => {
         // retrieve target cell's element and add CSS class to indicate selected cell
         selectedPieceElement = document.querySelector(`[id='${e.target.id}']`);
         selectedPieceElement.classList.add("selectedCell");
+        selectedPieceElement.classList.remove("hover");
 
-        // remove event listener for selecting pieces
+        // chess piece selected, go to (3) PLACE PIECE STATE
         chessBoard.removeEventListener("click", selectPiece);
-        
-        // attach event listener for placing pieces
         chessBoard.addEventListener("click", placePiece);
     };
 };
@@ -58,27 +57,27 @@ const selectPiece = (e) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 const placePiece = (e) => {
-    // change target cell's board value to be selected piece value
-    e.target.innerText = selectedPieceValue;
+    if (!e.target.classList.contains("selectedCell")) {
+        // change target cell's board value to be selected piece value
+        e.target.innerText = selectedPieceValue;
 
-    // remove selected piece initial position's board value and CSS class for selected cell
-    selectedPieceElement.innerText = "";
-    selectedPieceElement.classList.remove("selectedCell");
+        // remove selected piece initial position's board value
+        selectedPieceElement.innerText = "";
 
-    // update board state after placing piece
-    boardStateObj[e.target.id] = boardStateObj[selectedPieceId];
-    boardStateObj[selectedPieceId] = null;
-
+        // update board state after placing piece
+        boardStateObj[e.target.id] = boardStateObj[selectedPieceId];
+        boardStateObj[selectedPieceId] = null;
+    }; 
     // reset all selected piece info 
     selectedPieceValue = null;
     selectedPieceId = null;
+    selectedPieceElement.classList.remove("selectedCell");
+    selectedPieceElement.classList.add("hover");
     selectedPieceElement = null;
 
-    // remove event listener for placing pieces
+    // chess piece placed at target cell, go to (2) SELECT PIECE STATE
     chessBoard.removeEventListener("click", placePiece);
-
-    // attach event listener for selecting pieces
-    chessBoard.addEventListener("click", selectPiece);
+    chessBoard.addEventListener("click", selectPiece); 
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +88,10 @@ const placePiece = (e) => {
 /*------------------------------ (1) STARTING STATE ----------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
 
-// waiting for pieces to be selected
-chessBoard.addEventListener("click", selectPiece);
+window.onload = () => {
+    // waiting for chess piece to be selected, go to (2) SELECT PIECE STATE
+    chessBoard.addEventListener("click", selectPiece);
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (1) STARTING STATE ----------------------------------*/

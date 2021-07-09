@@ -8,12 +8,16 @@ div {
     justify-content: center;
 }
 
+table {
+    border-collapse: collapse;
+}
+
 td {
     text-align: center;
     font-size: 50px;
 }
 
-td:hover {
+.hover:hover {
     background-color: lightsteelblue;
 }
 
