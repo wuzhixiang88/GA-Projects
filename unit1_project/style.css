@@ -6,6 +6,8 @@ h1 {
 div {
     display: flex;
     justify-content: center;
+    font-size: xx-large;
+    margin: 50px;
 }
 
 table {
@@ -35,4 +37,17 @@ td {
 
 .selectedCell {
     background-color: steelblue;
-};
+}
+
+.white-player {
+    color: lightgray;
+}
+
+.black-player {
+    color: lightgray;
+}
+
+.player-turn {
+    color: black;
+    font-weight: bolder;
+}

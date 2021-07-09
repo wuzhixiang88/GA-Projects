@@ -2,13 +2,20 @@
 /*------------------------------ VARIABLES HOLDING AREA ------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
 
-// variables for the chess board table
+// variables for the chess board table and players' div
 const chessBoard = document.querySelector(".chess-board");
+const whitePlayer = document.querySelector(".white-player");
+const blackPlayer = document.querySelector(".black-player");
 
 // variables to hold selected piece info
 let selectedPieceValue;
 let selectedPieceId;
 let selectedPieceElement;
+
+const playerTurn = {
+    whitePlayer: false,
+    blackPlayer: false
+};
 
 // starting board state - will change according to how the chess pieces move when the game is being played
 const boardStateObj = {
@@ -77,7 +84,9 @@ const placePiece = (e) => {
 
     // chess piece placed at target cell, go to (2) SELECT PIECE STATE
     chessBoard.removeEventListener("click", placePiece);
-    chessBoard.addEventListener("click", selectPiece); 
+    chessBoard.addEventListener("click", selectPiece);
+    
+    playerTurnChange();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -89,10 +98,41 @@ const placePiece = (e) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 window.onload = () => {
+    // white player goes first
+    playerTurn.whitePlayer = true;
+    whitePlayer.classList.add("player-turn");
+
     // waiting for chess piece to be selected, go to (2) SELECT PIECE STATE
     chessBoard.addEventListener("click", selectPiece);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (1) STARTING STATE ----------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ HELPER FUNCTIONS ------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+const playerTurnChange = () => {
+    if (playerTurn.whitePlayer) {
+
+        playerTurn.whitePlayer = false;
+        playerTurn.blackPlayer = true;
+
+        whitePlayer.classList.remove("player-turn");
+        blackPlayer.classList.add("player-turn");
+
+    } else {
+
+        playerTurn.whitePlayer = true;
+        playerTurn.blackPlayer = false;
+
+        blackPlayer.classList.remove("player-turn");
+        whitePlayer.classList.add("player-turn");
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ HELPER FUNCTIONS ------------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
