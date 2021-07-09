@@ -2,8 +2,9 @@
 /*------------------------------ VARIABLES HOLDING AREA ------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
 
-// variables for the chess board table and players' div
+// variables for the chess board table, all table cells and players' div
 const chessBoard = document.querySelector(".chess-board");
+const allCells = document.querySelectorAll("td");
 const whitePlayer = document.querySelector(".white-player");
 const blackPlayer = document.querySelector(".black-player");
 
@@ -12,12 +13,13 @@ let selectedPieceValue;
 let selectedPieceId;
 let selectedPieceElement;
 
+// player turn object to keep track of player's turn
 const playerTurn = {
     whitePlayer: false,
     blackPlayer: false
 };
 
-// starting board state - will change according to how the chess pieces move when the game is being played
+// starting chess board state - to keep track of board state according to how the chess pieces move when the game is being played
 const boardStateObj = {
     "0": "Black Rook", "1": "Black Knight", "2": "Black Bishop", "3": "Black Queen", "4": "Black King", "5": "Black Bishop", "6": "Black Knight", "7": "Black Rook",
     "8": "Black Pawn", "9": "Black Pawn", "10": "Black Pawn", "11": "Black Pawn", "12": "Black Pawn", "13": "Black Pawn", "14": "Black Pawn", "15": "Black Pawn",
@@ -34,8 +36,85 @@ const boardStateObj = {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ HELPER FUNCTIONS ------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+// change turn between players
+const changePlayerTurn = () => {
+    if (playerTurn.whitePlayer) {
+
+        playerTurn.whitePlayer = false;
+        whitePlayer.classList.remove("player-turn");
+
+        playerTurn.blackPlayer = true;
+        blackPlayer.classList.add("player-turn");
+    } else {
+
+        playerTurn.whitePlayer = true;
+        whitePlayer.classList.add("player-turn");
+
+        playerTurn.blackPlayer = false;
+        blackPlayer.classList.remove("player-turn");
+    }
+};
+
+// make player's piece selectable on their turn
+const assignPlayerPiece = () => {
+    if (playerTurn.whitePlayer) {
+        for (const [key, value] of Object.entries(boardStateObj)) {
+            if (value !== null && value.includes("White")) {
+                document.querySelector(`[id='${key}']`).addEventListener("click", selectPiece);
+            };
+        };
+    } else {
+        for (const [key, value] of Object.entries(boardStateObj)) {
+            if (value !== null && value.includes("Black")) {
+                document.querySelector(`[id='${key}']`).addEventListener("click", selectPiece);
+            };
+        };        
+    }
+};
+
+// assign possible move space once a piece is selected
+const assignMoveSpace = () => {
+    for (let i = 0; i < allCells.length; i++) {
+        allCells[i].addEventListener("click", placePiece);
+    };
+};
+
+// clear all event listeners on all cells 
+const clearBoardEventListeners = () => {
+    for (let i = 0; i < allCells.length; i++) {
+        allCells[i].removeEventListener("click", selectPiece);
+        allCells[i].removeEventListener("click", placePiece);
+    };
+};
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ HELPER FUNCTIONS ------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (1) STARTING STATE ----------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+window.onload = () => {
+    // white player goes first
+    playerTurn.whitePlayer = true;
+    whitePlayer.classList.add("player-turn");
+
+    // waiting for chess piece to be selected, go to (2) SELECT PIECE STATE
+    assignPlayerPiece();
+};
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (1) STARTING STATE ----------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (2) SELECT PIECE STATE ------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
+
 const selectPiece = (e) => {
     // proceed only if user select a non-empty cell
     if (boardStateObj[e.target.id] !== null) {
@@ -51,10 +130,13 @@ const selectPiece = (e) => {
         selectedPieceElement.classList.remove("hover");
 
         // chess piece selected, go to (3) PLACE PIECE STATE
-        chessBoard.removeEventListener("click", selectPiece);
-        chessBoard.addEventListener("click", placePiece);
+        clearBoardEventListeners();        
+        for (let i = 0; i < allCells.length; i++) {
+            allCells[i].addEventListener("click", placePiece);
+        };
     };
 };
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (2) SELECT PIECE STATE ------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -74,6 +156,8 @@ const placePiece = (e) => {
         // update board state after placing piece
         boardStateObj[e.target.id] = boardStateObj[selectedPieceId];
         boardStateObj[selectedPieceId] = null;
+
+        changePlayerTurn();
     }; 
     // reset all selected piece info 
     selectedPieceValue = null;
@@ -83,56 +167,12 @@ const placePiece = (e) => {
     selectedPieceElement = null;
 
     // chess piece placed at target cell, go to (2) SELECT PIECE STATE
-    chessBoard.removeEventListener("click", placePiece);
-    chessBoard.addEventListener("click", selectPiece);
-    
-    playerTurnChange();
+    //chessBoard.removeEventListener("click", placePiece);
+    //chessBoard.addEventListener("click", selectPiece);
+    clearBoardEventListeners();
+    assignPlayerPiece()
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (3) PLACE PIECE STATE -------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////
-/*------------------------------ (1) STARTING STATE ----------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////
-
-window.onload = () => {
-    // white player goes first
-    playerTurn.whitePlayer = true;
-    whitePlayer.classList.add("player-turn");
-
-    // waiting for chess piece to be selected, go to (2) SELECT PIECE STATE
-    chessBoard.addEventListener("click", selectPiece);
-};
-
-////////////////////////////////////////////////////////////////////////////////////////
-/*------------------------------ (1) STARTING STATE ----------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////
-/*------------------------------ HELPER FUNCTIONS ------------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////
-
-const playerTurnChange = () => {
-    if (playerTurn.whitePlayer) {
-
-        playerTurn.whitePlayer = false;
-        playerTurn.blackPlayer = true;
-
-        whitePlayer.classList.remove("player-turn");
-        blackPlayer.classList.add("player-turn");
-
-    } else {
-
-        playerTurn.whitePlayer = true;
-        playerTurn.blackPlayer = false;
-
-        blackPlayer.classList.remove("player-turn");
-        whitePlayer.classList.add("player-turn");
-    }
-};
-
-////////////////////////////////////////////////////////////////////////////////////////
-/*------------------------------ HELPER FUNCTIONS ------------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
