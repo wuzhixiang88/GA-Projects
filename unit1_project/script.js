@@ -90,8 +90,14 @@ const assignPlayerPiece = () => {
 };
 
 // assign possible move space once a piece is selected
-const assignMoveSpace = (positionID) => {
-    const possibleMoveSpace = whitePawnMoves(positionID);
+const assignMoveSpace = (positionPiece, positionIdString) => {
+    let possibleMoveSpace = [];
+
+    if (positionPiece === "White Pawn") {
+        possibleMoveSpace = whitePawnMoves(positionIdString);
+    } else if (positionPiece === "Black Pawn") {
+        possibleMoveSpace = blackPawnMoves(positionIdString);
+    }    
 
     for (let i = 0; i < possibleMoveSpace.length; i++) {
         document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
@@ -102,22 +108,25 @@ const assignMoveSpace = (positionID) => {
     // };
 };
 
-const whitePawnMoves = (positionID) => {
-    const currentPos = parseInt(positionID);
+const whitePawnMoves = (positionIdString) => {
+    const currentPos = parseInt(positionIdString);
     const possibleMoves = [currentPos];
 
-    if (whitePawnDefaultPos.includes(currentPos)) {
-        possibleMoves.push(currentPos - 8);
-        possibleMoves.push(currentPos - 16);
-    } else {
+    if (whitePawnDefaultPos.includes(currentPos)) { // check whether white pawn is in default starting position
+        if (boardStateObj[(currentPos - 16).toString()] === null) { //pawn can move forward 2 space if at default starting position
+            possibleMoves.push(currentPos - 16);
+        };
+    }; 
+    // white pawn default moveset
+    if (boardStateObj[(currentPos - 8).toString()] === null) {
         possibleMoves.push(currentPos - 8);
     };
 
-    if (leftCornerPos.includes(currentPos)) {
+    if (leftCornerPos.includes(currentPos)) { // check whether chess piece is at leftmost column
         if (boardStateObj[(currentPos - 7).toString()] !== null) {
             possibleMoves.push(currentPos - 7);
         };
-    } else if (rightCornerPos.includes(currentPos)) {
+    } else if (rightCornerPos.includes(currentPos)) { // check whether chess piece is at rightmost column
         if (boardStateObj[(currentPos - 9).toString()] !== null) {
             possibleMoves.push(currentPos - 9);
         };
@@ -127,6 +136,39 @@ const whitePawnMoves = (positionID) => {
         };
         if (boardStateObj[(currentPos - 9).toString()] !== null) {
             possibleMoves.push(currentPos - 9);
+        };
+    };
+    return possibleMoves;
+};
+
+const blackPawnMoves = (positionIdString) => {
+    const currentPos = parseInt(positionIdString);
+    const possibleMoves = [currentPos];
+
+    if (blackPawnDefaultPos.includes(currentPos)) { // check whether black pawn is in default starting position
+        if (boardStateObj[(currentPos + 16).toString()] === null) { //pawn can move forward 2 space if at default starting position
+            possibleMoves.push(currentPos + 16);
+        };
+    }; 
+    // black pawn default moveset
+    if (boardStateObj[(currentPos + 8).toString()] === null) {
+        possibleMoves.push(currentPos + 8);
+    };
+
+    if (leftCornerPos.includes(currentPos)) { // check whether chess piece is at leftmost column
+        if (boardStateObj[(currentPos + 9).toString()] !== null) {
+            possibleMoves.push(currentPos + 9);
+        };
+    } else if (rightCornerPos.includes(currentPos)) { // check whether chess piece is at rightmost column
+        if (boardStateObj[(currentPos + 7).toString()] !== null) {
+            possibleMoves.push(currentPos + 7);
+        };
+    } else {
+        if (boardStateObj[(currentPos + 9).toString()] !== null) {
+            possibleMoves.push(currentPos + 9);
+        };
+        if (boardStateObj[(currentPos + 7).toString()] !== null) {
+            possibleMoves.push(currentPos + 7);
         };
     };
     return possibleMoves;
@@ -185,7 +227,7 @@ const selectPiece = (e) => {
 
         // chess piece selected, go to (3) PLACE PIECE STATE
         resetBoardEventListeners();        
-        assignMoveSpace(e.target.id);
+        assignMoveSpace(boardStateObj[e.target.id], e.target.id);
     };
 };
 
