@@ -97,7 +97,7 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
         possibleMoveSpace = whitePawnMoves(positionIdString);
     } else if (positionPiece === "Black Pawn") {
         possibleMoveSpace = blackPawnMoves(positionIdString);
-    }    
+    }
 
     for (let i = 0; i < possibleMoveSpace.length; i++) {
         document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
@@ -108,70 +108,121 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
     // };
 };
 
+// calculate white pawn moves based on current position
 const whitePawnMoves = (positionIdString) => {
-    const currentPos = parseInt(positionIdString);
-    const possibleMoves = [currentPos];
-
-    if (whitePawnDefaultPos.includes(currentPos)) { // check whether white pawn is in default starting position
-        if (boardStateObj[(currentPos - 16).toString()] === null) { //pawn can move forward 2 space if at default starting position
-            possibleMoves.push(currentPos - 16);
-        };
+    const currentPosInt = parseInt(positionIdString);
+    const possibleMoves = [currentPosInt];
+    // check whether white pawn is in default starting position
+    if (
+        whitePawnDefaultPos.includes(currentPosInt) &&
+        boardStateObj[(currentPosInt - 16).toString()] === null
+    ) {
+        possibleMoves.push(currentPosInt - 16); //pawn can move forward 2 space if at default starting position
     }; 
     // white pawn default moveset
-    if (boardStateObj[(currentPos - 8).toString()] === null) {
-        possibleMoves.push(currentPos - 8);
+    if (
+        boardStateObj[(currentPosInt - 8).toString()] === null && 
+        checkValidCell(currentPosInt - 8)
+    ) {
+        possibleMoves.push(currentPosInt - 8);
     };
-
-    if (leftCornerPos.includes(currentPos)) { // check whether chess piece is at leftmost column
-        if (boardStateObj[(currentPos - 7).toString()] !== null) {
-            possibleMoves.push(currentPos - 7);
+    // pawn moveset for eating pieces
+    if (leftCornerPos.includes(currentPosInt)) { // check whether chess piece is at leftmost column
+        if (
+            checkValidCell(currentPosInt - 7) && 
+            boardStateObj[(currentPosInt - 7).toString()] !== null && 
+            boardStateObj[(currentPosInt - 7).toString()].includes("Black")
+        ) {
+            possibleMoves.push(currentPosInt - 7);
         };
-    } else if (rightCornerPos.includes(currentPos)) { // check whether chess piece is at rightmost column
-        if (boardStateObj[(currentPos - 9).toString()] !== null) {
-            possibleMoves.push(currentPos - 9);
+    } else if (rightCornerPos.includes(currentPosInt)) { // check whether chess piece is at rightmost column
+        if (
+            checkValidCell(currentPosInt - 9) && 
+            boardStateObj[(currentPosInt - 9).toString()] !== null && 
+            boardStateObj[(currentPosInt - 9).toString()].includes("Black")
+        ) {
+            possibleMoves.push(currentPosInt - 9);
         };
     } else {
-        if (boardStateObj[(currentPos - 7).toString()] !== null) {
-            possibleMoves.push(currentPos - 7);
+        if (
+            checkValidCell(currentPosInt - 7) && 
+            boardStateObj[(currentPosInt - 7).toString()] !== null && 
+            boardStateObj[(currentPosInt - 7).toString()].includes("Black")
+        ) {
+            possibleMoves.push(currentPosInt - 7);
         };
-        if (boardStateObj[(currentPos - 9).toString()] !== null) {
-            possibleMoves.push(currentPos - 9);
+        if (
+            checkValidCell(currentPosInt - 9) && 
+            boardStateObj[(currentPosInt - 9).toString()] !== null && 
+            boardStateObj[(currentPosInt - 9).toString()].includes("Black")
+        ) {
+            possibleMoves.push(currentPosInt - 9);
         };
     };
     return possibleMoves;
 };
 
+// calculate black pawn moves based on current position
 const blackPawnMoves = (positionIdString) => {
-    const currentPos = parseInt(positionIdString);
-    const possibleMoves = [currentPos];
-
-    if (blackPawnDefaultPos.includes(currentPos)) { // check whether black pawn is in default starting position
-        if (boardStateObj[(currentPos + 16).toString()] === null) { //pawn can move forward 2 space if at default starting position
-            possibleMoves.push(currentPos + 16);
-        };
+    const currentPosInt = parseInt(positionIdString);
+    const possibleMoves = [currentPosInt];
+    // check whether black pawn is in default starting position
+    if (
+        blackPawnDefaultPos.includes(currentPosInt) &&
+        boardStateObj[(currentPosInt + 16).toString()] === null
+    ) {
+        possibleMoves.push(currentPosInt + 16); //pawn can move forward 2 space if at default starting position
     }; 
     // black pawn default moveset
-    if (boardStateObj[(currentPos + 8).toString()] === null) {
-        possibleMoves.push(currentPos + 8);
+    if (
+        boardStateObj[(currentPosInt + 8).toString()] === null && 
+        checkValidCell(currentPosInt + 8)
+    ) {
+        possibleMoves.push(currentPosInt + 8);
     };
-
-    if (leftCornerPos.includes(currentPos)) { // check whether chess piece is at leftmost column
-        if (boardStateObj[(currentPos + 9).toString()] !== null) {
-            possibleMoves.push(currentPos + 9);
+    // pawn moveset for eating pieces
+    if (leftCornerPos.includes(currentPosInt)) { // check whether chess piece is at leftmost column
+        if (
+            checkValidCell(currentPosInt + 7) && 
+            boardStateObj[(currentPosInt + 7).toString()] !== null && 
+            boardStateObj[(currentPosInt + 7).toString()].includes("White")
+        ) {
+            possibleMoves.push(currentPosInt + 7);
         };
-    } else if (rightCornerPos.includes(currentPos)) { // check whether chess piece is at rightmost column
-        if (boardStateObj[(currentPos + 7).toString()] !== null) {
-            possibleMoves.push(currentPos + 7);
+    } else if (rightCornerPos.includes(currentPosInt)) { // check whether chess piece is at rightmost column
+        if (
+            checkValidCell(currentPosInt + 9) && 
+            boardStateObj[(currentPosInt + 9).toString()] !== null && 
+            boardStateObj[(currentPosInt + 9).toString()].includes("White")
+        ) {
+            possibleMoves.push(currentPosInt + 9);
         };
     } else {
-        if (boardStateObj[(currentPos + 9).toString()] !== null) {
-            possibleMoves.push(currentPos + 9);
+        if (
+            checkValidCell(currentPosInt + 7) && 
+            boardStateObj[(currentPosInt + 7).toString()] !== null && 
+            boardStateObj[(currentPosInt + 7).toString()].includes("White")
+        ) {
+            possibleMoves.push(currentPosInt + 7);
         };
-        if (boardStateObj[(currentPos + 7).toString()] !== null) {
-            possibleMoves.push(currentPos + 7);
+        if (
+            checkValidCell(currentPosInt + 9) && 
+            boardStateObj[(currentPosInt + 9).toString()] !== null && 
+            boardStateObj[(currentPosInt + 9).toString()].includes("White")
+        ) {
+            possibleMoves.push(currentPosInt + 9);
         };
     };
     return possibleMoves;
+};
+
+// check if num is between 0 and 63
+const checkValidCell = (num) => {
+    if (num >= 0 && num <= 63) {
+        return true;
+    } else {
+        return false;
+    };
 };
 
 // clear all event listeners on all cells 
