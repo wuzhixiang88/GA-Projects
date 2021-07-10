@@ -1,101 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
+        <!-- Required Meta Tags For Bootstrap CSS -->
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+        <!-- Required Meta Tags For Bootstrap CSS -->
+
+        <!-- Bootstrap CSS -->
+        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+        <!-- Bootstrap CSS -->
         <link href="style.css" rel="stylesheet">
     </head>
 
     <body>
-        <div class="black-player">
-            BLACK PLAYER'S TURN
-        </div>
         <div class="container">
-            <table class="chess-board">
-                <tr class="row1">
-                    <td class="dark-box hover" id="0">&#9820</td>
-                    <td class="light-box hover" id="1">&#9822</td>
-                    <td class="dark-box hover" id="2">&#9821</td>
-                    <td class="light-box hover" id="3">&#9819</td>
-                    <td class="dark-box hover" id="4">&#9818</td>
-                    <td class="light-box hover" id="5">&#9821</td>
-                    <td class="dark-box hover" id="6">&#9822</td>
-                    <td class="light-box hover" id="7">&#9820</td>
-                </tr>
-                <tr class="row2">
-                    <td class="light-box hover" id="8">&#9823</td>
-                    <td class="dark-box hover" id="9">&#9823</td>                    
-                    <td class="light-box hover" id="10">&#9823</td>
-                    <td class="dark-box hover" id="11">&#9823</td>                    
-                    <td class="light-box hover" id="12">&#9823</td>
-                    <td class="dark-box hover" id="13">&#9823</td>                    
-                    <td class="light-box hover" id="14">&#9823</td>
-                    <td class="dark-box hover" id="15">&#9823</td>
-                </tr>
-                <tr class="row3">
-                    <td class="dark-box hover" id="16"></td>
-                    <td class="light-box hover" id="17"></td>
-                    <td class="dark-box hover" id="18"></td>
-                    <td class="light-box hover" id="19"></td>
-                    <td class="dark-box hover" id="20"></td>
-                    <td class="light-box hover" id="21"></td>
-                    <td class="dark-box hover" id="22"></td>
-                    <td class="light-box hover" id="23"></td>
-                </tr>
-                <tr class="row4">
-                    <td class="light-box hover" id="24"></td>
-                    <td class="dark-box hover" id="25"></td>                    
-                    <td class="light-box hover" id="26"></td>
-                    <td class="dark-box hover" id="27"></td>                    
-                    <td class="light-box hover" id="28"></td>
-                    <td class="dark-box hover" id="29"></td>                    
-                    <td class="light-box hover" id="30"></td>
-                    <td class="dark-box hover" id="31"></td>
-                </tr>
-                <tr class="row5">
-                    <td class="dark-box hover" id="32"></td>
-                    <td class="light-box hover" id="33"></td>
-                    <td class="dark-box hover" id="34"></td>
-                    <td class="light-box hover" id="35"></td>
-                    <td class="dark-box hover" id="36"></td>
-                    <td class="light-box hover" id="37"></td>
-                    <td class="dark-box hover" id="38"></td>
-                    <td class="light-box hover" id="39"></td>
-                </tr>
-                <tr class="row6">
-                    <td class="light-box hover" id="40"></td>
-                    <td class="dark-box hover" id="41"></td>                    
-                    <td class="light-box hover" id="42"></td>
-                    <td class="dark-box hover" id="43"></td>                    
-                    <td class="light-box hover" id="44"></td>
-                    <td class="dark-box hover" id="45"></td>                    
-                    <td class="light-box hover" id="46"></td>
-                    <td class="dark-box hover" id="47"></td>
-                </tr>
-                <tr class="row7">
-                    <td class="dark-box hover" id="48">&#9817</td>
-                    <td class="light-box hover" id="49">&#9817</td>
-                    <td class="dark-box hover" id="50">&#9817</td>
-                    <td class="light-box hover" id="51">&#9817</td>
-                    <td class="dark-box hover" id="52">&#9817</td>
-                    <td class="light-box hover" id="53">&#9817</td>
-                    <td class="dark-box hover" id="54">&#9817</td>
-                    <td class="light-box hover" id="55">&#9817</td>
-                </tr>
-                <tr class="row8">
-                    <td class="light-box hover" id="56">&#9814</td>
-                    <td class="dark-box hover" id="57">&#9816</td>                    
-                    <td class="light-box hover" id="58">&#9815</td>
-                    <td class="dark-box hover" id="59">&#9813</td>                    
-                    <td class="light-box hover" id="60">&#9812</td>
-                    <td class="dark-box hover" id="61">&#9815</td>                    
-                    <td class="light-box hover" id="62">&#9816</td>
-                    <td class="dark-box hover" id="63">&#9814</td>
-                </tr>
-            </table>
+            <div class="player-black-div">
+                PLAYER BLACK'S TURN
+            </div>
+            <div class="chess-board-div">
+                <table class="chess-board">
+                    <tr class="row1">
+                        <td class="dark-box hover" id="0">&#9820</td>
+                        <td class="light-box hover" id="1">&#9822</td>
+                        <td class="dark-box hover" id="2">&#9821</td>
+                        <td class="light-box hover" id="3">&#9819</td>
+                        <td class="dark-box hover" id="4">&#9818</td>
+                        <td class="light-box hover" id="5">&#9821</td>
+                        <td class="dark-box hover" id="6">&#9822</td>
+                        <td class="light-box hover" id="7">&#9820</td>
+                    </tr>
+                    <tr class="row2">
+                        <td class="light-box hover" id="8">&#9823</td>
+                        <td class="dark-box hover" id="9">&#9823</td>                    
+                        <td class="light-box hover" id="10">&#9823</td>
+                        <td class="dark-box hover" id="11">&#9823</td>                    
+                        <td class="light-box hover" id="12">&#9823</td>
+                        <td class="dark-box hover" id="13">&#9823</td>                    
+                        <td class="light-box hover" id="14">&#9823</td>
+                        <td class="dark-box hover" id="15">&#9823</td>
+                    </tr>
+                    <tr class="row3">
+                        <td class="dark-box hover" id="16"></td>
+                        <td class="light-box hover" id="17"></td>
+                        <td class="dark-box hover" id="18"></td>
+                        <td class="light-box hover" id="19"></td>
+                        <td class="dark-box hover" id="20"></td>
+                        <td class="light-box hover" id="21"></td>
+                        <td class="dark-box hover" id="22"></td>
+                        <td class="light-box hover" id="23"></td>
+                    </tr>
+                    <tr class="row4">
+                        <td class="light-box hover" id="24"></td>
+                        <td class="dark-box hover" id="25"></td>                    
+                        <td class="light-box hover" id="26"></td>
+                        <td class="dark-box hover" id="27"></td>                    
+                        <td class="light-box hover" id="28"></td>
+                        <td class="dark-box hover" id="29"></td>                    
+                        <td class="light-box hover" id="30"></td>
+                        <td class="dark-box hover" id="31"></td>
+                    </tr>
+                    <tr class="row5">
+                        <td class="dark-box hover" id="32"></td>
+                        <td class="light-box hover" id="33"></td>
+                        <td class="dark-box hover" id="34"></td>
+                        <td class="light-box hover" id="35"></td>
+                        <td class="dark-box hover" id="36"></td>
+                        <td class="light-box hover" id="37"></td>
+                        <td class="dark-box hover" id="38"></td>
+                        <td class="light-box hover" id="39"></td>
+                    </tr>
+                    <tr class="row6">
+                        <td class="light-box hover" id="40"></td>
+                        <td class="dark-box hover" id="41"></td>                    
+                        <td class="light-box hover" id="42"></td>
+                        <td class="dark-box hover" id="43"></td>                    
+                        <td class="light-box hover" id="44"></td>
+                        <td class="dark-box hover" id="45"></td>                    
+                        <td class="light-box hover" id="46"></td>
+                        <td class="dark-box hover" id="47"></td>
+                    </tr>
+                    <tr class="row7">
+                        <td class="dark-box hover" id="48">&#9817</td>
+                        <td class="light-box hover" id="49">&#9817</td>
+                        <td class="dark-box hover" id="50">&#9817</td>
+                        <td class="light-box hover" id="51">&#9817</td>
+                        <td class="dark-box hover" id="52">&#9817</td>
+                        <td class="light-box hover" id="53">&#9817</td>
+                        <td class="dark-box hover" id="54">&#9817</td>
+                        <td class="light-box hover" id="55">&#9817</td>
+                    </tr>
+                    <tr class="row8">
+                        <td class="light-box hover" id="56">&#9814</td>
+                        <td class="dark-box hover" id="57">&#9816</td>                    
+                        <td class="light-box hover" id="58">&#9815</td>
+                        <td class="dark-box hover" id="59">&#9813</td>                    
+                        <td class="light-box hover" id="60">&#9812</td>
+                        <td class="dark-box hover" id="61">&#9815</td>                    
+                        <td class="light-box hover" id="62">&#9816</td>
+                        <td class="dark-box hover" id="63">&#9814</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="player-white-div">
+                PLAYER WHITE'S TURN
+            </div>
         </div>
-        <div class="white-player">
-            WHITE PLAYER'S TURN
-        </div>
+
+        <!-- Required Javascript For Bootstrap CSS -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+        <!-- Required Javascript For Bootstrap CSS -->       
         <script src="script.js" charset="utf-8"></script>
     </body>
 </html>

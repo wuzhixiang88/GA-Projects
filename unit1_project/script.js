@@ -5,8 +5,8 @@
 // variables for the chess board table, all table cells and players' div
 const chessBoard = document.querySelector(".chess-board");
 const allCells = document.querySelectorAll("td");
-const whitePlayer = document.querySelector(".white-player");
-const blackPlayer = document.querySelector(".black-player");
+const playerWhite = document.querySelector(".player-white-div");
+const playerBlack = document.querySelector(".player-black-div");
 
 // variables to hold selected piece info
 let selectedPieceValue;
@@ -15,8 +15,8 @@ let selectedPieceElement;
 
 // player turn object to keep track of player's turn
 const playerTurn = {
-    whitePlayer: false,
-    blackPlayer: false
+    playerWhite: false,
+    playerBlack: false
 };
 
 // starting chess board state - to keep track of board state according to how the chess pieces move when the game is being played
@@ -25,11 +25,25 @@ const boardStateObj = {
     "8": "Black Pawn", "9": "Black Pawn", "10": "Black Pawn", "11": "Black Pawn", "12": "Black Pawn", "13": "Black Pawn", "14": "Black Pawn", "15": "Black Pawn",
     "16": null, "17": null, "18": null, "19": null, "20": null, "21": null, "22": null, "23": null,
     "24": null, "25": null, "26": null, "27": null, "28": null, "29": null, "30": null, "31": null,
-    "32": null, "33": null, "34": null, "35": null, "36": null, "37": null, "38": null, "39": null,
+    "32": null, "33": null, "34": null, "35": null, "36": null, "37": null, "38": null, "39": "Black Pawn",
     "40": null, "41": null, "42": null, "43": null, "44": null, "45": null, "46": null, "47": null,
     "48": "White Pawn", "49": "White Pawn", "50": "White Pawn", "51": "White Pawn", "52": "White Pawn", "53": "White Pawn", "54": "White Pawn", "55": "White Pawn",
     "56": "White Rook", "57": "White Knight", "58": "White Bishop", "59": "White Queen", "60": "White King", "61": "White Bishop", "62": "White Knight", "63": "White Rook"
 };
+
+// position arrays to help determine chess piece's possible move space
+const leftCornerPos = [
+    0, 8, 16, 24, 32, 40, 48, 56
+];
+const rightCornerPos = [
+    7, 15, 23, 31, 39, 47, 55, 63
+];
+const whitePawnDefaultPos = [
+    48, 49, 50, 51, 52, 53, 54 ,55
+];
+const blackPawnDefaultPos = [
+    8, 9, 10, 11, 12, 13, 14, 15
+];
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ VARIABLES HOLDING AREA ------------------------------*/
@@ -41,26 +55,26 @@ const boardStateObj = {
 
 // change turn between players
 const changePlayerTurn = () => {
-    if (playerTurn.whitePlayer) {
+    if (playerTurn.playerWhite) {
 
-        playerTurn.whitePlayer = false;
-        whitePlayer.classList.remove("player-turn");
+        playerTurn.playerWhite = false;
+        playerWhite.classList.remove("player-turn");
 
-        playerTurn.blackPlayer = true;
-        blackPlayer.classList.add("player-turn");
+        playerTurn.playerBlack = true;
+        playerBlack.classList.add("player-turn");
     } else {
 
-        playerTurn.whitePlayer = true;
-        whitePlayer.classList.add("player-turn");
+        playerTurn.playerWhite = true;
+        playerWhite.classList.add("player-turn");
 
-        playerTurn.blackPlayer = false;
-        blackPlayer.classList.remove("player-turn");
-    }
+        playerTurn.playerBlack = false;
+        playerBlack.classList.remove("player-turn");
+    };
 };
 
 // make player's piece selectable on their turn
 const assignPlayerPiece = () => {
-    if (playerTurn.whitePlayer) {
+    if (playerTurn.playerWhite) {
         for (const [key, value] of Object.entries(boardStateObj)) {
             if (value !== null && value.includes("White")) {
                 document.querySelector(`[id='${key}']`).addEventListener("click", selectPiece);
@@ -72,18 +86,54 @@ const assignPlayerPiece = () => {
                 document.querySelector(`[id='${key}']`).addEventListener("click", selectPiece);
             };
         };        
-    }
-};
-
-// assign possible move space once a piece is selected
-const assignMoveSpace = () => {
-    for (let i = 0; i < allCells.length; i++) {
-        allCells[i].addEventListener("click", placePiece);
     };
 };
 
+// assign possible move space once a piece is selected
+const assignMoveSpace = (positionID) => {
+    const possibleMoveSpace = whitePawnMoves(positionID);
+
+    for (let i = 0; i < possibleMoveSpace.length; i++) {
+        document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
+    };
+
+    // for (let i = 0; i < allCells.length; i++) {
+    //     allCells[i].addEventListener("click", placePiece)
+    // };
+};
+
+const whitePawnMoves = (positionID) => {
+    const currentPos = parseInt(positionID);
+    const possibleMoves = [currentPos];
+
+    if (whitePawnDefaultPos.includes(currentPos)) {
+        possibleMoves.push(currentPos - 8);
+        possibleMoves.push(currentPos - 16);
+    } else {
+        possibleMoves.push(currentPos - 8);
+    };
+
+    if (leftCornerPos.includes(currentPos)) {
+        if (boardStateObj[(currentPos - 7).toString()] !== null) {
+            possibleMoves.push(currentPos - 7);
+        };
+    } else if (rightCornerPos.includes(currentPos)) {
+        if (boardStateObj[(currentPos - 9).toString()] !== null) {
+            possibleMoves.push(currentPos - 9);
+        };
+    } else {
+        if (boardStateObj[(currentPos - 7).toString()] !== null) {
+            possibleMoves.push(currentPos - 7);
+        };
+        if (boardStateObj[(currentPos - 9).toString()] !== null) {
+            possibleMoves.push(currentPos - 9);
+        };
+    };
+    return possibleMoves;
+};
+
 // clear all event listeners on all cells 
-const clearBoardEventListeners = () => {
+const resetBoardEventListeners = () => {
     for (let i = 0; i < allCells.length; i++) {
         allCells[i].removeEventListener("click", selectPiece);
         allCells[i].removeEventListener("click", placePiece);
@@ -94,16 +144,20 @@ const clearBoardEventListeners = () => {
 /*------------------------------ HELPER FUNCTIONS ------------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (1) STARTING STATE ----------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
 
 window.onload = () => {
     // white player goes first
-    playerTurn.whitePlayer = true;
-    whitePlayer.classList.add("player-turn");
+    playerTurn.playerWhite = true;
+    playerWhite.classList.add("player-turn");
 
-    // waiting for chess piece to be selected, go to (2) SELECT PIECE STATE
+    // make player's chess pieces selectable, go to (2) SELECT PIECE STATE
     assignPlayerPiece();
 };
 
@@ -130,10 +184,8 @@ const selectPiece = (e) => {
         selectedPieceElement.classList.remove("hover");
 
         // chess piece selected, go to (3) PLACE PIECE STATE
-        clearBoardEventListeners();        
-        for (let i = 0; i < allCells.length; i++) {
-            allCells[i].addEventListener("click", placePiece);
-        };
+        resetBoardEventListeners();        
+        assignMoveSpace(e.target.id);
     };
 };
 
@@ -157,8 +209,9 @@ const placePiece = (e) => {
         boardStateObj[e.target.id] = boardStateObj[selectedPieceId];
         boardStateObj[selectedPieceId] = null;
 
+        // change player turn after player makes a move
         changePlayerTurn();
-    }; 
+    };
     // reset all selected piece info 
     selectedPieceValue = null;
     selectedPieceId = null;
@@ -167,9 +220,7 @@ const placePiece = (e) => {
     selectedPieceElement = null;
 
     // chess piece placed at target cell, go to (2) SELECT PIECE STATE
-    //chessBoard.removeEventListener("click", placePiece);
-    //chessBoard.addEventListener("click", selectPiece);
-    clearBoardEventListeners();
+    resetBoardEventListeners();
     assignPlayerPiece()
 };
 
