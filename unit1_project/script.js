@@ -100,26 +100,31 @@ const assignPlayerPiece = () => {
 // assign possible move space once a piece is selected
 const assignMoveSpace = (positionPiece, positionIdString) => {
     let possibleMoveSpace = [];
-
-    if (positionPiece === "White Pawn") {
-        possibleMoveSpace = whitePawnMoveset(positionIdString);
-    } else if (positionPiece === "Black Pawn") {
-        possibleMoveSpace = blackPawnMoveset(positionIdString);
-    } else if (positionPiece === "White Rook" || positionPiece === "Black Rook") {
-        possibleMoveSpace = rookMoveset(positionPiece, positionIdString)
-    } else if (positionPiece === "White Knight" || positionPiece === "Black Knight") {
-        possibleMoveSpace = knightMoveset(positionPiece, positionIdString)
-    } else if (positionPiece === "White King" || positionPiece === "Black King") {
-        possibleMoveSpace = kingMoveset(positionPiece, positionIdString)
-    }
+    
+    switch (positionPiece) {
+        case "White Pawn":
+            possibleMoveSpace = whitePawnMoveset(positionIdString);
+            break;
+        case "Black Pawn":
+            possibleMoveSpace = blackPawnMoveset(positionIdString);
+            break;
+        case "White Rook":
+        case "Black Rook":
+            possibleMoveSpace = rookMoveset(positionPiece, positionIdString);
+            break;
+        case "White Knight":
+        case "Black Knight":
+            possibleMoveSpace = knightMoveset(positionPiece, positionIdString);
+            break;
+        case "White King":
+        case "Black King":
+            possibleMoveSpace = kingMoveset(positionPiece, positionIdString);
+            break;
+    };
 
     for (let i = 0; i < possibleMoveSpace.length; i++) {
         document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
     };
-
-    // for (let i = 0; i < allCells.length; i++) {
-    //     allCells[i].addEventListener("click", placePiece)
-    // };
 };
 
 // calculate white pawn moves based on current position
