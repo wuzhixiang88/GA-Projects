@@ -109,6 +109,8 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
         possibleMoveSpace = rookMoveset(positionPiece, positionIdString)
     } else if (positionPiece === "White Knight" || positionPiece === "Black Knight") {
         possibleMoveSpace = knightMoveset(positionPiece, positionIdString)
+    } else if (positionPiece === "White King" || positionPiece === "Black King") {
+        possibleMoveSpace = kingMoveset(positionPiece, positionIdString)
     }
 
     for (let i = 0; i < possibleMoveSpace.length; i++) {
@@ -124,6 +126,7 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
 const whitePawnMoveset = (positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
+
     // check whether white pawn is in default starting position
     if (
         whitePawnDefaultPos.includes(currentPosInt) &&
@@ -131,6 +134,7 @@ const whitePawnMoveset = (positionIdString) => {
     ) {
         possibleMoves.push(currentPosInt - 200); //pawn can move forward 2 space if at default starting position
     }; 
+
     // white pawn default moveset
     if (
         checkValidCell(currentPosInt - 100) &&
@@ -138,6 +142,7 @@ const whitePawnMoveset = (positionIdString) => {
     ) {
         possibleMoves.push(currentPosInt - 100);
     };
+
     // pawn moveset for eating pieces - move diagonal only if cell occupied by enemy pieces
     if (leftCornerPos.includes(currentPosInt)) { // check whether chess piece is at leftmost column
         if (
@@ -178,6 +183,7 @@ const whitePawnMoveset = (positionIdString) => {
 const blackPawnMoveset = (positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
+
     // check whether black pawn is in default starting position
     if (
         blackPawnDefaultPos.includes(currentPosInt) &&
@@ -185,6 +191,7 @@ const blackPawnMoveset = (positionIdString) => {
     ) {
         possibleMoves.push(currentPosInt + 200); //pawn can move forward 2 space if at default starting position
     }; 
+
     // black pawn default moveset
     if (
         checkValidCell(currentPosInt + 100) &&
@@ -192,7 +199,8 @@ const blackPawnMoveset = (positionIdString) => {
     ) {
         possibleMoves.push(currentPosInt + 100);
     };
-    // pawn moveset for eating pieces
+
+    // pawn moveset for eating pieces - move diagonal only if cell occupied by enemy pieces
     if (leftCornerPos.includes(currentPosInt)) { // check whether chess piece is at leftmost column
         if (
             checkValidCell(currentPosInt + 101) && 
@@ -233,12 +241,14 @@ const rookMoveset = (positionPiece, positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
 
+    // array for all possible movable scenarios
     const rookVerticalMoveset = [
         100, 200, 300, 400, 500, 600, 700
     ];
     const rookHorizontalMoveset = [
         1, 2, 3, 4, 5, 6, 7
     ];
+
     // determine enemy piece colour
     let enemyPiece = "";
     if (positionPiece === "White Rook") {
@@ -246,6 +256,7 @@ const rookMoveset = (positionPiece, positionIdString) => {
     } else {
         enemyPiece = "White";
     }
+
     // check vertical up and down for movable space based on current position
     for (let i = 0; i < rookVerticalMoveset.length; i++) {
         if (checkValidCell(currentPosInt - rookVerticalMoveset[i])) {
@@ -271,6 +282,7 @@ const rookMoveset = (positionPiece, positionIdString) => {
             };
         };
     };
+
     // check horizontal left and right for movable space based on current position
     for (let i = 0; i < rookHorizontalMoveset.length; i++) {
         if (checkValidCell(currentPosInt - rookHorizontalMoveset[i])) {
@@ -299,13 +311,16 @@ const rookMoveset = (positionPiece, positionIdString) => {
     return possibleMoves;
 };
 
+// calculate white rook moves based on current position
 const knightMoveset = (positionPiece, positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
 
+    // array for all possible movable scenarios
     const knightMoveset = [
         -201, -199, -102, -98, 98, 102, 199, 201
     ];
+
     // determine enemy piece colour
     let enemyPiece = "";
     if (positionPiece === "White Knight") {
@@ -313,6 +328,7 @@ const knightMoveset = (positionPiece, positionIdString) => {
     } else {
         enemyPiece = "White";
     }
+
     // check for movable space based on current position
     for (let i = 0; i < knightMoveset.length; i++) {
         if (checkValidCell(currentPosInt + knightMoveset[i])) {
@@ -321,6 +337,37 @@ const knightMoveset = (positionPiece, positionIdString) => {
                 boardStateObj[currentPosInt + knightMoveset[i]].includes(enemyPiece)
             ) {
                 possibleMoves.push(currentPosInt + knightMoveset[i]);
+            };
+        };
+    };
+    return possibleMoves;
+};
+
+const kingMoveset = (positionPiece, positionIdString) => {
+    const currentPosInt = parseInt(positionIdString);
+    const possibleMoves = [currentPosInt];
+
+    // array for all possible movable scenarios
+    const kingMoveset = [
+        -101, -100, -99, -1, 1, 99, 100, 101 
+    ];
+
+    // determine enemy piece colour
+    let enemyPiece = "";
+    if (positionPiece === "White King") {
+        enemyPiece = "Black";
+    } else {
+        enemyPiece = "White";
+    }
+
+    // check for movable space based on current position
+    for (let i = 0; i < kingMoveset.length; i++) {
+        if (checkValidCell(currentPosInt + kingMoveset[i])) {
+            if (
+                boardStateObj[currentPosInt + kingMoveset[i]] === null ||
+                boardStateObj[currentPosInt + kingMoveset[i]].includes(enemyPiece)
+            ) {
+                possibleMoves.push(currentPosInt + kingMoveset[i]);
             };
         };
     };
