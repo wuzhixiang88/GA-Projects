@@ -107,6 +107,8 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
         possibleMoveSpace = blackPawnMoveset(positionIdString);
     } else if (positionPiece === "White Rook" || positionPiece === "Black Rook") {
         possibleMoveSpace = rookMoveset(positionPiece, positionIdString)
+    } else if (positionPiece === "White Knight" || positionPiece === "Black Knight") {
+        possibleMoveSpace = knightMoveset(positionPiece, positionIdString)
     }
 
     for (let i = 0; i < possibleMoveSpace.length; i++) {
@@ -125,46 +127,46 @@ const whitePawnMoveset = (positionIdString) => {
     // check whether white pawn is in default starting position
     if (
         whitePawnDefaultPos.includes(currentPosInt) &&
-        boardStateObj[(currentPosInt - 200).toString()] === null
+        boardStateObj[currentPosInt - 200] === null
     ) {
         possibleMoves.push(currentPosInt - 200); //pawn can move forward 2 space if at default starting position
     }; 
     // white pawn default moveset
     if (
         checkValidCell(currentPosInt - 100) &&
-        boardStateObj[(currentPosInt - 100).toString()] === null
+        boardStateObj[currentPosInt - 100] === null
     ) {
         possibleMoves.push(currentPosInt - 100);
     };
-    // pawn moveset for eating pieces
+    // pawn moveset for eating pieces - move diagonal only if cell occupied by enemy pieces
     if (leftCornerPos.includes(currentPosInt)) { // check whether chess piece is at leftmost column
         if (
             checkValidCell(currentPosInt - 99) && 
-            boardStateObj[(currentPosInt - 99).toString()] !== null && 
-            boardStateObj[(currentPosInt - 99).toString()].includes("Black")
+            boardStateObj[currentPosInt - 99] !== null && 
+            boardStateObj[currentPosInt - 99].includes("Black")
         ) {
             possibleMoves.push(currentPosInt - 99);
         };
     } else if (rightCornerPos.includes(currentPosInt)) { // check whether chess piece is at rightmost column
         if (
             checkValidCell(currentPosInt - 101) && 
-            boardStateObj[(currentPosInt - 101).toString()] !== null && 
-            boardStateObj[(currentPosInt - 101).toString()].includes("Black")
+            boardStateObj[currentPosInt - 101] !== null && 
+            boardStateObj[currentPosInt - 101].includes("Black")
         ) {
             possibleMoves.push(currentPosInt - 101);
         };
     } else {
         if (
             checkValidCell(currentPosInt - 99) && 
-            boardStateObj[(currentPosInt - 99).toString()] !== null && 
-            boardStateObj[(currentPosInt - 99).toString()].includes("Black")
+            boardStateObj[currentPosInt - 99] !== null && 
+            boardStateObj[currentPosInt - 99].includes("Black")
         ) {
             possibleMoves.push(currentPosInt - 99);
         };
         if (
             checkValidCell(currentPosInt - 101) && 
-            boardStateObj[(currentPosInt - 101).toString()] !== null && 
-            boardStateObj[(currentPosInt - 101).toString()].includes("Black")
+            boardStateObj[currentPosInt - 101] !== null && 
+            boardStateObj[currentPosInt - 101].includes("Black")
         ) {
             possibleMoves.push(currentPosInt - 101);
         };
@@ -179,14 +181,14 @@ const blackPawnMoveset = (positionIdString) => {
     // check whether black pawn is in default starting position
     if (
         blackPawnDefaultPos.includes(currentPosInt) &&
-        boardStateObj[(currentPosInt + 200).toString()] === null
+        boardStateObj[currentPosInt + 200] === null
     ) {
         possibleMoves.push(currentPosInt + 200); //pawn can move forward 2 space if at default starting position
     }; 
     // black pawn default moveset
     if (
         checkValidCell(currentPosInt + 100) &&
-        boardStateObj[(currentPosInt + 100).toString()] === null
+        boardStateObj[currentPosInt + 100] === null
     ) {
         possibleMoves.push(currentPosInt + 100);
     };
@@ -194,31 +196,31 @@ const blackPawnMoveset = (positionIdString) => {
     if (leftCornerPos.includes(currentPosInt)) { // check whether chess piece is at leftmost column
         if (
             checkValidCell(currentPosInt + 101) && 
-            boardStateObj[(currentPosInt + 101).toString()] !== null && 
-            boardStateObj[(currentPosInt + 101).toString()].includes("White")
+            boardStateObj[currentPosInt + 101] !== null && 
+            boardStateObj[currentPosInt + 101].includes("White")
         ) {
             possibleMoves.push(currentPosInt + 101);
         };
     } else if (rightCornerPos.includes(currentPosInt)) { // check whether chess piece is at rightmost column
         if (
             checkValidCell(currentPosInt + 99) && 
-            boardStateObj[(currentPosInt + 99).toString()] !== null && 
-            boardStateObj[(currentPosInt + 99).toString()].includes("White")
+            boardStateObj[currentPosInt + 99] !== null && 
+            boardStateObj[currentPosInt + 99].includes("White")
         ) {
             possibleMoves.push(currentPosInt + 99);
         };
     } else {
         if (
             checkValidCell(currentPosInt + 101) && 
-            boardStateObj[(currentPosInt + 101).toString()] !== null && 
-            boardStateObj[(currentPosInt + 101).toString()].includes("White")
+            boardStateObj[currentPosInt + 101] !== null && 
+            boardStateObj[currentPosInt + 101].includes("White")
         ) {
             possibleMoves.push(currentPosInt + 101);
         };
         if (
             checkValidCell(currentPosInt + 99) && 
-            boardStateObj[(currentPosInt + 99).toString()] !== null && 
-            boardStateObj[(currentPosInt + 99).toString()].includes("White")
+            boardStateObj[currentPosInt + 99] !== null && 
+            boardStateObj[currentPosInt + 99].includes("White")
         ) {
             possibleMoves.push(currentPosInt + 99);
         };
@@ -230,70 +232,95 @@ const blackPawnMoveset = (positionIdString) => {
 const rookMoveset = (positionPiece, positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
-    let enemyPiece = "";
 
-    const rookVerticalMoveSet = [
+    const rookVerticalMoveset = [
         100, 200, 300, 400, 500, 600, 700
     ];
-    const rookHorizontalMoveSet = [
+    const rookHorizontalMoveset = [
         1, 2, 3, 4, 5, 6, 7
     ];
-
+    // determine enemy piece colour
+    let enemyPiece = "";
     if (positionPiece === "White Rook") {
         enemyPiece = "Black";
     } else {
         enemyPiece = "White";
     }
-
-    // rook default moveset
-    for (let i = 0; i < rookVerticalMoveSet.length; i++) {
-        if (checkValidCell(currentPosInt - rookVerticalMoveSet[i])) {
-            if (boardStateObj[(currentPosInt - rookVerticalMoveSet[i]).toString()] === null) {
-                possibleMoves.push(currentPosInt - rookVerticalMoveSet[i]);
-            } else if (boardStateObj[(currentPosInt - rookVerticalMoveSet[i]).toString()].includes(enemyPiece)) {
-                possibleMoves.push(currentPosInt - rookVerticalMoveSet[i]);
+    // check vertical up and down for movable space based on current position
+    for (let i = 0; i < rookVerticalMoveset.length; i++) {
+        if (checkValidCell(currentPosInt - rookVerticalMoveset[i])) {
+            if (boardStateObj[currentPosInt - rookVerticalMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
+            } else if (boardStateObj[currentPosInt - rookVerticalMoveset[i]].includes(enemyPiece)) {
+                possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
                 break;
             } else {
                 break;
             };
         };
     };
-
-    for (let i = 0; i < rookVerticalMoveSet.length; i++) {
-        if (checkValidCell(currentPosInt + rookVerticalMoveSet[i])) {
-            if (boardStateObj[(currentPosInt + rookVerticalMoveSet[i]).toString()] === null) {
-                possibleMoves.push(currentPosInt + rookVerticalMoveSet[i]);
-            } else if (boardStateObj[(currentPosInt + rookVerticalMoveSet[i]).toString()].includes(enemyPiece)) {
-                possibleMoves.push(currentPosInt + rookVerticalMoveSet[i]);
+    for (let i = 0; i < rookVerticalMoveset.length; i++) {
+        if (checkValidCell(currentPosInt + rookVerticalMoveset[i])) {
+            if (boardStateObj[currentPosInt + rookVerticalMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
+            } else if (boardStateObj[currentPosInt + rookVerticalMoveset[i]].includes(enemyPiece)) {
+                possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
                 break;
             } else {
                 break;
             };
         };
     };
-
-    for (let i = 0; i < rookHorizontalMoveSet.length; i++) {
-        if (checkValidCell(currentPosInt - rookHorizontalMoveSet[i])) {
-            if (boardStateObj[(currentPosInt - rookHorizontalMoveSet[i]).toString()] === null) {
-                possibleMoves.push(currentPosInt - rookHorizontalMoveSet[i]);
-            } else if (boardStateObj[(currentPosInt - rookHorizontalMoveSet[i]).toString()].includes(enemyPiece)) {
-                possibleMoves.push(currentPosInt - rookHorizontalMoveSet[i]);
+    // check horizontal left and right for movable space based on current position
+    for (let i = 0; i < rookHorizontalMoveset.length; i++) {
+        if (checkValidCell(currentPosInt - rookHorizontalMoveset[i])) {
+            if (boardStateObj[currentPosInt - rookHorizontalMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
+            } else if (boardStateObj[currentPosInt - rookHorizontalMoveset[i]].includes(enemyPiece)) {
+                possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
                 break;
             } else {
                 break;
             };
         };
     };
-
-    for (let i = 0; i < rookHorizontalMoveSet.length; i++) {
-        if (checkValidCell(currentPosInt + rookHorizontalMoveSet[i])) {
-            if (boardStateObj[(currentPosInt + rookHorizontalMoveSet[i]).toString()] === null) {
-                possibleMoves.push(currentPosInt + rookHorizontalMoveSet[i]);
-            } else if (boardStateObj[(currentPosInt + rookHorizontalMoveSet[i]).toString()].includes(enemyPiece)) {
-                possibleMoves.push(currentPosInt + rookHorizontalMoveSet[i]);
+    for (let i = 0; i < rookHorizontalMoveset.length; i++) {
+        if (checkValidCell(currentPosInt + rookHorizontalMoveset[i])) {
+            if (boardStateObj[currentPosInt + rookHorizontalMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
+            } else if (boardStateObj[currentPosInt + rookHorizontalMoveset[i]].includes(enemyPiece)) {
+                possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
                 break;
             } else {
                 break;
+            };
+        };
+    };
+    return possibleMoves;
+};
+
+const knightMoveset = (positionPiece, positionIdString) => {
+    const currentPosInt = parseInt(positionIdString);
+    const possibleMoves = [currentPosInt];
+
+    const knightMoveset = [
+        -201, -199, -102, -98, 98, 102, 199, 201
+    ];
+    // determine enemy piece colour
+    let enemyPiece = "";
+    if (positionPiece === "White Knight") {
+        enemyPiece = "Black";
+    } else {
+        enemyPiece = "White";
+    }
+    // check for movable space based on current position
+    for (let i = 0; i < knightMoveset.length; i++) {
+        if (checkValidCell(currentPosInt + knightMoveset[i])) {
+            if (
+                boardStateObj[currentPosInt + knightMoveset[i]] === null ||
+                boardStateObj[currentPosInt + knightMoveset[i]].includes(enemyPiece)
+            ) {
+                possibleMoves.push(currentPosInt + knightMoveset[i]);
             };
         };
     };
@@ -345,7 +372,7 @@ window.onload = () => {
 const selectPiece = (e) => {
     // proceed only if user select a non-empty cell
     if (boardStateObj[e.target.id] !== null) {
-        // retrieve target cell's board value
+        // retrieve target cell's chess piece value
         selectedPieceValue = e.target.innerText;
 
         // retrieve target cell's id
@@ -372,10 +399,10 @@ const selectPiece = (e) => {
 
 const placePiece = (e) => {
     if (!e.target.classList.contains("selectedCell")) {
-        // change target cell's board value to be selected piece value
+        // change target cell's board value to be selected chess piece value
         e.target.innerText = selectedPieceValue;
 
-        // remove selected piece initial position's board value
+        // remove selected piece initial position's chess piece value
         selectedPieceElement.innerText = "";
 
         // update board state after placing piece
