@@ -16,8 +16,6 @@ td {
 
 .chess-board-div {
     display: flex;
-    min-width: 100px;
-    min-height: 100px;
     justify-content: center;
 }
 
@@ -36,7 +34,7 @@ td {
 }
 
 .hover:hover {
-    background-color: grey;
+    background-color: steelblue;
 }
 
 .movable-cell {
@@ -44,7 +42,7 @@ td {
 }
 
 .selected-cell {
-    background-color: grey;
+    background-color: steelblue;
 }
 
 .player-white-div {
@@ -62,24 +60,4 @@ td {
 
 .hide-container {
     display: none;
-}
-
-@media screen and (max-width: 576px) {
-    div {
-        font-size: large;
-    }
-
-    td {
-        font-size: 20px;
-    }
-
-	.dark-box {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .light-box {
-        width: 30px;
-        height: 30px;
-    }
 }

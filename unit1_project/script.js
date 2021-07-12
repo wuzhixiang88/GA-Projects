@@ -53,6 +53,14 @@ const blackPawnDefaultPos = [
     201, 202, 203, 204, 205, 206, 207, 208
 ];
 
+//
+const whitePawnFinalRow = [
+    101, 102, 103, 104, 105, 106, 107, 108
+];
+const blackPawnFinalRow = [
+    801, 802, 803, 804, 805, 806, 807, 808
+];
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ VARIABLES HOLDING AREA ------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -571,6 +579,21 @@ const placePiece = (e) => {
         boardStateObj[e.target.id] = boardStateObj[selectedPieceId];
         boardStateObj[selectedPieceId] = null;
 
+        // change pawn into queen if it reaches the last row
+        if (
+            selectedPiece === "White Pawn" && 
+            whitePawnFinalRow.includes(parseInt(e.target.id))
+        ) {
+            boardStateObj[e.target.id] = "White Queen";
+            document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9813";
+        } else if (
+            selectedPiece === "Black Pawn" && 
+            blackPawnFinalRow.includes(parseInt(e.target.id))
+        ) {
+            boardStateObj[e.target.id] = "Black Queen";
+            document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9819";
+        };
+        
         // change player turn after player makes a move
         changePlayerTurn();
     };
