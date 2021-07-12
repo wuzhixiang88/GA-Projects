@@ -39,13 +39,7 @@ const boardStateObj = {
     "801": "White Rook", "802": "White Knight", "803": "White Bishop", "804": "White Queen", "805": "White King", "806": "White Bishop", "807": "White Knight", "808": "White Rook"
 };
 
-// position arrays to help determine chess piece's possible move space
-const leftCornerPos = [
-    101, 201, 301, 401, 501, 601, 701, 801
-];
-const rightCornerPos = [
-    108, 208, 308, 408, 508, 608, 708, 808
-];
+// position arrays to help determine pawn's possible move space
 const whitePawnDefaultPos = [
     701, 702, 703, 704, 705, 706, 707, 708
 ];
@@ -53,7 +47,7 @@ const blackPawnDefaultPos = [
     201, 202, 203, 204, 205, 206, 207, 208
 ];
 
-//
+// position arrays to help determine condition for pawn turning into queen
 const whitePawnFinalRow = [
     101, 102, 103, 104, 105, 106, 107, 108
 ];
@@ -167,37 +161,19 @@ const whitePawnMoveset = (positionIdString) => {
     };
 
     // pawn moveset for eating pieces - move diagonal only if cell occupied by enemy pieces
-    if (leftCornerPos.includes(currentPosInt)) { // check whether chess piece is at leftmost column
-        if (
-            checkValidCell(currentPosInt - 99) && 
-            boardStateObj[currentPosInt - 99] !== null && 
-            boardStateObj[currentPosInt - 99].includes("Black")
-        ) {
-            possibleMoves.push(currentPosInt - 99);
-        };
-    } else if (rightCornerPos.includes(currentPosInt)) { // check whether chess piece is at rightmost column
-        if (
-            checkValidCell(currentPosInt - 101) && 
-            boardStateObj[currentPosInt - 101] !== null && 
-            boardStateObj[currentPosInt - 101].includes("Black")
-        ) {
-            possibleMoves.push(currentPosInt - 101);
-        };
-    } else {
-        if (
-            checkValidCell(currentPosInt - 99) && 
-            boardStateObj[currentPosInt - 99] !== null && 
-            boardStateObj[currentPosInt - 99].includes("Black")
-        ) {
-            possibleMoves.push(currentPosInt - 99);
-        };
-        if (
-            checkValidCell(currentPosInt - 101) && 
-            boardStateObj[currentPosInt - 101] !== null && 
-            boardStateObj[currentPosInt - 101].includes("Black")
-        ) {
-            possibleMoves.push(currentPosInt - 101);
-        };
+    if (
+        checkValidCell(currentPosInt - 99) && 
+        boardStateObj[currentPosInt - 99] !== null && 
+        boardStateObj[currentPosInt - 99].includes("Black")
+    ) {
+        possibleMoves.push(currentPosInt - 99);
+    };
+    if (
+        checkValidCell(currentPosInt - 101) && 
+        boardStateObj[currentPosInt - 101] !== null && 
+        boardStateObj[currentPosInt - 101].includes("Black")
+    ) {
+        possibleMoves.push(currentPosInt - 101);
     };
     return possibleMoves;
 };
@@ -225,37 +201,19 @@ const blackPawnMoveset = (positionIdString) => {
     };
 
     // pawn moveset for eating pieces - move diagonal only if cell occupied by enemy pieces
-    if (leftCornerPos.includes(currentPosInt)) { // check whether chess piece is at leftmost column
-        if (
-            checkValidCell(currentPosInt + 101) && 
-            boardStateObj[currentPosInt + 101] !== null && 
-            boardStateObj[currentPosInt + 101].includes("White")
-        ) {
-            possibleMoves.push(currentPosInt + 101);
-        };
-    } else if (rightCornerPos.includes(currentPosInt)) { // check whether chess piece is at rightmost column
-        if (
-            checkValidCell(currentPosInt + 99) && 
-            boardStateObj[currentPosInt + 99] !== null && 
-            boardStateObj[currentPosInt + 99].includes("White")
-        ) {
-            possibleMoves.push(currentPosInt + 99);
-        };
-    } else {
-        if (
-            checkValidCell(currentPosInt + 101) && 
-            boardStateObj[currentPosInt + 101] !== null && 
-            boardStateObj[currentPosInt + 101].includes("White")
-        ) {
-            possibleMoves.push(currentPosInt + 101);
-        };
-        if (
-            checkValidCell(currentPosInt + 99) && 
-            boardStateObj[currentPosInt + 99] !== null && 
-            boardStateObj[currentPosInt + 99].includes("White")
-        ) {
-            possibleMoves.push(currentPosInt + 99);
-        };
+    if (
+        checkValidCell(currentPosInt + 101) && 
+        boardStateObj[currentPosInt + 101] !== null && 
+        boardStateObj[currentPosInt + 101].includes("White")
+    ) {
+        possibleMoves.push(currentPosInt + 101);
+    };
+    if (
+        checkValidCell(currentPosInt + 99) && 
+        boardStateObj[currentPosInt + 99] !== null && 
+        boardStateObj[currentPosInt + 99].includes("White")
+    ) {
+        possibleMoves.push(currentPosInt + 99);
     };
     return possibleMoves;
 };
@@ -603,12 +561,15 @@ const placePiece = (e) => {
     selectedPieceElement.classList.remove("selected-cell");
     selectedPieceElement.classList.add("hover");
     selectedPieceElement = null;
+
+    // reset visible movable cells on chess board
     resetMovableCellClassList();
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (4) END STATE ---------------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
 
+    // game ends if either king piece is eliminated
     if (selectedPiece !== "White King" && targetedPiece === "White King") {
         confirm("Player Black Wins!");
         document.querySelector(".container").classList.add("hide-container");
@@ -623,7 +584,7 @@ const placePiece = (e) => {
 
     // chess piece placed at target cell, go to (2) SELECT PIECE STATE
     resetBoardEventListeners();
-    assignPlayerPiece()
+    assignPlayerPiece();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
