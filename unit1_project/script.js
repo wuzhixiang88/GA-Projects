@@ -120,6 +120,10 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
         case "Black Bishop":
             possibleMoveSpace = bishopMoveset(positionPiece, positionIdString);
             break;
+        case "White Queen":
+        case "Black Queen":
+            possibleMoveSpace = queenMoveset(positionPiece, positionIdString);
+            break;
         case "White King":
         case "Black King":
             possibleMoveSpace = kingMoveset(positionPiece, positionIdString);
@@ -344,6 +348,7 @@ const knightMoveset = (positionPiece, positionIdString) => {
     return possibleMoves;
 };
 
+// calculate bishop moves based on current position
 const bishopMoveset = (positionPiece, positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
@@ -415,6 +420,25 @@ const bishopMoveset = (positionPiece, positionIdString) => {
     return possibleMoves;
 };
 
+// calculate queen moves based on current position
+const queenMoveset = (positionPiece, positionIdString) => {
+    const currentPosInt = parseInt(positionIdString);
+    const possibleMoves = [currentPosInt];
+    
+    // queen's moveset is combination of rook + bishop
+    const rookPossibleMoves = rookMoveset(positionPiece, positionIdString);
+    const bishopPossibleMoves = bishopMoveset(positionPiece, positionIdString);
+
+    // push the calculated rook and bishop possible moves into queen's possible moves array
+    for (let i = 0; i < rookPossibleMoves.length; i++) {
+        possibleMoves.push(rookPossibleMoves[i]);
+    };
+    for (let i = 0; i < bishopPossibleMoves.length; i++) {
+        possibleMoves.push(bishopPossibleMoves[i]);
+    };
+    return possibleMoves;
+};
+
 // calculate king moves based on current position
 const kingMoveset = (positionPiece, positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
@@ -447,12 +471,10 @@ const checkValidCell = (key) => key in boardStateObj;
 
 // determine enemy piece colour
 const checkEnemyColour = (positionPiece) => {
-    let enemyColour = "";
-
     if (positionPiece.includes("White")) {
-        return enemyColour = "Black";
+        return "Black";
     } else {
-        return enemyColour = "White";
+        return "White";
     };
 };
 
