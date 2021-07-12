@@ -144,6 +144,7 @@ const whitePawnMoveset = (positionIdString) => {
     // check whether white pawn is in default starting position
     if (
         whitePawnDefaultPos.includes(currentPosInt) &&
+        boardStateObj[currentPosInt - 100] === null &&
         boardStateObj[currentPosInt - 200] === null
     ) {
         possibleMoves.push(currentPosInt - 200); //pawn can move forward 2 space if at default starting position
@@ -201,6 +202,7 @@ const blackPawnMoveset = (positionIdString) => {
     // check whether black pawn is in default starting position
     if (
         blackPawnDefaultPos.includes(currentPosInt) &&
+        boardStateObj[currentPosInt + 100] === null &&
         boardStateObj[currentPosInt + 200] === null
     ) {
         possibleMoves.push(currentPosInt + 200); //pawn can move forward 2 space if at default starting position

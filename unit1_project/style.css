@@ -43,6 +43,10 @@ td {
     background-color:lightsteelblue;
 }
 
+.selected-cell {
+    background-color: grey;
+}
+
 .player-white-div {
     color: lightgray;
 }
@@ -58,4 +62,24 @@ td {
 
 .hide-container {
     display: none;
+}
+
+@media screen and (max-width: 576px) {
+    div {
+        font-size: large;
+    }
+
+    td {
+        font-size: 20px;
+    }
+
+	.dark-box {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .light-box {
+        width: 30px;
+        height: 30px;
+    }
 }
