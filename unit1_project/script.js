@@ -116,6 +116,10 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
         case "Black Knight":
             possibleMoveSpace = knightMoveset(positionPiece, positionIdString);
             break;
+        case "White Bishop":
+        case "Black Bishop":
+            possibleMoveSpace = bishopMoveset(positionPiece, positionIdString);
+            break;
         case "White King":
         case "Black King":
             possibleMoveSpace = kingMoveset(positionPiece, positionIdString);
@@ -241,7 +245,7 @@ const blackPawnMoveset = (positionIdString) => {
     return possibleMoves;
 };
 
-// calculate white rook moves based on current position
+// calculate rook moves based on current position
 const rookMoveset = (positionPiece, positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
@@ -255,20 +259,16 @@ const rookMoveset = (positionPiece, positionIdString) => {
     ];
 
     // determine enemy piece colour
-    let enemyPiece = "";
-    if (positionPiece === "White Rook") {
-        enemyPiece = "Black";
-    } else {
-        enemyPiece = "White";
-    }
+    const enemyColour = checkEnemyColour(positionPiece);
 
     // check vertical up and down for movable space based on current position
+    // + to move down, - to move up
     for (let i = 0; i < rookVerticalMoveset.length; i++) {
-        if (checkValidCell(currentPosInt - rookVerticalMoveset[i])) {
-            if (boardStateObj[currentPosInt - rookVerticalMoveset[i]] === null) {
-                possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
-            } else if (boardStateObj[currentPosInt - rookVerticalMoveset[i]].includes(enemyPiece)) {
-                possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
+        if (checkValidCell(currentPosInt + rookVerticalMoveset[i])) {
+            if (boardStateObj[currentPosInt + rookVerticalMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
+            } else if (boardStateObj[currentPosInt + rookVerticalMoveset[i]].includes(enemyColour)) {
+                possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
                 break;
             } else {
                 break;
@@ -276,11 +276,11 @@ const rookMoveset = (positionPiece, positionIdString) => {
         };
     };
     for (let i = 0; i < rookVerticalMoveset.length; i++) {
-        if (checkValidCell(currentPosInt + rookVerticalMoveset[i])) {
-            if (boardStateObj[currentPosInt + rookVerticalMoveset[i]] === null) {
-                possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
-            } else if (boardStateObj[currentPosInt + rookVerticalMoveset[i]].includes(enemyPiece)) {
-                possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
+        if (checkValidCell(currentPosInt - rookVerticalMoveset[i])) {
+            if (boardStateObj[currentPosInt - rookVerticalMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
+            } else if (boardStateObj[currentPosInt - rookVerticalMoveset[i]].includes(enemyColour)) {
+                possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
                 break;
             } else {
                 break;
@@ -289,12 +289,13 @@ const rookMoveset = (positionPiece, positionIdString) => {
     };
 
     // check horizontal left and right for movable space based on current position
+    // + to move right, - to move left
     for (let i = 0; i < rookHorizontalMoveset.length; i++) {
-        if (checkValidCell(currentPosInt - rookHorizontalMoveset[i])) {
-            if (boardStateObj[currentPosInt - rookHorizontalMoveset[i]] === null) {
-                possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
-            } else if (boardStateObj[currentPosInt - rookHorizontalMoveset[i]].includes(enemyPiece)) {
-                possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
+        if (checkValidCell(currentPosInt + rookHorizontalMoveset[i])) {
+            if (boardStateObj[currentPosInt + rookHorizontalMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
+            } else if (boardStateObj[currentPosInt + rookHorizontalMoveset[i]].includes(enemyColour)) {
+                possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
                 break;
             } else {
                 break;
@@ -302,11 +303,11 @@ const rookMoveset = (positionPiece, positionIdString) => {
         };
     };
     for (let i = 0; i < rookHorizontalMoveset.length; i++) {
-        if (checkValidCell(currentPosInt + rookHorizontalMoveset[i])) {
-            if (boardStateObj[currentPosInt + rookHorizontalMoveset[i]] === null) {
-                possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
-            } else if (boardStateObj[currentPosInt + rookHorizontalMoveset[i]].includes(enemyPiece)) {
-                possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
+        if (checkValidCell(currentPosInt - rookHorizontalMoveset[i])) {
+            if (boardStateObj[currentPosInt - rookHorizontalMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
+            } else if (boardStateObj[currentPosInt - rookHorizontalMoveset[i]].includes(enemyColour)) {
+                possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
                 break;
             } else {
                 break;
@@ -316,7 +317,7 @@ const rookMoveset = (positionPiece, positionIdString) => {
     return possibleMoves;
 };
 
-// calculate white rook moves based on current position
+// calculate knight moves based on current position
 const knightMoveset = (positionPiece, positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
@@ -327,19 +328,14 @@ const knightMoveset = (positionPiece, positionIdString) => {
     ];
 
     // determine enemy piece colour
-    let enemyPiece = "";
-    if (positionPiece === "White Knight") {
-        enemyPiece = "Black";
-    } else {
-        enemyPiece = "White";
-    }
+    const enemyColour = checkEnemyColour(positionPiece);
 
     // check for movable space based on current position
     for (let i = 0; i < knightMoveset.length; i++) {
         if (checkValidCell(currentPosInt + knightMoveset[i])) {
             if (
                 boardStateObj[currentPosInt + knightMoveset[i]] === null ||
-                boardStateObj[currentPosInt + knightMoveset[i]].includes(enemyPiece)
+                boardStateObj[currentPosInt + knightMoveset[i]].includes(enemyColour)
             ) {
                 possibleMoves.push(currentPosInt + knightMoveset[i]);
             };
@@ -348,6 +344,78 @@ const knightMoveset = (positionPiece, positionIdString) => {
     return possibleMoves;
 };
 
+const bishopMoveset = (positionPiece, positionIdString) => {
+    const currentPosInt = parseInt(positionIdString);
+    const possibleMoves = [currentPosInt];
+
+    // array for all possible movable scenarios
+    const bishopDiagonalLeftDownMoveset = [
+        99, 198, 297, 396, 495, 594, 693,
+    ];
+    const bishopDiagonalRightDownMoveset = [
+        101, 202, 303, 404, 505, 606, 707
+    ];
+
+    // determine enemy piece colour
+    const enemyColour = checkEnemyColour(positionPiece);
+
+    // check diagonal left down and right up for movable space based on current position
+    // + to move diagonal left down, - to move diagonal right up
+    for (let i = 0; i < bishopDiagonalLeftDownMoveset.length; i++) {
+        if (checkValidCell(currentPosInt + bishopDiagonalLeftDownMoveset[i])) {
+            if (boardStateObj[currentPosInt + bishopDiagonalLeftDownMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i]);
+            } else if (boardStateObj[currentPosInt + bishopDiagonalLeftDownMoveset[i]].includes(enemyColour)) {
+                possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i]);
+                break;
+            } else {
+                break;
+            };
+        };
+    };
+    for (let i = 0; i < bishopDiagonalLeftDownMoveset.length; i++) {
+        if (checkValidCell(currentPosInt - bishopDiagonalLeftDownMoveset[i])) {
+            if (boardStateObj[currentPosInt - bishopDiagonalLeftDownMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i]);
+            } else if (boardStateObj[currentPosInt - bishopDiagonalLeftDownMoveset[i]].includes(enemyColour)) {
+                possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i]);
+                break;
+            } else {
+                break;
+            };
+        };
+    };
+
+    // check diagonal right down and left up for movable space based on current position
+    // + to move diagonal right down, - to move diagonal left up
+    for (let i = 0; i < bishopDiagonalRightDownMoveset.length; i++) {
+        if (checkValidCell(currentPosInt + bishopDiagonalRightDownMoveset[i])) {
+            if (boardStateObj[currentPosInt + bishopDiagonalRightDownMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i]);
+            } else if (boardStateObj[currentPosInt + bishopDiagonalRightDownMoveset[i]].includes(enemyColour)) {
+                possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i]);
+                break;
+            } else {
+                break;
+            };
+        };
+    };
+    for (let i = 0; i < bishopDiagonalRightDownMoveset.length; i++) {
+        if (checkValidCell(currentPosInt - bishopDiagonalRightDownMoveset[i])) {
+            if (boardStateObj[currentPosInt - bishopDiagonalRightDownMoveset[i]] === null) {
+                possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i]);
+            } else if (boardStateObj[currentPosInt - bishopDiagonalRightDownMoveset[i]].includes(enemyColour)) {
+                possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i]);
+                break;
+            } else {
+                break;
+            };
+        };
+    };
+    return possibleMoves;
+};
+
+// calculate king moves based on current position
 const kingMoveset = (positionPiece, positionIdString) => {
     const currentPosInt = parseInt(positionIdString);
     const possibleMoves = [currentPosInt];
@@ -358,19 +426,14 @@ const kingMoveset = (positionPiece, positionIdString) => {
     ];
 
     // determine enemy piece colour
-    let enemyPiece = "";
-    if (positionPiece === "White King") {
-        enemyPiece = "Black";
-    } else {
-        enemyPiece = "White";
-    }
+    const enemyColour = checkEnemyColour(positionPiece);
 
     // check for movable space based on current position
     for (let i = 0; i < kingMoveset.length; i++) {
         if (checkValidCell(currentPosInt + kingMoveset[i])) {
             if (
                 boardStateObj[currentPosInt + kingMoveset[i]] === null ||
-                boardStateObj[currentPosInt + kingMoveset[i]].includes(enemyPiece)
+                boardStateObj[currentPosInt + kingMoveset[i]].includes(enemyColour)
             ) {
                 possibleMoves.push(currentPosInt + kingMoveset[i]);
             };
@@ -381,6 +444,17 @@ const kingMoveset = (positionPiece, positionIdString) => {
 
 // check if cell is valid key in board state object
 const checkValidCell = (key) => key in boardStateObj;
+
+// determine enemy piece colour
+const checkEnemyColour = (positionPiece) => {
+    let enemyColour = "";
+
+    if (positionPiece.includes("White")) {
+        return enemyColour = "Black";
+    } else {
+        return enemyColour = "White";
+    };
+};
 
 // clear all event listeners on all cells 
 const resetBoardEventListeners = () => {
