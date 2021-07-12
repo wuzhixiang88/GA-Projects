@@ -132,6 +132,7 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
 
     for (let i = 0; i < possibleMoveSpace.length; i++) {
         document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
+        document.querySelector(`[id='${possibleMoveSpace[i]}']`).classList.add("movable-cell");
     };
 };
 
@@ -478,6 +479,15 @@ const checkEnemyColour = (positionPiece) => {
     };
 };
 
+// remove CSS class list for movable cells
+const resetMovableCellClassList = () => {
+    const allMovableCell = document.querySelectorAll(".movable-cell");
+
+    for (let i = 0; i < allMovableCell.length; i++) {
+        allMovableCell[i].classList.remove("movable-cell");
+    };
+};
+
 // clear all event listeners on all cells 
 const resetBoardEventListeners = () => {
     for (let i = 0; i < allCells.length; i++) {
@@ -528,8 +538,7 @@ const selectPiece = (e) => {
 
         // retrieve target cell's element and add CSS class to indicate selected cell
         selectedPieceElement = document.querySelector(`[id='${e.target.id}']`);
-        selectedPieceElement.classList.add("selectedCell");
-        selectedPieceElement.classList.remove("hover");
+        selectedPieceElement.classList.add("selected-cell");
 
         // chess piece selected, go to (3) PLACE PIECE STATE
         resetBoardEventListeners();        
@@ -549,7 +558,7 @@ const placePiece = (e) => {
     const selectedPiece = boardStateObj[selectedPieceId];
     const targetedPiece = boardStateObj[e.target.id];
 
-    if (!e.target.classList.contains("selectedCell")) {
+    if (!e.target.classList.contains("selected-cell")) {
         // change target cell's board value to be selected chess piece value
         e.target.innerText = selectedPieceValue;
 
@@ -566,9 +575,10 @@ const placePiece = (e) => {
     // reset all selected piece info 
     selectedPieceValue = null;
     selectedPieceId = null;
-    selectedPieceElement.classList.remove("selectedCell");
+    selectedPieceElement.classList.remove("selected-cell");
     selectedPieceElement.classList.add("hover");
     selectedPieceElement = null;
+    resetMovableCellClassList();
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (4) END STATE ---------------------------------------*/

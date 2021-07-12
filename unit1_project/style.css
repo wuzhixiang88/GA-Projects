@@ -11,31 +11,36 @@ table {
 td {
     text-align: center;
     font-size: 50px;
+    padding: 5px;
 }
 
 .chess-board-div {
     display: flex;
+    min-width: 100px;
+    min-height: 100px;
     justify-content: center;
 }
 
 .dark-box {
     background-color: brown;
+    border: 1px solid black;
     width: 100px;
     height: 100px;
 }
 
 .light-box {
     background-color: wheat;
+    border: 1px solid black;
     width: 100px;
     height: 100px;
 }
 
 .hover:hover {
-    background-color: lightsteelblue;
+    background-color: grey;
 }
 
-.selectedCell {
-    background-color: steelblue;
+.movable-cell {
+    background-color:lightsteelblue;
 }
 
 .player-white-div {
