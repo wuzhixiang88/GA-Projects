@@ -546,6 +546,9 @@ const selectPiece = (e) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 const placePiece = (e) => {
+    const selectedPiece = boardStateObj[selectedPieceId];
+    const targetedPiece = boardStateObj[e.target.id];
+
     if (!e.target.classList.contains("selectedCell")) {
         // change target cell's board value to be selected chess piece value
         e.target.innerText = selectedPieceValue;
@@ -566,6 +569,22 @@ const placePiece = (e) => {
     selectedPieceElement.classList.remove("selectedCell");
     selectedPieceElement.classList.add("hover");
     selectedPieceElement = null;
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (4) END STATE ---------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+    if (selectedPiece !== "White King" && targetedPiece === "White King") {
+        confirm("Player Black Wins!");
+        document.querySelector(".container").classList.add("hide-container");
+    } else if (selectedPiece !== "Black King" && targetedPiece === "Black King") {
+        confirm("Player White Wins!");
+        document.querySelector(".container").classList.add("hide-container");
+    };
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (4) END STATE ---------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
 
     // chess piece placed at target cell, go to (2) SELECT PIECE STATE
     resetBoardEventListeners();

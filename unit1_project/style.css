@@ -50,3 +50,7 @@ td {
     color: black;
     font-weight: bolder;
 }
+
+.hide-container {
+    display: none;
+}
