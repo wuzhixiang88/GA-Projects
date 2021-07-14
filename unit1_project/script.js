@@ -8,11 +8,6 @@ const allCells = document.querySelectorAll("td");
 const playerWhite = document.querySelector(".player-white-div");
 const playerBlack = document.querySelector(".player-black-div");
 
-// variables to hold selected piece info
-let selectedPieceValue;
-let selectedPieceId;
-let selectedPieceElement;
-
 // player turn object to keep track of player's turn
 const playerTurn = {
     playerWhite: false,
@@ -21,14 +16,6 @@ const playerTurn = {
 
 // starting chess board state - to keep track of board state according to how the chess pieces move when the game is being played
 const boardStateObj = {
-    // "0": "Black Rook", "1": "Black Knight", "2": "Black Bishop", "3": "Black Queen", "4": "Black King", "5": "Black Bishop", "6": "Black Knight", "7": "Black Rook",
-    // "8": "Black Pawn", "9": "Black Pawn", "10": "Black Pawn", "11": "Black Pawn", "12": "Black Pawn", "13": "Black Pawn", "14": "Black Pawn", "15": "Black Pawn",
-    // "16": null, "17": null, "18": null, "19": null, "20": null, "21": null, "22": null, "23": null,
-    // "24": null, "25": null, "26": null, "27": null, "28": null, "29": null, "30": null, "31": null,
-    // "32": null, "33": null, "34": null, "35": null, "36": null, "37": null, "38": null, "39": null,
-    // "40": null, "41": null, "42": null, "43": null, "44": null, "45": null, "46": null, "47": null,
-    // "48": "White Pawn", "49": "White Pawn", "50": "White Pawn", "51": "White Pawn", "52": "White Pawn", "53": "White Pawn", "54": "White Pawn", "55": "White Pawn",
-    // "56": "White Rook", "57": "White Knight", "58": "White Bishop", "59": "White Queen", "60": "White King", "61": "White Bishop", "62": "White Knight", "63": "White Rook"
     "101": "Black Rook", "102": "Black Knight", "103": "Black Bishop", "104": "Black Queen", "105": "Black King", "106": "Black Bishop", "107": "Black Knight", "108": "Black Rook",
     "201": "Black Pawn", "202": "Black Pawn", "203": "Black Pawn", "204": "Black Pawn", "205": "Black Pawn", "206": "Black Pawn", "207": "Black Pawn", "208": "Black Pawn",
     "301": null, "302": null, "303": null, "304": null, "305": null, "306": null, "307": null, "308": null,
@@ -38,6 +25,18 @@ const boardStateObj = {
     "701": "White Pawn", "702": "White Pawn", "703": "White Pawn", "704": "White Pawn", "705": "White Pawn", "706": "White Pawn", "707": "White Pawn", "708": "White Pawn",
     "801": "White Rook", "802": "White Knight", "803": "White Bishop", "804": "White Queen", "805": "White King", "806": "White Bishop", "807": "White Knight", "808": "White Rook"
 };
+
+// variables to hold selected piece info
+let selectedPiece;
+let selectedPieceId;
+let selectedElement;
+
+const firstMoveTrackerObj = {
+    "White Rook": false,
+    "White King": false
+};
+
+let currentCellsUnderAttack = [];
 
 // position arrays to help determine pawn's possible move space
 const whitePawnDefaultPos = [
@@ -100,35 +99,38 @@ const assignPlayerPiece = () => {
 };
 
 // assign possible move space once a piece is selected
-const assignMoveSpace = (positionPiece, positionIdString) => {
+const calculateMoveSpace = (selectedPiece, selectedPieceId, forCellsUnderAtk = false) => {
+    // for user to unselect chess piece by clicking on selected chess piece again
+    document.querySelector(`[id='${selectedPieceId}']`).addEventListener("click", placePiece);
+
     let possibleMoveSpace = [];
     
-    switch (positionPiece) {
+    switch (selectedPiece) {
         case "White Pawn":
-            possibleMoveSpace = whitePawnMoveset(positionIdString);
+            possibleMoveSpace = whitePawnMoveset(selectedPieceId);
             break;
         case "Black Pawn":
-            possibleMoveSpace = blackPawnMoveset(positionIdString);
+            possibleMoveSpace = blackPawnMoveset(selectedPieceId);
             break;
         case "White Rook":
         case "Black Rook":
-            possibleMoveSpace = rookMoveset(positionPiece, positionIdString);
+            possibleMoveSpace = rookMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
             break;
         case "White Knight":
         case "Black Knight":
-            possibleMoveSpace = knightMoveset(positionPiece, positionIdString);
+            possibleMoveSpace = knightMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
             break;
         case "White Bishop":
         case "Black Bishop":
-            possibleMoveSpace = bishopMoveset(positionPiece, positionIdString);
+            possibleMoveSpace = bishopMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
             break;
         case "White Queen":
         case "Black Queen":
-            possibleMoveSpace = queenMoveset(positionPiece, positionIdString);
+            possibleMoveSpace = queenMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
             break;
         case "White King":
         case "Black King":
-            possibleMoveSpace = kingMoveset(positionPiece, positionIdString);
+            possibleMoveSpace = kingMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
             break;
     };
 
@@ -136,12 +138,13 @@ const assignMoveSpace = (positionPiece, positionIdString) => {
         document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
         document.querySelector(`[id='${possibleMoveSpace[i]}']`).classList.add("movable-cell");
     };
+    return possibleMoveSpace;
 };
 
 // calculate white pawn moves based on current position
-const whitePawnMoveset = (positionIdString) => {
-    const currentPosInt = parseInt(positionIdString);
-    const possibleMoves = [currentPosInt];
+const whitePawnMoveset = (selectedPieceId) => {
+    const currentPosInt = parseInt(selectedPieceId);
+    const possibleMoves = [];
 
     // check whether white pawn is in default starting position
     if (
@@ -179,9 +182,9 @@ const whitePawnMoveset = (positionIdString) => {
 };
 
 // calculate black pawn moves based on current position
-const blackPawnMoveset = (positionIdString) => {
-    const currentPosInt = parseInt(positionIdString);
-    const possibleMoves = [currentPosInt];
+const blackPawnMoveset = (selectedPieceId) => {
+    const currentPosInt = parseInt(selectedPieceId);
+    const possibleMoves = [];
 
     // check whether black pawn is in default starting position
     if (
@@ -219,9 +222,9 @@ const blackPawnMoveset = (positionIdString) => {
 };
 
 // calculate rook moves based on current position
-const rookMoveset = (positionPiece, positionIdString) => {
-    const currentPosInt = parseInt(positionIdString);
-    const possibleMoves = [currentPosInt];
+const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+    const currentPosInt = parseInt(selectedPieceId);
+    const possibleMoves = [];
 
     // array for all possible movable scenarios
     const rookVerticalMoveset = [
@@ -232,7 +235,7 @@ const rookMoveset = (positionPiece, positionIdString) => {
     ];
 
     // determine enemy piece colour
-    const enemyColour = checkEnemyColour(positionPiece);
+    const enemyColour = checkEnemyColour(selectedPiece);
 
     // check vertical up and down for movable space based on current position
     // + to move down, - to move up
@@ -244,7 +247,12 @@ const rookMoveset = (positionPiece, positionIdString) => {
                 possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
                 break;
             } else {
-                break;
+                if (forCellsUnderAtk) {
+                    possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
+                    break;
+                } else {
+                    break;
+                };
             };
         };
     };
@@ -256,7 +264,12 @@ const rookMoveset = (positionPiece, positionIdString) => {
                 possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
                 break;
             } else {
-                break;
+                if (forCellsUnderAtk) {
+                    possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
+                    break;
+                } else {
+                    break;
+                };
             };
         };
     };
@@ -271,7 +284,12 @@ const rookMoveset = (positionPiece, positionIdString) => {
                 possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
                 break;
             } else {
-                break;
+                if (forCellsUnderAtk) {
+                    possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
+                    break;
+                } else {
+                    break;
+                };
             };
         };
     };
@@ -283,7 +301,12 @@ const rookMoveset = (positionPiece, positionIdString) => {
                 possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
                 break;
             } else {
-                break;
+                if (forCellsUnderAtk) {
+                    possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
+                    break;
+                } else {
+                    break;
+                };
             };
         };
     };
@@ -291,9 +314,9 @@ const rookMoveset = (positionPiece, positionIdString) => {
 };
 
 // calculate knight moves based on current position
-const knightMoveset = (positionPiece, positionIdString) => {
-    const currentPosInt = parseInt(positionIdString);
-    const possibleMoves = [currentPosInt];
+const knightMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+    const currentPosInt = parseInt(selectedPieceId);
+    const possibleMoves = [];
 
     // array for all possible movable scenarios
     const knightMoveset = [
@@ -301,7 +324,7 @@ const knightMoveset = (positionPiece, positionIdString) => {
     ];
 
     // determine enemy piece colour
-    const enemyColour = checkEnemyColour(positionPiece);
+    const enemyColour = checkEnemyColour(selectedPiece);
 
     // check for movable space based on current position
     for (let i = 0; i < knightMoveset.length; i++) {
@@ -311,6 +334,8 @@ const knightMoveset = (positionPiece, positionIdString) => {
                 boardStateObj[currentPosInt + knightMoveset[i]].includes(enemyColour)
             ) {
                 possibleMoves.push(currentPosInt + knightMoveset[i]);
+            } else if (forCellsUnderAtk) {
+                possibleMoves.push(currentPosInt + knightMoveset[i]);
             };
         };
     };
@@ -318,9 +343,9 @@ const knightMoveset = (positionPiece, positionIdString) => {
 };
 
 // calculate bishop moves based on current position
-const bishopMoveset = (positionPiece, positionIdString) => {
-    const currentPosInt = parseInt(positionIdString);
-    const possibleMoves = [currentPosInt];
+const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+    const currentPosInt = parseInt(selectedPieceId);
+    const possibleMoves = [];
 
     // array for all possible movable scenarios
     const bishopDiagonalLeftDownMoveset = [
@@ -331,7 +356,7 @@ const bishopMoveset = (positionPiece, positionIdString) => {
     ];
 
     // determine enemy piece colour
-    const enemyColour = checkEnemyColour(positionPiece);
+    const enemyColour = checkEnemyColour(selectedPiece);
 
     // check diagonal left down and right up for movable space based on current position
     // + to move diagonal left down, - to move diagonal right up
@@ -343,7 +368,12 @@ const bishopMoveset = (positionPiece, positionIdString) => {
                 possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i]);
                 break;
             } else {
-                break;
+                if (forCellsUnderAtk) {
+                    possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i]);
+                    break;
+                } else {
+                    break;
+                };
             };
         };
     };
@@ -355,7 +385,12 @@ const bishopMoveset = (positionPiece, positionIdString) => {
                 possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i]);
                 break;
             } else {
-                break;
+                if (forCellsUnderAtk) {
+                    possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i]);
+                    break;
+                } else {
+                    break;
+                };
             };
         };
     };
@@ -370,7 +405,12 @@ const bishopMoveset = (positionPiece, positionIdString) => {
                 possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i]);
                 break;
             } else {
-                break;
+                if (forCellsUnderAtk) {
+                    possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i]);
+                    break;
+                } else {
+                    break;
+                };
             };
         };
     };
@@ -382,7 +422,12 @@ const bishopMoveset = (positionPiece, positionIdString) => {
                 possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i]);
                 break;
             } else {
-                break;
+                if (forCellsUnderAtk) {
+                    possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i]);
+                    break;
+                } else {
+                    break;
+                };
             };
         };
     };
@@ -390,13 +435,12 @@ const bishopMoveset = (positionPiece, positionIdString) => {
 };
 
 // calculate queen moves based on current position
-const queenMoveset = (positionPiece, positionIdString) => {
-    const currentPosInt = parseInt(positionIdString);
-    const possibleMoves = [currentPosInt];
+const queenMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+    const possibleMoves = [];
     
     // queen's moveset is combination of rook + bishop
-    const rookPossibleMoves = rookMoveset(positionPiece, positionIdString);
-    const bishopPossibleMoves = bishopMoveset(positionPiece, positionIdString);
+    const rookPossibleMoves = rookMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
+    const bishopPossibleMoves = bishopMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
 
     // push the calculated rook and bishop possible moves into queen's possible moves array
     for (let i = 0; i < rookPossibleMoves.length; i++) {
@@ -409,9 +453,9 @@ const queenMoveset = (positionPiece, positionIdString) => {
 };
 
 // calculate king moves based on current position
-const kingMoveset = (positionPiece, positionIdString) => {
-    const currentPosInt = parseInt(positionIdString);
-    const possibleMoves = [currentPosInt];
+const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+    const currentPosInt = parseInt(selectedPieceId);
+    const possibleMoves = [];
 
     // array for all possible movable scenarios
     const kingMoveset = [
@@ -419,7 +463,7 @@ const kingMoveset = (positionPiece, positionIdString) => {
     ];
 
     // determine enemy piece colour
-    const enemyColour = checkEnemyColour(positionPiece);
+    const enemyColour = checkEnemyColour(selectedPiece);
 
     // check for movable space based on current position
     for (let i = 0; i < kingMoveset.length; i++) {
@@ -429,22 +473,131 @@ const kingMoveset = (positionPiece, positionIdString) => {
                 boardStateObj[currentPosInt + kingMoveset[i]].includes(enemyColour)
             ) {
                 possibleMoves.push(currentPosInt + kingMoveset[i]);
+            } else if (forCellsUnderAtk) {
+                possibleMoves.push(currentPosInt + kingMoveset[i]);
             };
         };
     };
+
+    // if (checkCastlingCondition) {
+    //     possibleMoves.push(807);
+    // }
+
     return possibleMoves;
 };
+
+// const checkCastlingCondition = () => {
+//     if (
+//         !firstMoveTrackerObj["White Rook"] &&
+//         !firstMoveTrackerObj["White King"] &&
+//         boardStateObj["806"] === null &&
+//         boardStateObj["807"] === null
+//     ) {
+//         return true;
+//     }
+//     return false;
+// };
+
+// const performCastling = () => {
+//     // rook move to col 6
+//     document.querySelector(`[id='${"806"}']`).innerHTML = document.querySelector(`[id='${"808"}']`).innerHTML;
+//     document.querySelector(`[id='${"808"}']`).innerHTML = "";
+//     boardStateObj["806"] = boardStateObj["808"];
+//     // king move to col 7
+//     boardStateObj["807"] = boardStateObj["805"];
+// };
 
 // check if cell is valid key in board state object
 const checkValidCell = (key) => key in boardStateObj;
 
 // determine enemy piece colour
-const checkEnemyColour = (positionPiece) => {
-    if (positionPiece.includes("White")) {
+const checkEnemyColour = (selectedPiece) => {
+    if (selectedPiece.includes("White")) {
         return "Black";
     } else {
         return "White";
     };
+};
+
+const computeCellsUnderAtk = () => {
+    // reset cells under attack
+    const allUnderAtkCells = document.querySelectorAll(".under-attack");
+    for (let i = 0; i < allUnderAtkCells.length; i++) {
+        allUnderAtkCells[i].classList.remove("under-attack");
+    };
+
+    const cellsUnderAtk = [];
+    
+    if (playerTurn.playerWhite) {
+        for (const [key, value] of Object.entries(boardStateObj)) {
+            if (value !== null && value.includes("Black Pawn")) {
+                if (checkValidCell(parseInt(key) + 101)) {
+                    cellsUnderAtk.push(parseInt(key) + 101);
+                    document.querySelector(`[id='${(parseInt(key) + 101)}']`).classList.add("under-attack")
+                };
+                if (checkValidCell(parseInt(key) + 99)) {
+                    cellsUnderAtk.push(parseInt(key) + 99);
+                    document.querySelector(`[id='${(parseInt(key) + 99)}']`).classList.add("under-attack")
+                };  
+            } else if (value !== null && value.includes("Black")) {
+                const possibleMoves = calculateMoveSpace(value, key, true);
+        
+                for (let i = 0; i < possibleMoves.length; i++) {
+                    cellsUnderAtk.push(possibleMoves[i]);
+                    document.querySelector(`[id='${possibleMoves[i]}']`).classList.add("under-attack")
+                };
+            };
+        };
+    } else {
+        for (const [key, value] of Object.entries(boardStateObj)) {
+            if (value !== null && value.includes("White Pawn")) {
+                if (checkValidCell(parseInt(key) - 101)) {
+                    cellsUnderAtk.push(parseInt(key) - 101);
+                    document.querySelector(`[id='${(parseInt(key) - 101)}']`).classList.add("under-attack")
+                };
+                if (checkValidCell(parseInt(key) - 99)) {
+                    cellsUnderAtk.push(parseInt(key) - 99);
+                    document.querySelector(`[id='${(parseInt(key) - 99)}']`).classList.add("under-attack")
+                };             
+            } else if (value !== null && value.includes("White")) {
+                const possibleMoves = calculateMoveSpace(value, key, true);
+        
+                for (let i = 0; i < possibleMoves.length; i++) {
+                    cellsUnderAtk.push(possibleMoves[i]);
+                    document.querySelector(`[id='${possibleMoves[i]}']`).classList.add("under-attack")
+                };
+            };
+        };
+    }
+
+    // if (chessPiece.includes("White Pawn")) {
+    //     if (checkValidCell(parseInt(chessPieceId) - 101)) {
+    //         cellsUnderAtk.push(parseInt(chessPieceId) - 101);
+    //         document.querySelector(`[id='${(parseInt(chessPieceId) - 101)}']`).classList.add("under-attack")
+    //     };
+    //     if (checkValidCell(parseInt(chessPieceId) - 99)) {
+    //         cellsUnderAtk.push(parseInt(chessPieceId) - 99);
+    //         document.querySelector(`[id='${(parseInt(chessPieceId) - 99)}']`).classList.add("under-attack")
+    //     };             
+    // } else if (chessPiece.includes("Black Pawn")) {
+    //     if (checkValidCell(parseInt(chessPieceId) + 101)) {
+    //         cellsUnderAtk.push(parseInt(chessPieceId) + 101);
+    //         document.querySelector(`[id='${(parseInt(chessPieceId) + 101)}']`).classList.add("under-attack")
+    //     };
+    //     if (checkValidCell(parseInt(chessPieceId) + 99)) {
+    //         cellsUnderAtk.push(parseInt(chessPieceId) + 99);
+    //         document.querySelector(`[id='${(parseInt(chessPieceId) + 99)}']`).classList.add("under-attack")
+    //     };  
+    // } else {
+    //     const possibleMoves = calculateMoveSpace(chessPiece, chessPieceId);
+
+    //     for (let i = 0; i < possibleMoves.length; i++) {
+    //         cellsUnderAtk.push(possibleMoves[i]);
+    //         document.querySelector(`[id='${possibleMoves[i]}']`).classList.add("under-attack")
+    //     };
+    // };
+
+    return cellsUnderAtk;
 };
 
 // remove CSS class list for movable cells
@@ -496,21 +649,25 @@ window.onload = () => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 const selectPiece = (e) => {
-    // proceed only if user select a non-empty cell
-    if (boardStateObj[e.target.id] !== null) {
-        // retrieve target cell's chess piece value
-        selectedPieceValue = e.target.innerText;
 
-        // retrieve target cell's id
+    // if (
+    //     computeCellsUnderAtk().includes(805) && 
+    //     boardStateObj[e.target.id] !== "White King"
+    // ) {
+    //     alert("King in check!");
+    // } 
+    if (boardStateObj[e.target.id] !== null) {
+        // store selected chess piece and its cell id
+        selectedPiece = boardStateObj[e.target.id];
         selectedPieceId = e.target.id;
 
-        // retrieve target cell's element and add CSS class to indicate selected cell
-        selectedPieceElement = document.querySelector(`[id='${e.target.id}']`);
-        selectedPieceElement.classList.add("selected-cell");
+        // store target cell's element and add CSS class to indicate selected cell
+        selectedElement = document.querySelector(`[id='${e.target.id}']`);
+        selectedElement.classList.add("selected-cell");
 
         // chess piece selected, go to (3) PLACE PIECE STATE
         resetBoardEventListeners();        
-        assignMoveSpace(boardStateObj[e.target.id], e.target.id);
+        calculateMoveSpace(selectedPiece, selectedPieceId);
     };
 };
 
@@ -523,18 +680,37 @@ const selectPiece = (e) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 const placePiece = (e) => {
-    const selectedPiece = boardStateObj[selectedPieceId];
-    const targetedPiece = boardStateObj[e.target.id];
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (4) END STATE ---------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
+
+    // game ends if either king piece is eliminated
+    if (selectedPiece !== "White King" && boardStateObj[e.target.id] === "White King") {
+        confirm("Player Black Wins!");
+        document.querySelector(".container").classList.add("hide-container");
+    } else if (selectedPiece !== "Black King" && boardStateObj[e.target.id] === "Black King") {
+        confirm("Player White Wins!");
+        document.querySelector(".container").classList.add("hide-container");
+    };
+
+////////////////////////////////////////////////////////////////////////////////////////
+/*------------------------------ (4) END STATE ---------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////
 
     if (!e.target.classList.contains("selected-cell")) {
-        // change target cell's board value to be selected chess piece value
-        e.target.innerText = selectedPieceValue;
 
-        // remove selected piece initial position's chess piece value
-        selectedPieceElement.innerText = "";
+        // // for castling
+        // if (selectedPiece === "White King" && e.target.id === "807") {
+        //     performCastling();
+        // }
+
+        // change target cell's board value to be previously selected chess piece value
+        e.target.innerText = selectedElement.innerText;
+        selectedElement.innerText = "";
 
         // update board state after placing piece
-        boardStateObj[e.target.id] = boardStateObj[selectedPieceId];
+        boardStateObj[e.target.id] = selectedPiece;
         boardStateObj[selectedPieceId] = null;
 
         // change pawn into queen if it reaches the last row
@@ -554,33 +730,17 @@ const placePiece = (e) => {
         
         // change player turn after player makes a move
         changePlayerTurn();
+        computeCellsUnderAtk();
     };
-    // reset all selected piece info 
-    selectedPieceValue = null;
+
+    // reset all selected piece info
+    selectedPiece = null; 
     selectedPieceId = null;
-    selectedPieceElement.classList.remove("selected-cell");
-    selectedPieceElement.classList.add("hover");
-    selectedPieceElement = null;
+    selectedElement.classList.remove("selected-cell");
+    selectedElement = null;
 
     // reset visible movable cells on chess board
     resetMovableCellClassList();
-
-////////////////////////////////////////////////////////////////////////////////////////
-/*------------------------------ (4) END STATE ---------------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////
-
-    // game ends if either king piece is eliminated
-    if (selectedPiece !== "White King" && targetedPiece === "White King") {
-        confirm("Player Black Wins!");
-        document.querySelector(".container").classList.add("hide-container");
-    } else if (selectedPiece !== "Black King" && targetedPiece === "Black King") {
-        confirm("Player White Wins!");
-        document.querySelector(".container").classList.add("hide-container");
-    };
-
-////////////////////////////////////////////////////////////////////////////////////////
-/*------------------------------ (4) END STATE ---------------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////
 
     // chess piece placed at target cell, go to (2) SELECT PIECE STATE
     resetBoardEventListeners();
