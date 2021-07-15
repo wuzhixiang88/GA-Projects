@@ -9,7 +9,8 @@ const playerBlack = document.querySelector(".player-black-div");
 
 // player turn object to keep track of player's turn
 const playerTurn = {
-    current: ""
+    current: "",
+    last: ""
 };
 
 // starting chess board state - to keep track of board state according to how the chess pieces move when the game is being played
@@ -67,10 +68,12 @@ const changePlayerTurn = () => {
     if (
         playerTurn["current"] === "White"
     ) {
+        playerTurn["last"] = playerTurn["current"];
         playerTurn["current"] = "Black";
         playerBlack.classList.add("player-turn");
         playerWhite.classList.remove("player-turn");
     } else {        
+        playerTurn["last"] = playerTurn["current"];
         playerTurn["current"] = "White";
         playerWhite.classList.add("player-turn");
         playerBlack.classList.remove("player-turn");
@@ -552,15 +555,19 @@ const getOutOfCheck = (targetCellId) => {
     computeCellsUnderAtk(cloneBoardStateObj);
 
     // if king is still in check, return false, otherwise return true
-    if (
-        (playerTurn["current"] === "White" && currentCellsUnderAtk.includes(kingPos["White King"])) ||
-        (playerTurn["current"] === "Black" && currentCellsUnderAtk.includes(kingPos["Black King"]))
-    ) {
+    if (kingInCheck()) {
         return false;
     } else {
         return true;
     }
 }
+
+const kingInCheck = () => {
+    return (
+        (playerTurn["current"] === "White" && currentCellsUnderAtk.includes(kingPos["White King"])) || 
+        (playerTurn["current"] === "Black" && currentCellsUnderAtk.includes(kingPos["Black King"]))
+    );
+};
 
 //
 const testCheckmate = () => {
@@ -625,6 +632,44 @@ const resetBoardEventListeners = () => {
     };
 };
 
+const drawGame = () => {
+    if (confirm("Confirm to Draw Game?")) {
+        document.querySelector(".container").classList.add("hide-container");
+    }
+};
+
+const normalPlayMove = (targetCell) => {
+    // change target cell's board value to be previously selected chess piece value
+    targetCell.innerText = selectedElement.innerText;
+    selectedElement.innerText = "";
+
+    // update board state after placing piece
+    boardStateObj[targetCell.id] = selectedPiece;
+    boardStateObj[selectedPieceId] = null;
+
+    // change pawn into queen if it reaches the last row
+    if (
+        selectedPiece === "White Pawn" && 
+        whitePawnFinalRow.includes(parseInt(targetCell.id))
+    ) {
+        boardStateObj[targetCell.id] = "White Queen";
+        document.querySelector(`[id='${targetCell.id}']`).innerHTML = "&#9813";
+    } else if (
+        selectedPiece === "Black Pawn" && 
+        blackPawnFinalRow.includes(parseInt(targetCell.id))
+    ) {
+        boardStateObj[targetCell.id] = "Black Queen";
+        document.querySelector(`[id='${targetCell.id}']`).innerHTML = "&#9819";
+    };
+
+    if (selectedPiece.includes("King")) {
+        updateKingPos(selectedPiece, targetCell.id);
+    };
+
+    // change player turn after player makes a move
+    changePlayerTurn();
+};
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ HELPER FUNCTIONS ------------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -640,12 +685,15 @@ const resetBoardEventListeners = () => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 window.onload = () => {
+    // intialize draw game button
+    document.querySelector(".draw-button").addEventListener("click", drawGame);
+
     // white player goes first
     playerTurn["current"] = "White";
     playerWhite.classList.add("player-turn");
 
-    // make player's chess pieces selectable, go to (2) SELECT PIECE STATE
-    assignPlayerPiece();
+    // make player's chess pieces selectable, program goes to (2) SELECT PIECE STATE
+    assignPlayerPiece();    
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -665,7 +713,7 @@ const selectPiece = (e) => {
     selectedElement = document.querySelector(`[id='${e.target.id}']`);
     selectedElement.classList.add("selected-cell");
 
-    // chess piece selected, go to (3) PLACE PIECE STATE
+    // chess piece selected, program goes to (3) PLACE PIECE STATE
     resetBoardEventListeners();        
     calculateMoveSpace(selectedPiece, selectedPieceId);
 };
@@ -689,100 +737,43 @@ const placePiece = (e) => {
     //     document.querySelector(".container").classList.add("hide-container");
     // };
 
+    // proceed if user does not unselect selected chess piece
     if (!e.target.classList.contains("selected-cell")) {
-        // if king is in check
-        if (
-            (playerTurn["current"] === "White" && currentCellsUnderAtk.includes(kingPos["White King"])) ||
-            (playerTurn["current"] === "Black" && currentCellsUnderAtk.includes(kingPos["Black King"]))
-        ) {
+        // check if king is in check
+        if (kingInCheck()) {
             // user must make a move to get out of check for the game to proceed
             if (getOutOfCheck(e.target.id)) {
-                // change target cell's board value to be previously selected chess piece value
-                e.target.innerText = selectedElement.innerText;
-                selectedElement.innerText = "";
-
-                // update board state after placing piece
-                boardStateObj[e.target.id] = selectedPiece;
-                boardStateObj[selectedPieceId] = null;
-
-                // change pawn into queen if it reaches the last row
-                if (
-                    selectedPiece === "White Pawn" && 
-                    whitePawnFinalRow.includes(parseInt(e.target.id))
-                ) {
-                    boardStateObj[e.target.id] = "White Queen";
-                    document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9813";
-                } else if (
-                    selectedPiece === "Black Pawn" && 
-                    blackPawnFinalRow.includes(parseInt(e.target.id))
-                ) {
-                    boardStateObj[e.target.id] = "Black Queen";
-                    document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9819";
-                };
-
-                if (selectedPiece.includes("King")) {
-                    updateKingPos(selectedPiece, e.target.id);
-                };
-
-                // change player turn after player makes a move
-                changePlayerTurn();
-                computeCellsUnderAtk();
+                normalPlayMove(e.target);
             } else {
                 alert("King is in check!");
             }
         } else {
-            
+            // user may not make a move that result in own king in check
             if (!getOutOfCheck(e.target.id)) {
                 alert("Illegal move! King will be in check!")
-            } else  {
-                // change target cell's board value to be previously selected chess piece value
-                e.target.innerText = selectedElement.innerText;
-                selectedElement.innerText = "";
-
-                // update board state after placing piece
-                boardStateObj[e.target.id] = selectedPiece;
-                boardStateObj[selectedPieceId] = null;
-
-                // change pawn into queen if it reaches the last row
-                if (
-                    selectedPiece === "White Pawn" && 
-                    whitePawnFinalRow.includes(parseInt(e.target.id))
-                ) {
-                    boardStateObj[e.target.id] = "White Queen";
-                    document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9813";
-                } else if (
-                    selectedPiece === "Black Pawn" && 
-                    blackPawnFinalRow.includes(parseInt(e.target.id))
-                ) {
-                    boardStateObj[e.target.id] = "Black Queen";
-                    document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9819";
-                };
-
-                if (selectedPiece.includes("King")) {
-                    updateKingPos(selectedPiece, e.target.id);
-                };
-                // change player turn after player makes a move
-                changePlayerTurn();
-                computeCellsUnderAtk();
-            };
-            // game ends when checkmate occurs
-            if (testCheckmate()) {
-                confirm("Checkmate! Player White Wins!");
+            } else {
+                normalPlayMove(e.target);
             };
         };
     };
 
-    // reset all selected piece info
-    selectedPiece = null; 
-    selectedPieceId = null;
-    selectedElement.classList.remove("selected-cell");
-    selectedElement = null;
+    // game ends when checkmate occurs, program ends when test returns true
+    if (testCheckmate()) {
+        alert(`Checkmate! Player ${playerTurn["last"]} Wins!`);
+        resetBoardEventListeners();
+    } else {
+        // reset all selected piece info
+        selectedPiece = null; 
+        selectedPieceId = null;
+        selectedElement.classList.remove("selected-cell");
+        selectedElement = null;
 
-    computeCellsUnderAtk();
+        computeCellsUnderAtk();
 
-    // chess piece placed at target cell, go to (2) SELECT PIECE STATE
-    resetBoardEventListeners();
-    assignPlayerPiece();
+        // chess piece placed at target cell, program goes to (2) SELECT PIECE STATE
+        resetBoardEventListeners();
+        assignPlayerPiece();
+    };
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////

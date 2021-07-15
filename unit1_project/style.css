@@ -37,27 +37,23 @@ p {
 .dark-box {
     background-color: brown;
     border: 1px solid black;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
 }
 
 .light-box {
     background-color: wheat;
     border: 1px solid black;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
 }
 
-.hover:hover {
+.hover:hover, .selected-cell {
     background-color: steelblue;
 }
 
 .movable-cell {
     background-color:lightsteelblue;
-}
-
-.selected-cell {
-    background-color: steelblue;
 }
 
 .player-white-div {
