@@ -26,7 +26,8 @@ const boardStateObj = {
     "801": "White Rook", "802": "White Knight", "803": "White Bishop", "804": "White Queen", "805": "White King", "806": "White Bishop", "807": "White Knight", "808": "White Rook"
 };
 
-const kingsPos = {
+// object to keep track of the king's board position
+const kingPos = {
     "White King": 805,
     "Black King": 105
 };
@@ -36,6 +37,7 @@ let selectedPiece;
 let selectedPieceId;
 let selectedElement;
 
+// TO RETHINK WHETHER TO USE GLOBAL OR LOCAL VARIABLE
 let currentCellsUnderAtk = [];
 
 // position arrays to help determine pawn's possible move space
@@ -99,7 +101,7 @@ const assignPlayerPiece = () => {
 };
 
 // assign possible move space once a piece is selected
-const calculateMoveSpace = (selectedPiece, selectedPieceId, forCellsUnderAtk = false) => {
+const calculateMoveSpace = (selectedPiece, selectedPieceId, forCellsUnderAtk = false, boardObject = boardStateObj) => {
     // for user to unselect chess piece by clicking on selected chess piece again
     document.querySelector(`[id='${selectedPieceId}']`).addEventListener("click", placePiece);
 
@@ -114,29 +116,31 @@ const calculateMoveSpace = (selectedPiece, selectedPieceId, forCellsUnderAtk = f
             break;
         case "White Rook":
         case "Black Rook":
-            possibleMoveSpace = rookMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
+            possibleMoveSpace = rookMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject);
             break;
         case "White Knight":
         case "Black Knight":
-            possibleMoveSpace = knightMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
+            possibleMoveSpace = knightMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject);
             break;
         case "White Bishop":
         case "Black Bishop":
-            possibleMoveSpace = bishopMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
+            possibleMoveSpace = bishopMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject);
             break;
         case "White Queen":
         case "Black Queen":
-            possibleMoveSpace = queenMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
+            possibleMoveSpace = queenMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject);
             break;
         case "White King":
         case "Black King":
-            possibleMoveSpace = kingMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
+            possibleMoveSpace = kingMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject);
             break;
     };
 
-    for (let i = 0; i < possibleMoveSpace.length; i++) {
-        document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
-        document.querySelector(`[id='${possibleMoveSpace[i]}']`).classList.add("movable-cell");
+    if (!forCellsUnderAtk) {
+        for (let i = 0; i < possibleMoveSpace.length; i++) {
+            document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
+            document.querySelector(`[id='${possibleMoveSpace[i]}']`).classList.add("movable-cell");
+        };
     };
     return possibleMoveSpace;
 };
@@ -222,7 +226,7 @@ const blackPawnMoveset = (selectedPieceId) => {
 };
 
 // calculate rook moves based on current position
-const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject) => {
     const currentPosInt = parseInt(selectedPieceId);
     const possibleMoves = [];
 
@@ -241,9 +245,9 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     // + to move down, - to move up
     for (let i = 0; i < rookVerticalMoveset.length; i++) {
         if (checkValidCell(currentPosInt + rookVerticalMoveset[i])) {
-            if (boardStateObj[currentPosInt + rookVerticalMoveset[i]] === null) {
+            if (boardObject[currentPosInt + rookVerticalMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
-            } else if (boardStateObj[currentPosInt + rookVerticalMoveset[i]].includes(enemyColour)) {
+            } else if (boardObject[currentPosInt + rookVerticalMoveset[i]].includes(enemyColour)) {
                 possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
                 break;
             } else {
@@ -258,9 +262,9 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     };
     for (let i = 0; i < rookVerticalMoveset.length; i++) {
         if (checkValidCell(currentPosInt - rookVerticalMoveset[i])) {
-            if (boardStateObj[currentPosInt - rookVerticalMoveset[i]] === null) {
+            if (boardObject[currentPosInt - rookVerticalMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
-            } else if (boardStateObj[currentPosInt - rookVerticalMoveset[i]].includes(enemyColour)) {
+            } else if (boardObject[currentPosInt - rookVerticalMoveset[i]].includes(enemyColour)) {
                 possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
                 break;
             } else {
@@ -278,9 +282,9 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     // + to move right, - to move left
     for (let i = 0; i < rookHorizontalMoveset.length; i++) {
         if (checkValidCell(currentPosInt + rookHorizontalMoveset[i])) {
-            if (boardStateObj[currentPosInt + rookHorizontalMoveset[i]] === null) {
+            if (boardObject[currentPosInt + rookHorizontalMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
-            } else if (boardStateObj[currentPosInt + rookHorizontalMoveset[i]].includes(enemyColour)) {
+            } else if (boardObject[currentPosInt + rookHorizontalMoveset[i]].includes(enemyColour)) {
                 possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
                 break;
             } else {
@@ -295,9 +299,9 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     };
     for (let i = 0; i < rookHorizontalMoveset.length; i++) {
         if (checkValidCell(currentPosInt - rookHorizontalMoveset[i])) {
-            if (boardStateObj[currentPosInt - rookHorizontalMoveset[i]] === null) {
+            if (boardObject[currentPosInt - rookHorizontalMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
-            } else if (boardStateObj[currentPosInt - rookHorizontalMoveset[i]].includes(enemyColour)) {
+            } else if (boardObject[currentPosInt - rookHorizontalMoveset[i]].includes(enemyColour)) {
                 possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
                 break;
             } else {
@@ -314,7 +318,7 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
 };
 
 // calculate knight moves based on current position
-const knightMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+const knightMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject) => {
     const currentPosInt = parseInt(selectedPieceId);
     const possibleMoves = [];
 
@@ -330,8 +334,8 @@ const knightMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     for (let i = 0; i < knightMoveset.length; i++) {
         if (checkValidCell(currentPosInt + knightMoveset[i])) {
             if (
-                boardStateObj[currentPosInt + knightMoveset[i]] === null ||
-                boardStateObj[currentPosInt + knightMoveset[i]].includes(enemyColour)
+                boardObject[currentPosInt + knightMoveset[i]] === null ||
+                boardObject[currentPosInt + knightMoveset[i]].includes(enemyColour)
             ) {
                 possibleMoves.push(currentPosInt + knightMoveset[i]);
             } else if (forCellsUnderAtk) {
@@ -343,7 +347,7 @@ const knightMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
 };
 
 // calculate bishop moves based on current position
-const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject) => {
     const currentPosInt = parseInt(selectedPieceId);
     const possibleMoves = [];
 
@@ -362,9 +366,9 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     // + to move diagonal left down, - to move diagonal right up
     for (let i = 0; i < bishopDiagonalLeftDownMoveset.length; i++) {
         if (checkValidCell(currentPosInt + bishopDiagonalLeftDownMoveset[i])) {
-            if (boardStateObj[currentPosInt + bishopDiagonalLeftDownMoveset[i]] === null) {
+            if (boardObject[currentPosInt + bishopDiagonalLeftDownMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i]);
-            } else if (boardStateObj[currentPosInt + bishopDiagonalLeftDownMoveset[i]].includes(enemyColour)) {
+            } else if (boardObject[currentPosInt + bishopDiagonalLeftDownMoveset[i]].includes(enemyColour)) {
                 possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i]);
                 break;
             } else {
@@ -379,9 +383,9 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     };
     for (let i = 0; i < bishopDiagonalLeftDownMoveset.length; i++) {
         if (checkValidCell(currentPosInt - bishopDiagonalLeftDownMoveset[i])) {
-            if (boardStateObj[currentPosInt - bishopDiagonalLeftDownMoveset[i]] === null) {
+            if (boardObject[currentPosInt - bishopDiagonalLeftDownMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i]);
-            } else if (boardStateObj[currentPosInt - bishopDiagonalLeftDownMoveset[i]].includes(enemyColour)) {
+            } else if (boardObject[currentPosInt - bishopDiagonalLeftDownMoveset[i]].includes(enemyColour)) {
                 possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i]);
                 break;
             } else {
@@ -399,9 +403,9 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     // + to move diagonal right down, - to move diagonal left up
     for (let i = 0; i < bishopDiagonalRightDownMoveset.length; i++) {
         if (checkValidCell(currentPosInt + bishopDiagonalRightDownMoveset[i])) {
-            if (boardStateObj[currentPosInt + bishopDiagonalRightDownMoveset[i]] === null) {
+            if (boardObject[currentPosInt + bishopDiagonalRightDownMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i]);
-            } else if (boardStateObj[currentPosInt + bishopDiagonalRightDownMoveset[i]].includes(enemyColour)) {
+            } else if (boardObject[currentPosInt + bishopDiagonalRightDownMoveset[i]].includes(enemyColour)) {
                 possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i]);
                 break;
             } else {
@@ -416,9 +420,9 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     };
     for (let i = 0; i < bishopDiagonalRightDownMoveset.length; i++) {
         if (checkValidCell(currentPosInt - bishopDiagonalRightDownMoveset[i])) {
-            if (boardStateObj[currentPosInt - bishopDiagonalRightDownMoveset[i]] === null) {
+            if (boardObject[currentPosInt - bishopDiagonalRightDownMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i]);
-            } else if (boardStateObj[currentPosInt - bishopDiagonalRightDownMoveset[i]].includes(enemyColour)) {
+            } else if (boardObject[currentPosInt - bishopDiagonalRightDownMoveset[i]].includes(enemyColour)) {
                 possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i]);
                 break;
             } else {
@@ -435,12 +439,12 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
 };
 
 // calculate queen moves based on current position
-const queenMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+const queenMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject) => {
     const possibleMoves = [];
     
     // queen's moveset is combination of rook + bishop
-    const rookPossibleMoves = rookMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
-    const bishopPossibleMoves = bishopMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk);
+    const rookPossibleMoves = rookMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject);
+    const bishopPossibleMoves = bishopMoveset(selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject);
 
     // push the calculated rook and bishop possible moves into queen's possible moves array
     for (let i = 0; i < rookPossibleMoves.length; i++) {
@@ -452,8 +456,8 @@ const queenMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
     return possibleMoves;
 };
 
-// calculate king moves based on current position
-const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
+// calculate king moves based on current position  //GOT BUGS NEED TO FIX
+const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject) => {
     const currentPosInt = parseInt(selectedPieceId);
     const possibleMoves = [];
 
@@ -467,10 +471,13 @@ const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
 
     // check for movable space based on current position
     for (let i = 0; i < kingMoveset.length; i++) {
-        if (checkValidCell(currentPosInt + kingMoveset[i])) {
+        if (
+            checkValidCell(currentPosInt + kingMoveset[i]) && 
+            !currentCellsUnderAtk.includes(currentPosInt + kingMoveset[i])
+        ) {
             if (
-                boardStateObj[currentPosInt + kingMoveset[i]] === null ||
-                boardStateObj[currentPosInt + kingMoveset[i]].includes(enemyColour)
+                boardObject[currentPosInt + kingMoveset[i]] === null ||
+                boardObject[currentPosInt + kingMoveset[i]].includes(enemyColour)
             ) {
                 possibleMoves.push(currentPosInt + kingMoveset[i]);
             } else if (forCellsUnderAtk) {
@@ -478,52 +485,11 @@ const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk) => {
             };
         };
     };
-
-    // if (checkCastlingCondition) {
-    //     possibleMoves.push(807);
-    // }
-
     return possibleMoves;
 };
 
-const updateKingPos = (selectedPiece, selectedPieceId) => {
-    kingsPos[selectedPiece] = parseInt(selectedPieceId);
-}
-
-// const checkCastlingCondition = () => {
-//     if (
-//         !firstMoveTrackerObj["White Rook"] &&
-//         !firstMoveTrackerObj["White King"] &&
-//         boardStateObj["806"] === null &&
-//         boardStateObj["807"] === null
-//     ) {
-//         return true;
-//     }
-//     return false;
-// };
-
-// const performCastling = () => {
-//     // rook move to col 6
-//     document.querySelector(`[id='${"806"}']`).innerHTML = document.querySelector(`[id='${"808"}']`).innerHTML;
-//     document.querySelector(`[id='${"808"}']`).innerHTML = "";
-//     boardStateObj["806"] = boardStateObj["808"];
-//     // king move to col 7
-//     boardStateObj["807"] = boardStateObj["805"];
-// };
-
-// check if cell is valid key in board state object
-const checkValidCell = (key) => key in boardStateObj;
-
-// determine enemy piece colour
-const checkEnemyColour = (selectedPiece) => {
-    if (selectedPiece.includes("White")) {
-        return "Black";
-    } else {
-        return "White";
-    };
-};
-
-const computeCellsUnderAtk = () => {
+// calculate cells under attack by opposing pieces / used to test if king is in check
+const computeCellsUnderAtk = (boardObject = boardStateObj) => {
     // reset cells under attack
     currentCellsUnderAtk = [];
     const allUnderAtkCells = document.querySelectorAll(".under-attack");
@@ -533,7 +499,7 @@ const computeCellsUnderAtk = () => {
     
     // compute cells under attack based on player's turn
     if (playerTurn.playerWhite) {
-        for (const [key, value] of Object.entries(boardStateObj)) {
+        for (const [key, value] of Object.entries(boardObject)) {
             if (value !== null && value.includes("Black Pawn")) {
                 if (checkValidCell(parseInt(key) + 101)) {
                     currentCellsUnderAtk.push(parseInt(key) + 101);
@@ -544,7 +510,7 @@ const computeCellsUnderAtk = () => {
                     document.querySelector(`[id='${(parseInt(key) + 99)}']`).classList.add("under-attack")
                 };  
             } else if (value !== null && value.includes("Black")) {
-                const possibleMoves = calculateMoveSpace(value, key, true);
+                const possibleMoves = calculateMoveSpace(value, key, true, boardObject);
         
                 for (let i = 0; i < possibleMoves.length; i++) {
                     currentCellsUnderAtk.push(possibleMoves[i]);
@@ -553,7 +519,7 @@ const computeCellsUnderAtk = () => {
             };
         };
     } else {
-        for (const [key, value] of Object.entries(boardStateObj)) {
+        for (const [key, value] of Object.entries(boardObject)) {
             if (value !== null && value.includes("White Pawn")) {
                 if (checkValidCell(parseInt(key) - 101)) {
                     currentCellsUnderAtk.push(parseInt(key) - 101);
@@ -564,7 +530,7 @@ const computeCellsUnderAtk = () => {
                     document.querySelector(`[id='${(parseInt(key) - 99)}']`).classList.add("under-attack")
                 };             
             } else if (value !== null && value.includes("White")) {
-                const possibleMoves = calculateMoveSpace(value, key, true);
+                const possibleMoves = calculateMoveSpace(value, key, true, boardObject);
         
                 for (let i = 0; i < possibleMoves.length; i++) {
                     currentCellsUnderAtk.push(possibleMoves[i]);
@@ -572,6 +538,47 @@ const computeCellsUnderAtk = () => {
                 };
             };
         };
+    };
+};
+
+// simulate a move to get out of check
+const getOutOfCheck = (targetCellId) => {
+    // clone board state object for move simulation
+    const cloneBoardStateObj = {...boardStateObj};
+    // simulate move based on user target cell
+    cloneBoardStateObj[targetCellId] = selectedPiece;
+    cloneBoardStateObj[selectedPieceId] = null;
+    // update king position if king is selected to move out of check
+    if (selectedPiece.includes("King")) {
+        updateKingPos(selectedPiece, targetCellId);
+    };
+    // compute cells under attack to check if king is still in check
+    computeCellsUnderAtk(cloneBoardStateObj);
+    // if king is still in check, return false, otherwise return true
+    if (
+        (playerTurn.playerWhite && currentCellsUnderAtk.includes(kingPos["White King"])) ||
+        (playerTurn.playerBlack && currentCellsUnderAtk.includes(kingPos["Black King"]))
+    ) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+// update king's position whenever they are moved
+const updateKingPos = (selectedPiece, selectedPieceId) => {
+    kingPos[selectedPiece] = parseInt(selectedPieceId);
+}
+
+// check if cell is valid key in board state object
+const checkValidCell = (key) => key in boardStateObj;
+
+// determine enemy piece colour
+const checkEnemyColour = (selectedPiece) => {
+    if (selectedPiece.includes("White")) {
+        return "Black";
+    } else {
+        return "White";
     };
 };
 
@@ -624,26 +631,17 @@ window.onload = () => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 const selectPiece = (e) => {
+    // store selected chess piece and its cell id
+    selectedPiece = boardStateObj[e.target.id];
+    selectedPieceId = e.target.id;
 
-    // if king is in check, can only move king
-    if (
-        (playerTurn.playerWhite && currentCellsUnderAtk.includes(kingsPos["White King"]) && boardStateObj[e.target.id] !== "White King")||
-        (playerTurn.playerBlack && currentCellsUnderAtk.includes(kingsPos["Black King"]) && boardStateObj[e.target.id] !== "Black King")
-    ) {
-        alert("King is in check!");
-    } else if (boardStateObj[e.target.id] !== null) {
-        // store selected chess piece and its cell id
-        selectedPiece = boardStateObj[e.target.id];
-        selectedPieceId = e.target.id;
+    // store target cell's element and add CSS class to indicate selected cell
+    selectedElement = document.querySelector(`[id='${e.target.id}']`);
+    selectedElement.classList.add("selected-cell");
 
-        // store target cell's element and add CSS class to indicate selected cell
-        selectedElement = document.querySelector(`[id='${e.target.id}']`);
-        selectedElement.classList.add("selected-cell");
-
-        // chess piece selected, go to (3) PLACE PIECE STATE
-        resetBoardEventListeners();        
-        calculateMoveSpace(selectedPiece, selectedPieceId);
-    };
+    // chess piece selected, go to (3) PLACE PIECE STATE
+    resetBoardEventListeners();        
+    calculateMoveSpace(selectedPiece, selectedPieceId);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -674,42 +672,90 @@ const placePiece = (e) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
     if (!e.target.classList.contains("selected-cell")) {
-
-        // // for castling
-        // if (selectedPiece === "White King" && e.target.id === "807") {
-        //     performCastling();
-        // }
-
-        // change target cell's board value to be previously selected chess piece value
-        e.target.innerText = selectedElement.innerText;
-        selectedElement.innerText = "";
-
-        // update board state after placing piece
-        boardStateObj[e.target.id] = selectedPiece;
-        boardStateObj[selectedPieceId] = null;
-
-        // change pawn into queen if it reaches the last row
+        // if king is in check
         if (
-            selectedPiece === "White Pawn" && 
-            whitePawnFinalRow.includes(parseInt(e.target.id))
+            (playerTurn.playerWhite && currentCellsUnderAtk.includes(kingPos["White King"])) ||
+            (playerTurn.playerBlack && currentCellsUnderAtk.includes(kingPos["Black King"]))
         ) {
-            boardStateObj[e.target.id] = "White Queen";
-            document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9813";
-        } else if (
-            selectedPiece === "Black Pawn" && 
-            blackPawnFinalRow.includes(parseInt(e.target.id))
-        ) {
-            boardStateObj[e.target.id] = "Black Queen";
-            document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9819";
-        };
+            if (testCheckmate()) {
+                confirm("Checkmate! Player White Wins!");
+            }
+            // user must make a move to get out of check for the game to proceed
+            if (getOutOfCheck(e.target.id)) {
+                // change target cell's board value to be previously selected chess piece value
+                e.target.innerText = selectedElement.innerText;
+                selectedElement.innerText = "";
 
-        if (selectedPiece.includes("King")) {
-            updateKingPos(selectedPiece, e.target.id);
+                // update board state after placing piece
+                boardStateObj[e.target.id] = selectedPiece;
+                boardStateObj[selectedPieceId] = null;
+
+                // change pawn into queen if it reaches the last row
+                if (
+                    selectedPiece === "White Pawn" && 
+                    whitePawnFinalRow.includes(parseInt(e.target.id))
+                ) {
+                    boardStateObj[e.target.id] = "White Queen";
+                    document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9813";
+                } else if (
+                    selectedPiece === "Black Pawn" && 
+                    blackPawnFinalRow.includes(parseInt(e.target.id))
+                ) {
+                    boardStateObj[e.target.id] = "Black Queen";
+                    document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9819";
+                };
+
+                if (selectedPiece.includes("King")) {
+                    updateKingPos(selectedPiece, e.target.id);
+                };
+
+                // change player turn after player makes a move
+                changePlayerTurn();
+                computeCellsUnderAtk();
+            } else {
+                alert("King is in check!");
+            }
+        } else {
+            
+            if (!getOutOfCheck(e.target.id)) {
+                alert("Illegal move! King will be in check!")
+            } else  {
+                // change target cell's board value to be previously selected chess piece value
+                e.target.innerText = selectedElement.innerText;
+                selectedElement.innerText = "";
+
+                // update board state after placing piece
+                boardStateObj[e.target.id] = selectedPiece;
+                boardStateObj[selectedPieceId] = null;
+
+                // change pawn into queen if it reaches the last row
+                if (
+                    selectedPiece === "White Pawn" && 
+                    whitePawnFinalRow.includes(parseInt(e.target.id))
+                ) {
+                    boardStateObj[e.target.id] = "White Queen";
+                    document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9813";
+                } else if (
+                    selectedPiece === "Black Pawn" && 
+                    blackPawnFinalRow.includes(parseInt(e.target.id))
+                ) {
+                    boardStateObj[e.target.id] = "Black Queen";
+                    document.querySelector(`[id='${e.target.id}']`).innerHTML = "&#9819";
+                };
+
+                if (selectedPiece.includes("King")) {
+                    updateKingPos(selectedPiece, e.target.id);
+                };
+                // change player turn after player makes a move
+                changePlayerTurn();
+                computeCellsUnderAtk();
+
+                if (testCheckmate()) {
+                    confirm("Checkmate! Player White Wins!");
+                }
+
+            };
         };
-        
-        // change player turn after player makes a move
-        changePlayerTurn();
-        computeCellsUnderAtk();
     };
 
     // reset all selected piece info
@@ -720,6 +766,7 @@ const placePiece = (e) => {
 
     // reset visible movable cells on chess board
     resetMovableCellClassList();
+    computeCellsUnderAtk();
 
     // chess piece placed at target cell, go to (2) SELECT PIECE STATE
     resetBoardEventListeners();
@@ -729,3 +776,35 @@ const placePiece = (e) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (3) PLACE PIECE STATE -------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
+
+const testCheckmate = () => {
+    let kingPossibleMove = [];   
+    // compute cells under attack based on player's turn
+    if (playerTurn.playerBlack) {
+        for (const [key, value] of Object.entries(boardStateObj)) {
+            if (value === "Black King") {
+                kingPossibleMove = calculateMoveSpace(value, key);
+            } else if (
+                value !== null && 
+                value.includes("Black")
+            ) {
+                const possibleMoves = calculateMoveSpace(value, key);
+
+                for (let i = 0; i < possibleMoves.length; i++) {
+                    const cloneBoardStateObj = {...boardStateObj};
+                    cloneBoardStateObj[possibleMoves[i]] = key;
+
+                    computeCellsUnderAtk(cloneBoardStateObj);
+                    // if king not in check
+                    if (!currentCellsUnderAtk.includes(kingPos["Black King"])) {
+                        return false;
+                    };
+                };
+            };
+        };
+
+        if (kingPossibleMove.length === 0) {
+            return true;
+        };
+    }; 
+};
