@@ -1,7 +1,6 @@
 div {
     font-size: xx-large;
     text-align: center;
-    margin: 50px;
 }
 
 table {
@@ -19,11 +18,20 @@ p {
     margin: 35px;
 }
 
-.chess-board-div {
+.main-div {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    position: relative;
+    justify-content: space-evenly;
+}
+
+.buttons-div {
+    width: 350px;
+    margin-left: 300px;
+}
+
+.eliminated-info-div {
+    width: 350px;
+    margin-right: 300px;
 }
 
 .dark-box {
@@ -40,11 +48,6 @@ p {
     height: 100px;
 }
 
-.eliminated-info-div {
-    position: absolute;
-    right: 0;
-}
-
 .hover:hover {
     background-color: steelblue;
 }
@@ -59,10 +62,12 @@ p {
 
 .player-white-div {
     color: lightgray;
+    margin: 100px 0 0 0;
 }
 
 .player-black-div {
     color: lightgray;
+    margin: 50px 0 100px 0;
 }
 
 .player-turn {

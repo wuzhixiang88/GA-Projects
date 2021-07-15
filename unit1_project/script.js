@@ -4,14 +4,12 @@
 
 // variables for the chess board table, all table cells and players' div
 const chessBoard = document.querySelector(".chess-board");
-const allCells = document.querySelectorAll("td");
 const playerWhite = document.querySelector(".player-white-div");
 const playerBlack = document.querySelector(".player-black-div");
 
 // player turn object to keep track of player's turn
 const playerTurn = {
-    playerWhite: false,
-    playerBlack: false
+    current: ""
 };
 
 // starting chess board state - to keep track of board state according to how the chess pieces move when the game is being played
@@ -66,42 +64,36 @@ const blackPawnFinalRow = [
 
 // change turn between players
 const changePlayerTurn = () => {
-    if (playerTurn.playerWhite) {
-
-        playerTurn.playerWhite = false;
-        playerWhite.classList.remove("player-turn");
-
-        playerTurn.playerBlack = true;
+    if (
+        playerTurn["current"] === "White"
+    ) {
+        playerTurn["current"] = "Black";
         playerBlack.classList.add("player-turn");
-    } else {
-
-        playerTurn.playerWhite = true;
+        playerWhite.classList.remove("player-turn");
+    } else {        
+        playerTurn["current"] = "White";
         playerWhite.classList.add("player-turn");
-
-        playerTurn.playerBlack = false;
         playerBlack.classList.remove("player-turn");
     };
 };
 
 // make player's piece selectable on their turn
 const assignPlayerPiece = () => {
-    if (playerTurn.playerWhite) {
-        for (const [key, value] of Object.entries(boardStateObj)) {
-            if (value !== null && value.includes("White")) {
-                document.querySelector(`[id='${key}']`).addEventListener("click", selectPiece);
-            };
+    for (const [key, value] of Object.entries(boardStateObj)) {
+        if (value !== null && value.includes(playerTurn["current"])) {
+            document.querySelector(`[id='${key}']`).addEventListener("click", selectPiece);
         };
-    } else {
-        for (const [key, value] of Object.entries(boardStateObj)) {
-            if (value !== null && value.includes("Black")) {
-                document.querySelector(`[id='${key}']`).addEventListener("click", selectPiece);
-            };
-        };        
     };
 };
 
 // assign possible move space once a piece is selected
 const calculateMoveSpace = (selectedPiece, selectedPieceId, forCellsUnderAtk = false, boardObject = boardStateObj) => {
+    // reset CSS class for movable cells
+    const allMovableCell = document.querySelectorAll(".movable-cell");
+    for (let i = 0; i < allMovableCell.length; i++) {
+        allMovableCell[i].classList.remove("movable-cell");
+    };
+
     // for user to unselect chess piece by clicking on selected chess piece again
     document.querySelector(`[id='${selectedPieceId}']`).addEventListener("click", placePiece);
 
@@ -490,15 +482,16 @@ const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
 
 // calculate cells under attack by opposing pieces / used to test if king is in check
 const computeCellsUnderAtk = (boardObject = boardStateObj) => {
-    // reset cells under attack
+    // reset cells under attack and its CSS class
     currentCellsUnderAtk = [];
-    const allUnderAtkCells = document.querySelectorAll(".under-attack");
+
+    const allUnderAtkCells = document.querySelectorAll(".under-attack");    
     for (let i = 0; i < allUnderAtkCells.length; i++) {
         allUnderAtkCells[i].classList.remove("under-attack");
     };
     
     // compute cells under attack based on player's turn
-    if (playerTurn.playerWhite) {
+    if (playerTurn["current"] === "White") {
         for (const [key, value] of Object.entries(boardObject)) {
             if (value !== null && value.includes("Black Pawn")) {
                 if (checkValidCell(parseInt(key) + 101)) {
@@ -545,25 +538,66 @@ const computeCellsUnderAtk = (boardObject = boardStateObj) => {
 const getOutOfCheck = (targetCellId) => {
     // clone board state object for move simulation
     const cloneBoardStateObj = {...boardStateObj};
+
     // simulate move based on user target cell
     cloneBoardStateObj[targetCellId] = selectedPiece;
     cloneBoardStateObj[selectedPieceId] = null;
+
     // update king position if king is selected to move out of check
     if (selectedPiece.includes("King")) {
         updateKingPos(selectedPiece, targetCellId);
     };
+
     // compute cells under attack to check if king is still in check
     computeCellsUnderAtk(cloneBoardStateObj);
+
     // if king is still in check, return false, otherwise return true
     if (
-        (playerTurn.playerWhite && currentCellsUnderAtk.includes(kingPos["White King"])) ||
-        (playerTurn.playerBlack && currentCellsUnderAtk.includes(kingPos["Black King"]))
+        (playerTurn["current"] === "White" && currentCellsUnderAtk.includes(kingPos["White King"])) ||
+        (playerTurn["current"] === "Black" && currentCellsUnderAtk.includes(kingPos["Black King"]))
     ) {
         return false;
     } else {
         return true;
     }
 }
+
+//
+const testCheckmate = () => {
+    let kingPossibleMove = [];   
+
+    // simulating all possible moves to get out of check
+    for (const [key, value] of Object.entries(boardStateObj)) {
+        // calculate possible moves for king
+        if (
+            value === `${playerTurn["current"]} King`
+        ) {
+            kingPossibleMove = calculateMoveSpace(value, key);
+        } else if (
+            value !== null && 
+            value.includes(playerTurn["current"])
+        ) {
+            // calculate and simulate all possible moves for rest of the chess pieces
+            const possibleMoves = calculateMoveSpace(value, key);
+            for (let i = 0; i < possibleMoves.length; i++) {
+                const cloneBoardStateObj = {...boardStateObj};
+                cloneBoardStateObj[possibleMoves[i]] = value;
+                cloneBoardStateObj[key] = null;
+
+                computeCellsUnderAtk(cloneBoardStateObj);
+
+                // if a move results in king not in check, no checkmate, return false
+                if (!currentCellsUnderAtk.includes(kingPos[`${playerTurn["current"]} King`])) {
+                    return false;
+                };
+            };
+        };
+    };
+    // no moves to get king out of check and no possible moves for king, checkmate, return true
+    if (kingPossibleMove.length === 0) {
+        return true;
+    };
+};
 
 // update king's position whenever they are moved
 const updateKingPos = (selectedPiece, selectedPieceId) => {
@@ -582,17 +616,9 @@ const checkEnemyColour = (selectedPiece) => {
     };
 };
 
-// remove CSS class list for movable cells
-const resetMovableCellClassList = () => {
-    const allMovableCell = document.querySelectorAll(".movable-cell");
-
-    for (let i = 0; i < allMovableCell.length; i++) {
-        allMovableCell[i].classList.remove("movable-cell");
-    };
-};
-
 // clear all event listeners on all cells 
 const resetBoardEventListeners = () => {
+    const allCells = document.querySelectorAll("td");
     for (let i = 0; i < allCells.length; i++) {
         allCells[i].removeEventListener("click", selectPiece);
         allCells[i].removeEventListener("click", placePiece);
@@ -615,7 +641,7 @@ const resetBoardEventListeners = () => {
 
 window.onload = () => {
     // white player goes first
-    playerTurn.playerWhite = true;
+    playerTurn["current"] = "White";
     playerWhite.classList.add("player-turn");
 
     // make player's chess pieces selectable, go to (2) SELECT PIECE STATE
@@ -654,32 +680,21 @@ const selectPiece = (e) => {
 
 const placePiece = (e) => {
 
-////////////////////////////////////////////////////////////////////////////////////////
-/*------------------------------ (4) END STATE ---------------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////
-
-    // game ends if either king piece is eliminated
-    if (selectedPiece !== "White King" && boardStateObj[e.target.id] === "White King") {
-        confirm("Player Black Wins!");
-        document.querySelector(".container").classList.add("hide-container");
-    } else if (selectedPiece !== "Black King" && boardStateObj[e.target.id] === "Black King") {
-        confirm("Player White Wins!");
-        document.querySelector(".container").classList.add("hide-container");
-    };
-
-////////////////////////////////////////////////////////////////////////////////////////
-/*------------------------------ (4) END STATE ---------------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////
+    // // game ends if either king piece is eliminated
+    // if (selectedPiece !== "White King" && boardStateObj[e.target.id] === "White King") {
+    //     confirm("Player Black Wins!");
+    //     document.querySelector(".container").classList.add("hide-container");
+    // } else if (selectedPiece !== "Black King" && boardStateObj[e.target.id] === "Black King") {
+    //     confirm("Player White Wins!");
+    //     document.querySelector(".container").classList.add("hide-container");
+    // };
 
     if (!e.target.classList.contains("selected-cell")) {
         // if king is in check
         if (
-            (playerTurn.playerWhite && currentCellsUnderAtk.includes(kingPos["White King"])) ||
-            (playerTurn.playerBlack && currentCellsUnderAtk.includes(kingPos["Black King"]))
+            (playerTurn["current"] === "White" && currentCellsUnderAtk.includes(kingPos["White King"])) ||
+            (playerTurn["current"] === "Black" && currentCellsUnderAtk.includes(kingPos["Black King"]))
         ) {
-            if (testCheckmate()) {
-                confirm("Checkmate! Player White Wins!");
-            }
             // user must make a move to get out of check for the game to proceed
             if (getOutOfCheck(e.target.id)) {
                 // change target cell's board value to be previously selected chess piece value
@@ -749,11 +764,10 @@ const placePiece = (e) => {
                 // change player turn after player makes a move
                 changePlayerTurn();
                 computeCellsUnderAtk();
-
-                if (testCheckmate()) {
-                    confirm("Checkmate! Player White Wins!");
-                }
-
+            };
+            // game ends when checkmate occurs
+            if (testCheckmate()) {
+                confirm("Checkmate! Player White Wins!");
             };
         };
     };
@@ -764,8 +778,6 @@ const placePiece = (e) => {
     selectedElement.classList.remove("selected-cell");
     selectedElement = null;
 
-    // reset visible movable cells on chess board
-    resetMovableCellClassList();
     computeCellsUnderAtk();
 
     // chess piece placed at target cell, go to (2) SELECT PIECE STATE
@@ -776,35 +788,3 @@ const placePiece = (e) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ (3) PLACE PIECE STATE -------------------------------*/
 ////////////////////////////////////////////////////////////////////////////////////////
-
-const testCheckmate = () => {
-    let kingPossibleMove = [];   
-    // compute cells under attack based on player's turn
-    if (playerTurn.playerBlack) {
-        for (const [key, value] of Object.entries(boardStateObj)) {
-            if (value === "Black King") {
-                kingPossibleMove = calculateMoveSpace(value, key);
-            } else if (
-                value !== null && 
-                value.includes("Black")
-            ) {
-                const possibleMoves = calculateMoveSpace(value, key);
-
-                for (let i = 0; i < possibleMoves.length; i++) {
-                    const cloneBoardStateObj = {...boardStateObj};
-                    cloneBoardStateObj[possibleMoves[i]] = key;
-
-                    computeCellsUnderAtk(cloneBoardStateObj);
-                    // if king not in check
-                    if (!currentCellsUnderAtk.includes(kingPos["Black King"])) {
-                        return false;
-                    };
-                };
-            };
-        };
-
-        if (kingPossibleMove.length === 0) {
-            return true;
-        };
-    }; 
-};
