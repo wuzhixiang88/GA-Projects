@@ -4,6 +4,7 @@
 
 // variables for the chess board table, all table cells and players' div
 const chessBoard = document.querySelector(".chess-board");
+const allCells = document.querySelectorAll("td");
 const playerWhite = document.querySelector(".player-white-div");
 const playerBlack = document.querySelector(".player-black-div");
 
@@ -548,7 +549,7 @@ const getOutOfCheck = (targetCellId) => {
 
     // update king position if king is selected to move out of check
     if (selectedPiece.includes("King")) {
-        updateKingPos(selectedPiece, targetCellId);
+        kingPos[selectedPiece] = parseInt(targetCellId);
     };
 
     // compute cells under attack to check if king is still in check
@@ -562,6 +563,7 @@ const getOutOfCheck = (targetCellId) => {
     }
 }
 
+// test whether king is in check during respective player's turn
 const kingInCheck = () => {
     return (
         (playerTurn["current"] === "White" && currentCellsUnderAtk.includes(kingPos["White King"])) || 
@@ -569,7 +571,7 @@ const kingInCheck = () => {
     );
 };
 
-//
+// test end game condition, checkmate
 const testCheckmate = () => {
     let kingPossibleMove = [];   
 
@@ -606,11 +608,6 @@ const testCheckmate = () => {
     };
 };
 
-// update king's position whenever they are moved
-const updateKingPos = (selectedPiece, selectedPieceId) => {
-    kingPos[selectedPiece] = parseInt(selectedPieceId);
-}
-
 // check if cell is valid key in board state object
 const checkValidCell = (key) => key in boardStateObj;
 
@@ -623,21 +620,28 @@ const checkEnemyColour = (selectedPiece) => {
     };
 };
 
-// clear all event listeners on all cells 
-const resetBoardEventListeners = () => {
-    const allCells = document.querySelectorAll("td");
+// clear event listeners for selecting chess pieces
+const resetSelectPiece = () => {
     for (let i = 0; i < allCells.length; i++) {
         allCells[i].removeEventListener("click", selectPiece);
+    };
+};
+
+// clear event listeners for placing chess pieces
+const resetPlacePiece = () => {
+    for (let i = 0; i < allCells.length; i++) {
         allCells[i].removeEventListener("click", placePiece);
     };
 };
 
+// trigger draw game/stalemate
 const drawGame = () => {
     if (confirm("Confirm to Draw Game?")) {
-        document.querySelector(".container").classList.add("hide-container");
+        document.querySelector(".container").classList.add("hide");
     }
 };
 
+// function for normal game flow when user place chess piece on targeted cell
 const normalPlayMove = (targetCell) => {
     // change target cell's board value to be previously selected chess piece value
     targetCell.innerText = selectedElement.innerText;
@@ -662,8 +666,9 @@ const normalPlayMove = (targetCell) => {
         document.querySelector(`[id='${targetCell.id}']`).innerHTML = "&#9819";
     };
 
+    // update king position if king is selected to move out of check
     if (selectedPiece.includes("King")) {
-        updateKingPos(selectedPiece, targetCell.id);
+        kingPos[selectedPiece] = parseInt(targetCell.id);
     };
 
     // change player turn after player makes a move
@@ -714,7 +719,7 @@ const selectPiece = (e) => {
     selectedElement.classList.add("selected-cell");
 
     // chess piece selected, program goes to (3) PLACE PIECE STATE
-    resetBoardEventListeners();        
+    resetSelectPiece();        
     calculateMoveSpace(selectedPiece, selectedPieceId);
 };
 
@@ -727,16 +732,6 @@ const selectPiece = (e) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 
 const placePiece = (e) => {
-
-    // // game ends if either king piece is eliminated
-    // if (selectedPiece !== "White King" && boardStateObj[e.target.id] === "White King") {
-    //     confirm("Player Black Wins!");
-    //     document.querySelector(".container").classList.add("hide-container");
-    // } else if (selectedPiece !== "Black King" && boardStateObj[e.target.id] === "Black King") {
-    //     confirm("Player White Wins!");
-    //     document.querySelector(".container").classList.add("hide-container");
-    // };
-
     // proceed if user does not unselect selected chess piece
     if (!e.target.classList.contains("selected-cell")) {
         // check if king is in check
@@ -757,10 +752,13 @@ const placePiece = (e) => {
         };
     };
 
-    // game ends when checkmate occurs, program ends when test returns true
+    // game ends when checkmate occurs, when test returns true
     if (testCheckmate()) {
+        selectedElement.classList.remove("selected-cell");
+        resetPlacePiece();
+        document.querySelector(".draw-button").removeEventListener("click", drawGame);
+
         alert(`Checkmate! Player ${playerTurn["last"]} Wins!`);
-        resetBoardEventListeners();
     } else {
         // reset all selected piece info
         selectedPiece = null; 
@@ -771,9 +769,9 @@ const placePiece = (e) => {
         computeCellsUnderAtk();
 
         // chess piece placed at target cell, program goes to (2) SELECT PIECE STATE
-        resetBoardEventListeners();
+        resetPlacePiece();
         assignPlayerPiece();
-    };
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
