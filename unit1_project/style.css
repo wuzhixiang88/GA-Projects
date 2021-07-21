@@ -14,7 +14,6 @@ td {
 }
 
 p {
-    display: inline-block;
     margin: 35px;
 }
 
@@ -32,6 +31,11 @@ p {
 .eliminated-info-div {
     width: 350px;
     margin-right: 300px;
+}
+
+.elim-piece-div {
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .dark-box {

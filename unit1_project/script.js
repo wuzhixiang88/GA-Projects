@@ -60,10 +60,16 @@ const blackPawnFinalRow = [
     801, 802, 803, 804, 805, 806, 807, 808
 ];
 
+// object to track eliminated chess piece
+const eliminatedPieceTracker = {
+    White: {},
+    Black: {}
+};
+
 // to hold selected piece info
 let selectedPiece;
 let selectedPieceId;
-let selectedElement;
+let selectedCell;
 
 // to hold the cells id that are under attack by the enemy chess piece for the current turn
 let currentCellsUnderAtk = [];
@@ -503,7 +509,7 @@ const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
     return possibleMoves;
 };
 
-// calculate cells under attack by opposing pieces / used to test if king is in check
+// calculate cells under attack by opposing pieces to test if king is in check / to use for COM movement as well
 const computeCellsUnderAtk = (boardObject = boardStateObj) => {
     // reset cells under attack and its CSS class
     const cellsUnderAtk = [];
@@ -764,9 +770,12 @@ const checkRookFirstMove = () => {
 
 // function for normal game flow when user place chess piece on targeted cell
 const normalPlayMove = (targetCell) => {
+    // populating/updating eliminated chess piece info if a chess piece is eliminated
+    eliminatedPiece(targetCell);
+
     // change target cell's board value to be previously selected chess piece value
-    targetCell.innerHTML = selectedElement.innerHTML;
-    selectedElement.innerHTML = "";
+    targetCell.innerHTML = selectedCell.innerHTML;
+    selectedCell.innerHTML = "";
 
     // update board state after placing piece
     boardStateObj[targetCell.id] = selectedPiece;
@@ -817,8 +826,31 @@ const normalPlayMove = (targetCell) => {
     // change player turn after player makes a move
     changePlayerTurn();
 
+    // calculate cells under attack by opposing pieces to test if king is in check
     currentCellsUnderAtk = [];
     currentCellsUnderAtk = computeCellsUnderAtk();
+};
+
+// for populating/updating eliminated chess piece info
+const eliminatedPiece = (targetCell) => {
+    const elimInfoPara = document.querySelector(`.elim-${playerTurn["last"].toLowerCase()}`);
+
+    // check eliminated piece not null
+    if (boardStateObj[targetCell.id] !== null) {
+        if (
+            targetCell.innerHTML in eliminatedPieceTracker[playerTurn["last"]]
+        ) {
+            eliminatedPieceTracker[playerTurn["last"]][targetCell.innerHTML ] += 1;
+        } else {
+            eliminatedPieceTracker[playerTurn["last"]][targetCell.innerHTML ] = 1;
+        };
+
+        // clear and update eliminated info paragraph
+        elimInfoPara.innerHTML = ""
+        for (const [key, value] of Object.entries(eliminatedPieceTracker[playerTurn["last"]])) {
+            elimInfoPara.innerHTML += `${value}x ${key} <br>`
+        };
+    };
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -861,8 +893,8 @@ const selectPiece = (e) => {
     selectedPieceId = e.target.id;
 
     // store target cell's element and add CSS class to indicate selected cell
-    selectedElement = document.querySelector(`[id='${e.target.id}']`);
-    selectedElement.classList.add("selected-cell");
+    selectedCell = document.querySelector(`[id='${e.target.id}']`);
+    selectedCell.classList.add("selected-cell");
 
     // chess piece selected, program goes to (3) PLACE PIECE STATE
     resetSelectPiece();        
@@ -900,7 +932,7 @@ const placePiece = (e) => {
 
     // game ends when checkmate occurs, when test returns true
     if (testCheckmate()) {
-        selectedElement.classList.remove("selected-cell");
+        selectedCell.classList.remove("selected-cell");
         resetPlacePiece();
         document.querySelector(".draw-button").removeEventListener("click", drawGame);
 
@@ -909,8 +941,8 @@ const placePiece = (e) => {
         // reset all selected piece info
         selectedPiece = null; 
         selectedPieceId = null;
-        selectedElement.classList.remove("selected-cell");
-        selectedElement = null;
+        selectedCell.classList.remove("selected-cell");
+        selectedCell = null;
 
         currentCellsUnderAtk = [];
         currentCellsUnderAtk = computeCellsUnderAtk();
