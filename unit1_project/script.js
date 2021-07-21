@@ -32,13 +32,17 @@ const kingPos = {
     "Black King": 105
 };
 
-// variables to hold selected piece info
-let selectedPiece;
-let selectedPieceId;
-let selectedElement;
-
-// TO RETHINK WHETHER TO USE GLOBAL OR LOCAL VARIABLE
-let currentCellsUnderAtk = [];
+// object to keep track of castling requirements
+const castlingReqTracker = {
+    whiteRookKingSideMoved: false,
+    whiteRookQueenSideMoved: false,
+    whiteKingFirstMove: false,
+    whiteCastlingCells: [805, 806, 807, 802, 803, 804],
+    blackRookKingSideMoved: false,
+    blackRookQueenSideMoved: false,
+    blackKingFirstMove: false,
+    blackCastlingCells: [105, 106, 107, 802, 103, 104],
+};
 
 // position arrays to help determine pawn's possible move space
 const whitePawnDefaultPos = [
@@ -55,6 +59,14 @@ const whitePawnFinalRow = [
 const blackPawnFinalRow = [
     801, 802, 803, 804, 805, 806, 807, 808
 ];
+
+// to hold selected piece info
+let selectedPiece;
+let selectedPieceId;
+let selectedElement;
+
+// to hold the cells id that are under attack by the enemy chess piece for the current turn
+let currentCellsUnderAtk = [];
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*------------------------------ VARIABLES HOLDING AREA ------------------------------*/
@@ -452,7 +464,7 @@ const queenMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObj
     return possibleMoves;
 };
 
-// calculate king moves based on current position  //GOT BUGS NEED TO FIX
+// calculate king moves based on current position  //GOT MINOR BUGS
 const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject) => {
     const currentPosInt = parseInt(selectedPieceId);
     const possibleMoves = [];
@@ -468,7 +480,7 @@ const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
     // check for movable space based on current position
     for (let i = 0; i < kingMoveset.length; i++) {
         if (
-            checkValidCell(currentPosInt + kingMoveset[i]) && 
+            checkValidCell(currentPosInt + kingMoveset[i]) &&
             !currentCellsUnderAtk.includes(currentPosInt + kingMoveset[i])
         ) {
             if (
@@ -481,17 +493,24 @@ const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
             };
         };
     };
+    //
+    if (checkCastlingReqKingSide(playerTurn["current"])) {
+        possibleMoves.push(currentPosInt + 2);
+    };
+    if (checkCastlingReqQueenSide(playerTurn["current"])) {
+        possibleMoves.push(currentPosInt - 2);
+    };
     return possibleMoves;
 };
 
 // calculate cells under attack by opposing pieces / used to test if king is in check
 const computeCellsUnderAtk = (boardObject = boardStateObj) => {
     // reset cells under attack and its CSS class
-    currentCellsUnderAtk = [];
+    const cellsUnderAtk = [];
 
-    const allUnderAtkCells = document.querySelectorAll(".under-attack");    
-    for (let i = 0; i < allUnderAtkCells.length; i++) {
-        allUnderAtkCells[i].classList.remove("under-attack");
+    const allCellsUnderAtk = document.querySelectorAll(".under-attack");    
+    for (let i = 0; i < allCellsUnderAtk.length; i++) {
+        allCellsUnderAtk[i].classList.remove("under-attack");
     };
     
     // compute cells under attack based on player's turn
@@ -499,19 +518,21 @@ const computeCellsUnderAtk = (boardObject = boardStateObj) => {
         for (const [key, value] of Object.entries(boardObject)) {
             if (value !== null && value.includes("Black Pawn")) {
                 if (checkValidCell(parseInt(key) + 101)) {
-                    currentCellsUnderAtk.push(parseInt(key) + 101);
+                    cellsUnderAtk.push(parseInt(key) + 101);
                     document.querySelector(`[id='${(parseInt(key) + 101)}']`).classList.add("under-attack")
                 };
                 if (checkValidCell(parseInt(key) + 99)) {
-                    currentCellsUnderAtk.push(parseInt(key) + 99);
+                    cellsUnderAtk.push(parseInt(key) + 99);
                     document.querySelector(`[id='${(parseInt(key) + 99)}']`).classList.add("under-attack")
                 };  
             } else if (value !== null && value.includes("Black")) {
                 const possibleMoves = calculateMoveSpace(value, key, true, boardObject);
         
                 for (let i = 0; i < possibleMoves.length; i++) {
-                    currentCellsUnderAtk.push(possibleMoves[i]);
-                    document.querySelector(`[id='${possibleMoves[i]}']`).classList.add("under-attack")
+                    if (checkValidCell(possibleMoves[i])) {
+                        cellsUnderAtk.push(possibleMoves[i]);                    
+                        document.querySelector(`[id='${possibleMoves[i]}']`).classList.add("under-attack")
+                    }
                 };
             };
         };
@@ -519,23 +540,34 @@ const computeCellsUnderAtk = (boardObject = boardStateObj) => {
         for (const [key, value] of Object.entries(boardObject)) {
             if (value !== null && value.includes("White Pawn")) {
                 if (checkValidCell(parseInt(key) - 101)) {
-                    currentCellsUnderAtk.push(parseInt(key) - 101);
+                    cellsUnderAtk.push(parseInt(key) - 101);
                     document.querySelector(`[id='${(parseInt(key) - 101)}']`).classList.add("under-attack")
                 };
                 if (checkValidCell(parseInt(key) - 99)) {
-                    currentCellsUnderAtk.push(parseInt(key) - 99);
+                    cellsUnderAtk.push(parseInt(key) - 99);
                     document.querySelector(`[id='${(parseInt(key) - 99)}']`).classList.add("under-attack")
                 };             
             } else if (value !== null && value.includes("White")) {
                 const possibleMoves = calculateMoveSpace(value, key, true, boardObject);
         
                 for (let i = 0; i < possibleMoves.length; i++) {
-                    currentCellsUnderAtk.push(possibleMoves[i]);
-                    document.querySelector(`[id='${possibleMoves[i]}']`).classList.add("under-attack")
+                    if (checkValidCell(possibleMoves[i])) {
+                        cellsUnderAtk.push(possibleMoves[i]);                    
+                        document.querySelector(`[id='${possibleMoves[i]}']`).classList.add("under-attack")
+                    }
                 };
             };
         };
     };
+    return cellsUnderAtk;
+};
+
+// test whether king is in check during respective player's turn
+const kingInCheck = (cellsUnderAtk) => {
+    return (
+        (playerTurn["current"] === "White" && cellsUnderAtk.includes(kingPos["White King"])) || 
+        (playerTurn["current"] === "Black" && cellsUnderAtk.includes(kingPos["Black King"]))
+    );
 };
 
 // simulate a move to get out of check
@@ -553,22 +585,14 @@ const getOutOfCheck = (targetCellId) => {
     };
 
     // compute cells under attack to check if king is still in check
-    computeCellsUnderAtk(cloneBoardStateObj);
+    const cellsUnderAtk = computeCellsUnderAtk(cloneBoardStateObj);
 
     // if king is still in check, return false, otherwise return true
-    if (kingInCheck()) {
+    if (kingInCheck(cellsUnderAtk)) {
         return false;
     } else {
         return true;
     }
-}
-
-// test whether king is in check during respective player's turn
-const kingInCheck = () => {
-    return (
-        (playerTurn["current"] === "White" && currentCellsUnderAtk.includes(kingPos["White King"])) || 
-        (playerTurn["current"] === "Black" && currentCellsUnderAtk.includes(kingPos["Black King"]))
-    );
 };
 
 // test end game condition, checkmate
@@ -593,10 +617,10 @@ const testCheckmate = () => {
                 cloneBoardStateObj[possibleMoves[i]] = value;
                 cloneBoardStateObj[key] = null;
 
-                computeCellsUnderAtk(cloneBoardStateObj);
+                const cellsUnderAtk = computeCellsUnderAtk(cloneBoardStateObj);
 
                 // if a move results in king not in check, no checkmate, return false
-                if (!currentCellsUnderAtk.includes(kingPos[`${playerTurn["current"]} King`])) {
+                if (!cellsUnderAtk.includes(kingPos[`${playerTurn["current"]} King`])) {
                     return false;
                 };
             };
@@ -620,6 +644,87 @@ const checkEnemyColour = (selectedPiece) => {
     };
 };
 
+// checking if castle king side is legal
+const checkCastlingReqKingSide = (playerTurn) => {
+    playerTurnLower = playerTurn.toLowerCase();
+    if (
+        !castlingReqTracker[`${playerTurnLower}RookKingSideMoved`] && 
+        !castlingReqTracker[`${playerTurnLower}KingFirstMove`] &&
+        !currentCellsUnderAtk.includes(castlingReqTracker[`${playerTurnLower}CastlingCells`][0]) &&
+        !currentCellsUnderAtk.includes(castlingReqTracker[`${playerTurnLower}CastlingCells`][1]) &&
+        !currentCellsUnderAtk.includes(castlingReqTracker[`${playerTurnLower}CastlingCells`][2]) &&
+        boardStateObj[castlingReqTracker[`${playerTurnLower}CastlingCells`][1]] === null &&
+        boardStateObj[castlingReqTracker[`${playerTurnLower}CastlingCells`][2]] === null
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+// checking if castle queen side is legal
+const checkCastlingReqQueenSide = (playerTurn) => {
+    playerTurnLower = playerTurn.toLowerCase();
+    if (
+        !castlingReqTracker[`${playerTurnLower}RookQueenSideMoved`] && 
+        !castlingReqTracker[`${playerTurnLower}KingFirstMove`] &&
+        !currentCellsUnderAtk.includes(castlingReqTracker[`${playerTurnLower}CastlingCells`][0]) &&
+        !currentCellsUnderAtk.includes(castlingReqTracker[`${playerTurnLower}CastlingCells`][4]) &&
+        !currentCellsUnderAtk.includes(castlingReqTracker[`${playerTurnLower}CastlingCells`][5]) &&
+        boardStateObj[castlingReqTracker[`${playerTurnLower}CastlingCells`][3]] === null &&
+        boardStateObj[castlingReqTracker[`${playerTurnLower}CastlingCells`][4]] === null &&
+        boardStateObj[castlingReqTracker[`${playerTurnLower}CastlingCells`][5]] === null
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+// perform castle king side
+const castleKingSide = () => {
+    if (playerTurn["current"] === "White") {
+        document.querySelector(`[id='806']`).innerHTML = "&#9814";
+        document.querySelector(`[id='808']`).innerHTML = "";
+        boardStateObj["806"] = "White Rook";
+        boardStateObj["808"] = null;
+
+        castlingReqTracker["whiteRookFirstMove"] = true
+        castlingReqTracker["whiteKingFirstMove"] = true
+    } else {
+        document.querySelector(`[id='106']`).innerHTML = "&#9820";
+        document.querySelector(`[id='108']`).innerHTML = "";
+        boardStateObj["106"] = "Black Rook";
+        boardStateObj["108"] = null;
+    
+        castlingReqTracker["blackRookFirstMove"] = true
+        castlingReqTracker["blackKingFirstMove"] = true
+    }
+
+};
+
+// perform castle queen side
+const castleQueenSide = () => {
+    if (playerTurn["current"] === "White") {
+        document.querySelector(`[id='804']`).innerHTML = "&#9814";
+        document.querySelector(`[id='801']`).innerHTML = "";
+        boardStateObj["804"] = "White Rook";
+        boardStateObj["801"] = null;
+
+        castlingReqTracker["whiteRookFirstMove"] = true
+        castlingReqTracker["whiteKingFirstMove"] = true
+    } else {
+        document.querySelector(`[id='104']`).innerHTML = "&#9820";
+        document.querySelector(`[id='101']`).innerHTML = "";
+        boardStateObj["104"] = "Black Rook";
+        boardStateObj["101"] = null;
+    
+        castlingReqTracker["blackRookFirstMove"] = true
+        castlingReqTracker["blackKingFirstMove"] = true
+    }
+
+};
+
 // clear event listeners for selecting chess pieces
 const resetSelectPiece = () => {
     for (let i = 0; i < allCells.length; i++) {
@@ -641,11 +746,27 @@ const drawGame = () => {
     }
 };
 
+// for checking if rook has moved, for castling requirements
+const checkRookFirstMove = () => {
+    if (selectedPieceId === "808") {
+        castlingReqTracker["whiteRookKingSideMoved"] = true;
+    }
+    if (selectedPieceId === "801") {
+        castlingReqTracker["whiteRookQueenSideMoved"] = true;
+    }
+    if (selectedPieceId === "108") {
+        castlingReqTracker["blackRookKingSideMoved"] = true;
+    }
+    if (selectedPieceId === "101") {
+        castlingReqTracker["blackRookQueenSideMoved"] = true;
+    }
+};
+
 // function for normal game flow when user place chess piece on targeted cell
 const normalPlayMove = (targetCell) => {
     // change target cell's board value to be previously selected chess piece value
-    targetCell.innerText = selectedElement.innerText;
-    selectedElement.innerText = "";
+    targetCell.innerHTML = selectedElement.innerHTML;
+    selectedElement.innerHTML = "";
 
     // update board state after placing piece
     boardStateObj[targetCell.id] = selectedPiece;
@@ -665,14 +786,39 @@ const normalPlayMove = (targetCell) => {
         boardStateObj[targetCell.id] = "Black Queen";
         document.querySelector(`[id='${targetCell.id}']`).innerHTML = "&#9819";
     };
+    
+    // check if rook moved, for castling
+    checkRookFirstMove()
 
-    // update king position if king is selected to move out of check
-    if (selectedPiece.includes("King")) {
+    // for castling king and queen side
+    if (
+        (selectedPiece === "White King" && targetCell.id === "807" && !castlingReqTracker["whiteKingFirstMove"]) ||
+        (selectedPiece === "Black King" && targetCell.id === "107" && !castlingReqTracker["blackKingFirstMove"])
+    ) {
+        castleKingSide();
+    };
+    if (
+        (selectedPiece === "White King" && targetCell.id === "803" && !castlingReqTracker["whiteKingFirstMove"]) ||
+        (selectedPiece === "Black King" && targetCell.id === "103" && !castlingReqTracker["blackKingFirstMove"])
+    ) {
+        castleQueenSide();
+    };
+
+    // update king position if king is moved
+    if (selectedPiece === "White King") {
         kingPos[selectedPiece] = parseInt(targetCell.id);
+        castlingReqTracker["whiteKingFirstMove"] = true;
+    };
+    if (selectedPiece === "Black King") {
+        kingPos[selectedPiece] = parseInt(targetCell.id);
+        castlingReqTracker["blackKingFirstMove"] = true;
     };
 
     // change player turn after player makes a move
     changePlayerTurn();
+
+    currentCellsUnderAtk = [];
+    currentCellsUnderAtk = computeCellsUnderAtk();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -735,7 +881,7 @@ const placePiece = (e) => {
     // proceed if user does not unselect selected chess piece
     if (!e.target.classList.contains("selected-cell")) {
         // check if king is in check
-        if (kingInCheck()) {
+        if (kingInCheck(currentCellsUnderAtk)) {
             // user must make a move to get out of check for the game to proceed
             if (getOutOfCheck(e.target.id)) {
                 normalPlayMove(e.target);
@@ -766,12 +912,13 @@ const placePiece = (e) => {
         selectedElement.classList.remove("selected-cell");
         selectedElement = null;
 
-        computeCellsUnderAtk();
+        currentCellsUnderAtk = [];
+        currentCellsUnderAtk = computeCellsUnderAtk();
 
         // chess piece placed at target cell, program goes to (2) SELECT PIECE STATE
         resetPlacePiece();
         assignPlayerPiece();
-    }
+    };
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
