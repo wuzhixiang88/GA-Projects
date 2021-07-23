@@ -14,6 +14,9 @@ const playerTurn = {
     last: ""
 };
 
+// for making player black as COM player
+const playerBlackCtrl = "COM";
+
 // starting chess board state - to keep track of board state according to how the chess pieces move when the game is being played
 const boardStateObj = {
     "101": "Black Rook", "102": "Black Knight", "103": "Black Bishop", "104": "Black Queen", "105": "Black King", "106": "Black Bishop", "107": "Black Knight", "108": "Black Rook",
@@ -692,9 +695,9 @@ const getOutOfCheck = (targetCellId) => {
 
 // test end game condition, checkmate
 const testCheckmate = () => {
-    let kingPossibleMove = [];   
+    let kingPossibleMove = [];
 
-    // simulating all possible moves to get out of check
+    // iterate over all current player turn's chess pieces
     for (const [key, value] of Object.entries(boardStateObj)) {
         // calculate possible moves for king
         if (
@@ -920,6 +923,94 @@ const normalPlayMove = (targetCell) => {
     currentCellsUnderAtk = computeCellsUnderAtk();
 };
 
+// function for COM movements
+const comMove = () => {
+    const allBlackPiece = [];
+    let comPossibleMove = [];
+    let randomMove = "";
+    let moveCell = "";
+
+    for (const [key, value] of Object.entries(boardStateObj)) {
+        if (value !== null && value.includes("Black")) {
+            allBlackPiece.push([key, value]);
+        }
+    };        
+
+    if (kingInCheck(currentCellsUnderAtk)) {
+        const getOutOfCheckMoves = comGetOutOfCheckMoves();
+        const randomGetOutOfCheckMoves = getOutOfCheckMoves[Math.floor(Math.random() * getOutOfCheckMoves.length)];
+
+        selectedPiece = randomGetOutOfCheckMoves[1];
+        selectedPieceId = randomGetOutOfCheckMoves[0];
+        selectedCell = document.querySelector(`[id='${selectedPieceId}']`);
+
+        randomMove = randomGetOutOfCheckMoves[2];
+        moveCell = document.querySelector(`[id='${randomMove}']`);        
+    } else {
+        do {
+            const randomSelectPiece = allBlackPiece[Math.floor(Math.random() * allBlackPiece.length)];
+            selectedPiece = randomSelectPiece[1];
+            selectedPieceId = randomSelectPiece[0];
+            selectedCell = document.querySelector(`[id='${selectedPieceId}']`);
+    
+            comPossibleMove = calculateMoveSpace(selectedPiece, selectedPieceId);
+            randomMove = comPossibleMove[Math.floor(Math.random() * comPossibleMove.length)];
+            moveCell = document.querySelector(`[id='${randomMove}']`);
+        } while (comPossibleMove.length === 0 || !checkValidCell(randomMove) || !getOutOfCheck(randomMove));
+    }    
+
+    normalPlayMove(moveCell);
+
+    // game ends when checkmate occurs, when test returns true
+    if (testCheckmate()) {
+        document.querySelector(".draw-button").removeEventListener("click", drawGame);
+
+        alert(`Checkmate! Player ${playerTurn["last"]} Wins!`);
+    } else {
+        // reset all selected piece info
+        selectedPiece = null; 
+        selectedPieceId = null;
+        selectedCell = null;
+
+        currentCellsUnderAtk = [];
+        currentCellsUnderAtk = computeCellsUnderAtk();
+    };
+};
+
+// function for computing COM's get out of check moves
+const comGetOutOfCheckMoves = () => {
+    const getOutOfCheckMoves = [];
+
+    // iterate over all COM's chess piece
+    for (const [key, value] of Object.entries(boardStateObj)) {
+       if (
+            value !== null && 
+            value.includes("Black")
+        ) {
+            // calculate and simulate all possible moves for each chess piece
+            const possibleMoves = calculateMoveSpace(value, key);
+            for (let i = 0; i < possibleMoves.length; i++) {
+                const cloneBoardStateObj = {...boardStateObj};
+                cloneBoardStateObj[possibleMoves[i]] = value;
+                cloneBoardStateObj[key] = null;
+
+                const cloneKingPos = {...kingPos};
+                if (value === "Black King") {
+                    cloneKingPos[value] = possibleMoves[i];
+                };
+
+                const cellsUnderAtk = computeCellsUnderAtk(cloneBoardStateObj);
+
+                // if a move results in king not in check, push the move into the array
+                if (!cellsUnderAtk.includes(cloneKingPos["Black King"])) {
+                    getOutOfCheckMoves.push([key, value, possibleMoves[i]]);
+                };
+            };
+        };
+    };
+    return getOutOfCheckMoves;
+};
+
 // for populating/updating eliminated chess piece info
 const eliminatedPiece = (targetCell) => {
     const elimInfoPara = document.querySelector(`.elim-${playerTurn["last"].toLowerCase()}`);
@@ -965,7 +1056,7 @@ window.onload = () => {
     playerWhite.classList.add("player-turn");
 
     // make player's chess pieces selectable, program goes to (2) SELECT PIECE STATE
-    assignPlayerPiece();    
+    assignPlayerPiece();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -1012,7 +1103,7 @@ const placePiece = (e) => {
         } else {
             // user may not make a move that result in own king in check
             if (!getOutOfCheck(e.target.id)) {
-                alert("Illegal move! King will be in check!")
+                alert("Illegal move! King will be in check!");
             } else {
                 normalPlayMove(e.target);
             };
@@ -1036,9 +1127,22 @@ const placePiece = (e) => {
         currentCellsUnderAtk = [];
         currentCellsUnderAtk = computeCellsUnderAtk();
 
-        // chess piece placed at target cell, program goes to (2) SELECT PIECE STATE
-        removePlacePieceEventListener();
-        assignPlayerPiece();
+        // for if player black is COM
+        if (
+            playerTurn["current"] === "Black" && 
+            playerBlackCtrl === "COM"
+        ) {
+            setTimeout(() => {
+                comMove();
+                // chess piece placed at target cell, program goes to (2) SELECT PIECE STATE
+                removePlacePieceEventListener();
+                assignPlayerPiece();
+            }, 1000);            
+        } else {
+            // chess piece placed at target cell, program goes to (2) SELECT PIECE STATE
+            removePlacePieceEventListener();
+            assignPlayerPiece();
+        };
     };
 };
 
