@@ -262,6 +262,17 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
             if (boardObject[currentPosInt + rookVerticalMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
             } else if (boardObject[currentPosInt + rookVerticalMoveset[i]].includes(enemyColour)) {
+                if (
+                    forCellsUnderAtk &&
+                    boardObject[currentPosInt + rookVerticalMoveset[i]].includes(`${enemyColour} King`)
+                ) {
+                    if (
+                        checkValidCell(currentPosInt + rookVerticalMoveset[i] + 100) && 
+                        boardObject[currentPosInt + rookVerticalMoveset[i] + 100] === null
+                    ) {
+                        possibleMoves.push(currentPosInt + rookVerticalMoveset[i] + 100);
+                    };
+                }; 
                 possibleMoves.push(currentPosInt + rookVerticalMoveset[i]);
                 break;
             } else {
@@ -279,6 +290,17 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
             if (boardObject[currentPosInt - rookVerticalMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
             } else if (boardObject[currentPosInt - rookVerticalMoveset[i]].includes(enemyColour)) {
+                if (
+                    forCellsUnderAtk &&
+                    boardObject[currentPosInt - rookVerticalMoveset[i]].includes(`${enemyColour} King`)
+                ) {
+                    if (
+                        checkValidCell(currentPosInt - rookVerticalMoveset[i] - 100) && 
+                        boardObject[currentPosInt - rookVerticalMoveset[i] - 100] === null
+                    ) {
+                        possibleMoves.push(currentPosInt - rookVerticalMoveset[i] - 100);
+                    };
+                };
                 possibleMoves.push(currentPosInt - rookVerticalMoveset[i]);
                 break;
             } else {
@@ -288,7 +310,7 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
                 } else {
                     break;
                 };
-            };
+            };            
         };
     };
 
@@ -299,6 +321,17 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
             if (boardObject[currentPosInt + rookHorizontalMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
             } else if (boardObject[currentPosInt + rookHorizontalMoveset[i]].includes(enemyColour)) {
+                if (
+                    forCellsUnderAtk &&
+                    boardObject[currentPosInt + rookHorizontalMoveset[i]].includes(`${enemyColour} King`)
+                ) {
+                    if (
+                        checkValidCell(currentPosInt + rookHorizontalMoveset[i] + 1) && 
+                        boardObject[currentPosInt + rookHorizontalMoveset[i] + 1] === null
+                    ) {
+                        possibleMoves.push(currentPosInt + rookHorizontalMoveset[i] + 1);
+                    };
+                }; 
                 possibleMoves.push(currentPosInt + rookHorizontalMoveset[i]);
                 break;
             } else {
@@ -316,6 +349,17 @@ const rookMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
             if (boardObject[currentPosInt - rookHorizontalMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
             } else if (boardObject[currentPosInt - rookHorizontalMoveset[i]].includes(enemyColour)) {
+                if (
+                    forCellsUnderAtk &&
+                    boardObject[currentPosInt - rookHorizontalMoveset[i]].includes(`${enemyColour} King`)
+                ) {
+                    if (
+                        checkValidCell(currentPosInt - rookHorizontalMoveset[i] - 1) && 
+                        boardObject[currentPosInt - rookHorizontalMoveset[i] - 1] === null
+                    ) {
+                        possibleMoves.push(currentPosInt - rookHorizontalMoveset[i] - 1);
+                    };
+                }; 
                 possibleMoves.push(currentPosInt - rookHorizontalMoveset[i]);
                 break;
             } else {
@@ -383,6 +427,17 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardOb
             if (boardObject[currentPosInt + bishopDiagonalLeftDownMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i]);
             } else if (boardObject[currentPosInt + bishopDiagonalLeftDownMoveset[i]].includes(enemyColour)) {
+                if (
+                    forCellsUnderAtk &&
+                    boardObject[currentPosInt + bishopDiagonalLeftDownMoveset[i]].includes(`${enemyColour} King`)
+                ) {
+                    if (
+                        checkValidCell(currentPosInt + bishopDiagonalLeftDownMoveset[i] + 99) && 
+                        boardObject[currentPosInt + bishopDiagonalLeftDownMoveset[i] + 99] === null
+                    ) {
+                        possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i] + 99);
+                    };
+                }; 
                 possibleMoves.push(currentPosInt + bishopDiagonalLeftDownMoveset[i]);
                 break;
             } else {
@@ -400,6 +455,17 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardOb
             if (boardObject[currentPosInt - bishopDiagonalLeftDownMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i]);
             } else if (boardObject[currentPosInt - bishopDiagonalLeftDownMoveset[i]].includes(enemyColour)) {
+                if (
+                    forCellsUnderAtk &&
+                    boardObject[currentPosInt - bishopDiagonalLeftDownMoveset[i]].includes(`${enemyColour} King`)
+                ) {
+                    if (
+                        checkValidCell(currentPosInt - bishopDiagonalLeftDownMoveset[i] - 99) && 
+                        boardObject[currentPosInt - bishopDiagonalLeftDownMoveset[i] - 99] === null
+                    ) {
+                        possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i] - 99);
+                    };
+                }; 
                 possibleMoves.push(currentPosInt - bishopDiagonalLeftDownMoveset[i]);
                 break;
             } else {
@@ -420,6 +486,17 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardOb
             if (boardObject[currentPosInt + bishopDiagonalRightDownMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i]);
             } else if (boardObject[currentPosInt + bishopDiagonalRightDownMoveset[i]].includes(enemyColour)) {
+                if (
+                    forCellsUnderAtk &&
+                    boardObject[currentPosInt + bishopDiagonalRightDownMoveset[i]].includes(`${enemyColour} King`)
+                ) {
+                    if (
+                        checkValidCell(currentPosInt + bishopDiagonalRightDownMoveset[i] + 101) && 
+                        boardObject[currentPosInt + bishopDiagonalRightDownMoveset[i] + 101] === null
+                    ) {
+                        possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i] + 101);
+                    };
+                }; 
                 possibleMoves.push(currentPosInt + bishopDiagonalRightDownMoveset[i]);
                 break;
             } else {
@@ -437,6 +514,17 @@ const bishopMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardOb
             if (boardObject[currentPosInt - bishopDiagonalRightDownMoveset[i]] === null) {
                 possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i]);
             } else if (boardObject[currentPosInt - bishopDiagonalRightDownMoveset[i]].includes(enemyColour)) {
+                if (
+                    forCellsUnderAtk &&
+                    boardObject[currentPosInt - bishopDiagonalRightDownMoveset[i]].includes(`${enemyColour} King`)
+                ) {
+                    if (
+                        checkValidCell(currentPosInt - bishopDiagonalRightDownMoveset[i] - 101) && 
+                        boardObject[currentPosInt - bishopDiagonalRightDownMoveset[i] - 101] === null
+                    ) {
+                        possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i] - 101);
+                    };
+                }; 
                 possibleMoves.push(currentPosInt - bishopDiagonalRightDownMoveset[i]);
                 break;
             } else {
@@ -470,7 +558,7 @@ const queenMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObj
     return possibleMoves;
 };
 
-// calculate king moves based on current position  //GOT MINOR BUGS
+// calculate king moves based on current position
 const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObject) => {
     const currentPosInt = parseInt(selectedPieceId);
     const possibleMoves = [];
@@ -499,6 +587,7 @@ const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
             };
         };
     };
+
     // push castling moves into the possible moves array if castling requirements are fulfilled
     if (checkCastlingReqKingSide(playerTurn["current"])) {
         possibleMoves.push(currentPosInt + 2);
@@ -732,14 +821,14 @@ const castleQueenSide = () => {
 };
 
 // clear event listeners for selecting chess pieces
-const resetSelectPiece = () => {
+const removeSelectPieceEventListener = () => {
     for (let i = 0; i < allCells.length; i++) {
         allCells[i].removeEventListener("click", selectPiece);
     };
 };
 
 // clear event listeners for placing chess pieces
-const resetPlacePiece = () => {
+const removePlacePieceEventListener = () => {
     for (let i = 0; i < allCells.length; i++) {
         allCells[i].removeEventListener("click", placePiece);
     };
@@ -897,7 +986,7 @@ const selectPiece = (e) => {
     selectedCell.classList.add("selected-cell");
 
     // chess piece selected, program goes to (3) PLACE PIECE STATE
-    resetSelectPiece();        
+    removeSelectPieceEventListener();        
     calculateMoveSpace(selectedPiece, selectedPieceId);
 };
 
@@ -930,10 +1019,10 @@ const placePiece = (e) => {
         };
     };
 
-    // game ends when checkmate occurs, when test returns true
+    // game ends when checkmate occurs, when test checkmate returns true
     if (testCheckmate()) {
         selectedCell.classList.remove("selected-cell");
-        resetPlacePiece();
+        removePlacePieceEventListener();
         document.querySelector(".draw-button").removeEventListener("click", drawGame);
 
         alert(`Checkmate! Player ${playerTurn["last"]} Wins!`);
@@ -948,7 +1037,7 @@ const placePiece = (e) => {
         currentCellsUnderAtk = computeCellsUnderAtk();
 
         // chess piece placed at target cell, program goes to (2) SELECT PIECE STATE
-        resetPlacePiece();
+        removePlacePieceEventListener();
         assignPlayerPiece();
     };
 };
