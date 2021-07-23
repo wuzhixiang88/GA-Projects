@@ -116,9 +116,6 @@ const calculateMoveSpace = (selectedPiece, selectedPieceId, forCellsUnderAtk = f
         allMovableCell[i].classList.remove("movable-cell");
     };
 
-    // for user to unselect chess piece by clicking on selected chess piece again
-    document.querySelector(`[id='${selectedPieceId}']`).addEventListener("click", placePiece);
-
     let possibleMoveSpace = [];
     
     switch (selectedPiece) {
@@ -151,6 +148,9 @@ const calculateMoveSpace = (selectedPiece, selectedPieceId, forCellsUnderAtk = f
     };
 
     if (!forCellsUnderAtk) {
+        // for user to unselect chess piece by clicking on selected chess piece again
+        document.querySelector(`[id='${selectedPieceId}']`).addEventListener("click", placePiece);
+        // attach event listeners to movable cells for placing chess piece
         for (let i = 0; i < possibleMoveSpace.length; i++) {
             document.querySelector(`[id='${possibleMoveSpace[i]}']`).addEventListener("click", placePiece);
             document.querySelector(`[id='${possibleMoveSpace[i]}']`).classList.add("movable-cell");
@@ -499,7 +499,7 @@ const kingMoveset = (selectedPiece, selectedPieceId, forCellsUnderAtk, boardObje
             };
         };
     };
-    //
+    // push castling moves into the possible moves array if castling requirements are fulfilled
     if (checkCastlingReqKingSide(playerTurn["current"])) {
         possibleMoves.push(currentPosInt + 2);
     };
@@ -749,7 +749,7 @@ const resetPlacePiece = () => {
 const drawGame = () => {
     if (confirm("Confirm to Draw Game?")) {
         document.querySelector(".container").classList.add("hide");
-    }
+    };
 };
 
 // for checking if rook has moved, for castling requirements
