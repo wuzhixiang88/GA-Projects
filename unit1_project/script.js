@@ -15,7 +15,7 @@ const playerTurn = {
 };
 
 // for making player black as COM player
-const playerBlackCtrl = "COM";
+const playerBlackCtrl = "";
 
 // starting chess board state - to keep track of board state according to how the chess pieces move when the game is being played
 const boardStateObj = {

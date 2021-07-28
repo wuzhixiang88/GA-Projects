@@ -9,7 +9,7 @@ table {
 
 td {
     text-align: center;
-    font-size: 50px;
+    font-size: 35px;
     padding: 5px;
 }
 
@@ -25,12 +25,12 @@ p {
 
 .buttons-div {
     width: 350px;
-    margin-left: 300px;
+    margin-left: 500px;
 }
 
 .eliminated-info-div {
     width: 350px;
-    margin-right: 300px;
+    margin-right: 500px;
 }
 
 .elim-piece-div {
@@ -41,15 +41,15 @@ p {
 .dark-box {
     background-color: brown;
     border: 1px solid black;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
 }
 
 .light-box {
     background-color: wheat;
     border: 1px solid black;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
 }
 
 .hover:hover, .selected-cell {
@@ -62,12 +62,12 @@ p {
 
 .player-white-div {
     color: lightgray;
-    margin: 100px 0 0 0;
+    margin: 70px 0 0 0;
 }
 
 .player-black-div {
     color: lightgray;
-    margin: 50px 0 100px 0;
+    margin: 50px 0 70px 0;
 }
 
 .player-turn {
