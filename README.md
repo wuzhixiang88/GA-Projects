@@ -1,1 +1,1 @@
-# GA-Projects
+# GA_Projects
