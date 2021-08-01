@@ -65,28 +65,46 @@ Besides choosing whether to install on Windows or WSL, there are additional choi
 If you are using NVM to install Node.js and NPM, you should not need to use the SUDO command to install new packages.
 
 ## Install Visual Studio Code
-To install VS Code and the Remote-WSL Extension:
+To install VS Code and the Remote-Development Extension Pack:
 
 1. <a href="https://code.visualstudio.com/">Download and install VS Code for Windows</a>. VS Code is also available for Linux, but Windows Subsystem for Linux does not support GUI apps, so we need to install it on Windows. Not to worry, you'll still be able to integrate with your Linux command line and tools using the Remote - WSL Extension.
 
-2. Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl">Remote - WSL Extension</a> on VS Code. This allows you to use WSL as your integrated development environment and will handle compatibility and pathing for you. <a href="https://code.visualstudio.com/docs/remote/remote-overview">Learn more</a>.
+2. Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">Remote-Development Extension Pack</a> on VS Code. This allows you to use WSL as your integrated development environment and will handle compatibility and pathing for you. The <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">Remote-Development Extension Pack</a> includes three extensions. <a href="https://code.visualstudio.com/docs/remote/remote-overview">Learn more</a>.
 
->**Important**
->
->If you already have VS Code installed, you need to ensure that you have the <a href="https://code.visualstudio.com/updates/v1_35">1.35 May release</a> or later in order to install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl">Remote - WSL Extension</a>. We do not recommend using >WSL in VS Code without the Remote-WSL extension as you will lose support for auto-complete, debugging, linting, etc. Fun fact: This WSL extension is installed in $HOME/.vscode->server/extensions.
+    >**Important**
+    >
+    >If you already have VS Code installed, you need to ensure that you have the <a href="https://code.visualstudio.com/updates/v1_35">1.35 May release</a> or later in order to install the Remote - WSL Extension. We do not recommend using WSL in VS Code without the Remote - WSL extension as you will lose support for auto-complete, debugging, linting, etc.
 
-We recommend using Visual Studio Code with the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">Remote-development extension pack</a> for Node.js projects. This splits VS Code into a “client-server” architecture, with the client (the VS Code user interface) running on your Windows operating system and the server (your code, Git, plugins, etc) running "remotely" on your WSL Linux distribution.
+    We recommend using Visual Studio Code with the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">Remote-Development Extension Pack</a> for Node.js projects. This splits VS Code into a “client-server” architecture, with the client (the VS Code user interface) running on your Windows operating system and the server (your code, Git, plugins, etc) running "remotely" on your WSL Linux distribution.
 
->**Note**
->
->This “remote” scenario is a bit different than you may be accustomed to. WSL supports an actual Linux distribution where your project code is running, separately from your >Windows operating system, but still on your local machine. The Remote-WSL extension connects with your Linux subsystem as if it were a remote server, though it’s not running in >the cloud… it’s still running on your local machine in the WSL environment that you enabled to run alongside Windows.
+    >**Note**
+    >
+    >This “remote” scenario is a bit different than you may be accustomed to. WSL supports an actual Linux distribution where your project code is running, separately from your Windows operating system, but still on your local machine. The Remote-WSL extension connects with your Linux subsystem as if it were a remote server, though it’s not running in the cloud… it’s still running on your local machine in the WSL environment that you enabled to run alongside Windows.
 
-  - Linux-based Intellisense and linting is supported.
-  - Your project will automatically build in Linux.
-  - You can use all your extensions running on Linux (<a href="https://marketplace.visualstudio.com/items?itemName=waderyan.nodejs-extension-pack">ES Lint, NPM Intellisense, ES6 snippets, etc.</a>).
+    - Linux-based Intellisense and linting is supported.
+    - Your project will automatically build in Linux.
+    - You can use all your extensions running on Linux (<a href="https://marketplace.visualstudio.com/items?itemName=waderyan.nodejs-extension-pack">ES Lint, NPM Intellisense, ES6 snippets, etc.</a>).
 
+## Helpful VS Code Extensions
+While VS Code comes with many features for Node.js development out of the box, there are some helpful extensions to consider installing available in the <a href="https://marketplace.visualstudio.com/items?itemName=waderyan.nodejs-extension-pack">Node.js Extension Pack</a>. Install them all or pick and choose which seem the most useful to you.
 
+To install the Node.js extension pack:
 
+1. Open the **Extensions** window (Ctrl+Shift+X) in VS Code.
+
+    The Extensions window is now divided into three sections (because you installed the Remote-WSL extension).
+
+    <img src="https://docs.microsoft.com/en-us/windows/images/vscode-extensions-local-remote.png" />
+    
+2. In the search box at the top of the Extensions window, enter: Node Extension Pack (or the name of whatever extension you are looking for). The extension will be installed for either your Local or WSL instances of VS Code depending on where you have the current project opened. You can tell by selecting the remote link in the bottom-left corner of your VS Code window (in green). It will either give you the option to open or close a remote connection. Install your Node.js extensions in the "WSL:Ubuntu-18.04" environment.
+
+   <img src="https://docs.microsoft.com/en-us/windows/images/wsl-remote-extension.png" />
+   
+A few additional extensions you may want to consider include:
+
+- <a href="https://code.visualstudio.com/blogs/2016/02/23/introducing-chrome-debugger-for-vs-code">Debugger for Chrome</a>: Once you finish developing on the server side with Node.js, you'll need to develop and test the client side. This extension integrates your VS Code editor with your Chrome browser debugging service, making things a bit more efficient.
+- <a href="https://marketplace.visualstudio.com/search?target=VSCode&category=Keymaps&sortBy=Relevance">Keymaps from other editors</a>: These extensions can help your environment feel right at home if you're transitioning from another text editor (like Atom, Sublime, Vim, eMacs, Notepad++, etc).
+- <a href="https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync">Settings Sync</a>: Enables you to synchronize your VS Code settings across different installations using GitHub. If you work on different machines, this helps keep your environment consistent across them.
 
 
 
