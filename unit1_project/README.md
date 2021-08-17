@@ -7,18 +7,18 @@ An English Chess game meant for 2 human players (hotseat) or 1 human player vs C
 The general program flow is shown below, consisting of 3 main program states.
 
 #### Starting State
-On window load, the game will be initialized and based on current player's turn, the program will assign the player's chess pieces for selection. White player always goes first.
+- On window load, the game will be initialized and based on current player's turn, the program will assign the player's chess pieces for selection. White player always goes first.
 
 #### Select Piece State
-Player are only allowed to select own chess pieces and is able to unselect the chess piece by clicking on it again.
+- Player are only allowed to select own chess pieces and is able to unselect the chess piece by clicking on it again.
 
 #### Place Piece State
-Players are allowed to make a move by clicking on a movable cell based on the selected chess piece.
+- Players are allowed to make a move by clicking on a movable cell based on the selected chess piece.
 
 #### Test Checkmate
-After each player makes a move, the program will test for checkmate. 
+- After each player makes a move, the program will test for checkmate. 
 
-If it returns true, the game ends and the player making the check move will be declared the winner via an alert prompt window, else, the program changes the player turn and goes back to Select Piece State.
+- If it returns true, the game ends and the player making the check move will be declared the winner via an alert prompt window, else, the program changes the player turn and goes back to Select Piece State.
 
 ![image](https://user-images.githubusercontent.com/78526590/127288462-01400209-689f-4b47-a195-630d895b357e.png)
 
