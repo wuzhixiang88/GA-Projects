@@ -9,7 +9,7 @@ module.exports = [
     },
     {
         name: "The Witcher Book Series (3 Books)",
-        description: "The Witcher storybook set",
+        description: "Selling first 3 books of the witcher book series.",
         img: "https://i.imgur.com/cU1TUKh.jpg",
         price: 50,
         category: "Books",
@@ -17,7 +17,7 @@ module.exports = [
     },
     {
         name: "Monopoly Deal",
-        description: "Monopoly Deal card game for sale",
+        description: "Selling monopoly deal card game.",
         img: "https://i.imgur.com/ls9yJWC.jpg",
         price: 5,
         category: "Board Games",
@@ -25,7 +25,7 @@ module.exports = [
     },
     {
         name: "Uno Card Game",
-        description: "Uno card game for saile",
+        description: "Selling cheap uno card game.",
         img: "https://i.imgur.com/syxbN3d.jpg",
         price: 3,
         category: "Card Game",
@@ -33,7 +33,7 @@ module.exports = [
     },
     {
         name: "Pokemon Sun",
-        description: "Pokemon Sun game for 3DS",
+        description: "Selling 2nd hand Pokemon Sun for 3DS.",
         img: "https://i.imgur.com/3U6rSsp.jpg",
         price: 30,
         category: "Video Game",
@@ -41,7 +41,7 @@ module.exports = [
     },
     {
         name: "Pokemon Moon",
-        description: "Pokemon Moon game for 3DS",
+        description: "Selling 2nd hand Pokemon Moon for 3DS.",
         img: "https://i.imgur.com/vr9RFiJ.jpg",
         price: 50,
         category: "Video Game",
@@ -49,7 +49,7 @@ module.exports = [
     },
     {
         name: "Pokemon Sword",
-        description: "Pokemon Sword game for Switch",
+        description: "Selling 2nd hand Pokemon Sword for Nintendo Switch.",
         img: "https://i.imgur.com/1ol3SGj.jpg",
         price: 50,
         category: "Video Game",
@@ -57,7 +57,7 @@ module.exports = [
     },
     {
         name: "Pokemon Shield",
-        description: "Pokemon Shield game for Switch",
+        description: "Selling 2nd hand Pokemon Shield for Nintendo Switch.",
         img: "https://i.imgur.com/CtHSahP.jpg",
         price: 50,
         category: "Video Game",

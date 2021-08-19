@@ -21,7 +21,8 @@ dbConnection.on("connected", () => console.log("Mongo connected..."));
 dbConnection.on("disconnected", () => console.log("Mongo disconnected..."));
 
 // MIDDLEWARES
-
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
 // ROUTERS
 app.use("/product", productController);

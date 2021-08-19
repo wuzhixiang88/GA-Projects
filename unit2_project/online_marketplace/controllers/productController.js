@@ -15,9 +15,11 @@ const Product = require("../models/product");
 
 // INDEX ROUTE
 controller.get("/", async (req, res) => {
-    await Product.find();
+    const allProducts = await Product.find();
 
-    res.send("Ok")
+    res.render("index.ejs", {
+        allProducts 
+    })
 });
 
 module.exports = controller;
