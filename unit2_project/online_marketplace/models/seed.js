@@ -5,23 +5,26 @@ module.exports = [
         img: "https://i.imgur.com/tpqk0Zy.png",
         price: 350,
         category: "Road Bike",
-        condition: "Used"
+        condition: "Used",
+        meetLocation: "Bukit Panjang MRT"
     },
     {
         name: "The Witcher Book Series (3 Books)",
         description: "Selling first 3 books of the witcher book series.",
         img: "https://i.imgur.com/cU1TUKh.jpg",
         price: 50,
-        category: "Books",
-        condition: "Used"
+        category: "Book",
+        condition: "Used",
+        meetLocation: "Bukit Panjang MRT"
     },
     {
         name: "Monopoly Deal",
         description: "Selling monopoly deal card game.",
         img: "https://i.imgur.com/ls9yJWC.jpg",
         price: 5,
-        category: "Board Games",
-        condition: "Brand New"
+        category: "Board Game",
+        condition: "Brand New",
+        meetLocation: "Bukit Panjang MRT"
     },
     {
         name: "Uno Card Game",
@@ -29,7 +32,8 @@ module.exports = [
         img: "https://i.imgur.com/syxbN3d.jpg",
         price: 3,
         category: "Card Game",
-        condition: "Brand New"
+        condition: "Brand New",
+        meetLocation: "Bukit Panjang MRT"
     },
     {
         name: "Pokemon Sun",
@@ -37,7 +41,8 @@ module.exports = [
         img: "https://i.imgur.com/3U6rSsp.jpg",
         price: 30,
         category: "Video Game",
-        condition: "Used"
+        condition: "Used",
+        meetLocation: "Bukit Panjang MRT"
     },
     {
         name: "Pokemon Moon",
@@ -45,7 +50,8 @@ module.exports = [
         img: "https://i.imgur.com/vr9RFiJ.jpg",
         price: 50,
         category: "Video Game",
-        condition: "Used"
+        condition: "Used",
+        meetLocation: "Bukit Panjang MRT"
     },
     {
         name: "Pokemon Sword",
@@ -53,7 +59,8 @@ module.exports = [
         img: "https://i.imgur.com/1ol3SGj.jpg",
         price: 50,
         category: "Video Game",
-        condition: "Used"
+        condition: "Used",
+        meetLocation: "Bukit Panjang MRT"
     },
     {
         name: "Pokemon Shield",
@@ -61,6 +68,7 @@ module.exports = [
         img: "https://i.imgur.com/CtHSahP.jpg",
         price: 50,
         category: "Video Game",
-        condition: "Used"
+        condition: "Used",
+        meetLocation: "Bukit Panjang MRT"
     }
 ];

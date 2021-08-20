@@ -1,0 +1,57 @@
+<%- include("partials/header.ejs") %>
+    <div class="row">
+        <div class="text-center mb-3">
+            <img 
+                src="<%= product.img %>" 
+                class="rounded mx-auto d-block w-100"
+            />
+        </div>
+        <div class="col-md-9">
+            <div class="border-bottom mb-3">
+                <div class="fs-2 mb-3">
+                    <%= product.name %>
+                </div>
+                <div class="fs-2 fw-bold mb-3">
+                    $<%= product.price %>
+                </div>
+                <div class="fs-3 mb-3">
+                    <%= product.condition %>
+                </div>
+            </div>
+            <div class="border-bottom mb-3">
+                <h3 class="mb-3">Description</h3>
+                <div class="mb-3">
+                    Category: <%= product.category %>
+                </div>
+                <div class="mb-3">
+                    <%= product.description %>
+                </div>
+            </div>
+            <div class="border-bottom mb-3">
+                <h3 class="mb-3">Meetup Location</h3>
+                <div class="mb-3">
+                    <%= product.meetLocation %>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-3">
+                <textarea 
+                    class="form-control h-50"
+                    name="message"
+                    placeholder="Write a custom message..."
+                ></textarea>
+            </div>
+            <div class="mb-5">
+                <input class="form-control btn btn-success mb-3" type="submit" value="Send message to seller">
+            </div>
+            <div>
+                <div class="input-group mb-3">
+                    <div class="input-group-text">S$</div> 
+                    <input class="form-control" type="text" value="<%= product.price  %>"> 
+                </div>                 
+                <input class="form-control btn btn-danger" type="submit" value="Make Offer">
+            </div>
+        </div>
+    </div>
+<%- include("partials/footer.ejs") %>

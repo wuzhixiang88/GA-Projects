@@ -22,4 +22,17 @@ controller.get("/", async (req, res) => {
     })
 });
 
+// SHOW ROUTE
+controller.get("/:id", async (req, res) => {
+    const product = await Product.find(
+        {
+            _id: req.params.id
+        }
+    );
+
+    res.render("show.ejs",  {
+        product: product[0]
+    });
+});
+
 module.exports = controller;

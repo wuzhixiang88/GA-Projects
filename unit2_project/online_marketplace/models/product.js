@@ -25,6 +25,9 @@ const productSchema = new Schema(
         condition: {
             type: String,
             required: true
+        },
+        meetLocation: {
+            type: String
         }
     },
     {
