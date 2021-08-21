@@ -1,4 +1,6 @@
 // DEPENDENCIES
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 
@@ -8,8 +10,8 @@ const dbConnection = mongoose.connection;
 const productController = require("./controllers/productController");
 
 // CONFIGURATION
-const mongoURI = "";
-const port = 3000;
+const mongoURI = process.env.MONGO_URI;
+const port = process.env.PORT;
 
 // CONNECT TO MONGO
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
