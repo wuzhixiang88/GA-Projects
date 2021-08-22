@@ -5,6 +5,7 @@ const User = require("../models/user");
 
 const controller = express.Router();
 
+// ROUTES
 controller.get("/signup", (req, res) => {
     res.render("signup.ejs")
 });
@@ -58,4 +59,5 @@ controller.post("/login", async (req, res) => {
     };
 });
 
+// EXPORTS
 module.exports = controller;

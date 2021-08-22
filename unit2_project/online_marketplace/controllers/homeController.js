@@ -4,10 +4,7 @@ const controller = express.Router();
 
 const Product = require("../models/product");
 
-controller.get("/register", (req, res) => {
-    res.render("signup.ejs")
-});
-
+// ROUTES
 controller.get("/", async (req, res) => {
     const allProducts = await Product.find();
 
@@ -16,4 +13,5 @@ controller.get("/", async (req, res) => {
     })
 });
 
+// EXPORTS
 module.exports = controller;
