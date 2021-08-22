@@ -13,6 +13,11 @@ controller.get("/login", (req, res) => {
     res.render("login.ejs")
 });
 
+controller.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
+});
+
 controller.post("/signup", async (req, res) => {
     try {
         const salt = await bcrypt.genSalt(10);
@@ -44,7 +49,7 @@ controller.post("/login", async (req, res) => {
     }
 
     if (bcrypt.compareSync(req.body.password, selectedUser.password)) {
-        req.session.username = selectedUser;
+        req.session.username = selectedUser.username;
 
         res.redirect("/");
 

@@ -33,8 +33,24 @@
                                     aria-label="Search">
                             </form>
                         </div>
+                        <% if (username) { %>
+                            <div class="text-white me-5">
+                                Hello, <%= username %>
+                            </div>
+                        <% }; %>
                         <div>
                             <ul class="navbar-nav">
+                                <% if (username) { %>
+                                <li class="nav-item border border-dark rounded-pill bg-light p-1">
+                                    <a 
+                                        class="nav-link active text-center" 
+                                        aria-current="page" 
+                                        href="/user/logout"
+                                    >
+                                        Logout    
+                                    </a>
+                                </li>
+                                <% } else { %>
                                 <li class="nav-item border border-dark rounded-pill bg-light me-3 p-1">
                                     <a 
                                         class="nav-link active text-center" 
@@ -53,15 +69,7 @@
                                         Login    
                                     </a>
                                 </li>
-                                <!-- <li class="nav-item border border-dark rounded-pill bg-light p-1">
-                                    <a 
-                                        class="nav-link active text-center" 
-                                        aria-current="page" 
-                                        href="/product"
-                                    >
-                                        Home    
-                                    </a>
-                                </li> -->
+                                <% }; %>
                             </ul>
                         </div>
                     </div>
