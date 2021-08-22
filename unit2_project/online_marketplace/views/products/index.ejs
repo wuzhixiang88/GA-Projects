@@ -1,4 +1,29 @@
 <%- include("../partials/header.ejs") %>
+<div class="row bg-secondary p-3">
+    <div class="container-fluid col-md-4 text-white fs-5 mt-1">
+        Listings
+    </div>    
+    <div class="container-fluid col-md-8 d-flex justify-content-end">
+    <% if (username) { %>
+        <div class="d-flex align-items-center">
+            <form class="mb-0">
+                <input 
+                    class="form-control" 
+                    type="search" 
+                    placeholder="Search listing" 
+                    aria-label="Search">
+            </form>
+            <a 
+                class="nav-link active link-light text-center fw-bold" 
+                aria-current="page" 
+                href="#"
+            >
+                Add Item   
+            </a>
+        </div>
+    <% }; %>
+    </div>
+</div>
 <div class="row bg-light">
     <% for (let i = 0; i < allProducts.length; i++) { %>
         <div class="col-md-3 mt-5 mb-5">
