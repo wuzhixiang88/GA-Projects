@@ -1,12 +1,12 @@
 <%- include("../partials/header.ejs") %>
 <div class="row bg-secondary p-3">
-    <div class="container-fluid col-md-4 text-white fs-5 mt-1">
-        Listings
-    </div>    
-    <div class="container-fluid col-md-8 d-flex justify-content-end">
-    <% if (username) { %>
-        <div class="d-flex align-items-center">
-            <form class="mb-0">
+    <div class="container-fluid col-12 d-flex">
+        <div class="me-auto text-white ms-2 fs-4">
+            Listings
+        </div>
+        <% if (username) { %>
+        <div class="d-flex justify-content-end align-items-center">
+            <form class="me-3 mb-0">
                 <input 
                     class="form-control" 
                     type="search" 
@@ -14,15 +14,15 @@
                     aria-label="Search">
             </form>
             <a 
-                class="nav-link link-light text-center fw-bold" 
-                aria-current="page" 
+                class="btn btn-secondary text-center fw-bold" 
+                role="button"
                 href="#"
             >
                 Add Item   
             </a>
         </div>
-    <% }; %>
-    </div>
+        <% }; %>
+    </div>    
 </div>
 <div class="row bg-light">
     <% for (let i = 0; i < allProducts.length; i++) { %>
