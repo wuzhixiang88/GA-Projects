@@ -5,6 +5,7 @@ const express = require("express");
 const app = express();
 
 const session = require("express-session");
+const methodOverride = require("method-override");
 
 const mongoose = require("mongoose");
 const dbConnection = mongoose.connection;
@@ -17,8 +18,14 @@ const productController = require("./controllers/productController");
 const mongoURI = process.env.MONGO_URI;
 const port = process.env.PORT;
 
+// FOR FIXING MONGOOSE DEPRECATION WARNING
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true)
+
 // CONNECT TO MONGO
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+mongoose.connect(mongoURI, () => {
     console.log("Connection with Mongo Database is established.")
 });
 
@@ -28,7 +35,9 @@ dbConnection.on("disconnected", () => console.log("Mongo disconnected..."));
 
 // MIDDLEWARES
 app.use(express.static("public"));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.use(session({
     secret: process.env.SESSION_SECRET,

@@ -4,18 +4,28 @@
     <% if (username) { %>
         <div class="d-flex align-items-center">
             <a 
-                class="nav-link active link-light text-center fw-bold" 
+                class="nav-link link-light text-center fw-bold" 
                 aria-current="page" 
                 href="/product"
             >
                 Back   
             </a>
             <a 
-                class="nav-link active link-light text-center fw-bold" 
+                class="nav-link link-light text-center fw-bold" 
                 aria-current="page" 
                 href="/product/<%= product._id %>/edit"
             >
                 Edit Item   
+            </a>
+        </div>
+    <% } else { %>
+        <div class="d-flex align-items-center">
+            <a 
+                class="nav-link link-light text-center fw-bold" 
+                aria-current="page" 
+                href="/"
+            >
+                Back   
             </a>
         </div>
     <% }; %>

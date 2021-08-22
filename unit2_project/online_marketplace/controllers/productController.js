@@ -48,5 +48,24 @@ controller.get("/:id/edit", async (req, res) => {
     });
 });
 
+// UPDATE ROUTE
+controller.put("/:id", async (req, res) => {
+    await Product.updateOne(
+        {
+            _id: req.params.id
+        },
+        {
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            category: req.body.category,
+            condition: req.body.condition,
+            meetLocation: req.body.meetLocation
+        }
+    );
+
+    res.redirect(`/product/${req.params.id}`);
+});
+
 // EXPORTS
 module.exports = controller;

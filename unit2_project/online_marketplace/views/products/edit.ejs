@@ -1,102 +1,105 @@
 <%- include("../partials/header.ejs") %>
-<div class="row bg-secondary p-3">
-    <div class="container-fluid col-12 d-flex justify-content-end">
-    <% if (username) { %>
-        <div class="d-flex align-items-center">
-            <a 
-                class="nav-link active link-light text-center fw-bold" 
-                aria-current="page" 
-                href="/product/<%= product._id %>"
-            >
-                Back   
-            </a>
-            <a 
-                class="nav-link active link-light text-center fw-bold" 
-                aria-current="page" 
-                href="#"
-            >
-                Save Changes   
-            </a>
-        </div>
-    <% }; %>
-    </div>
-</div>
-<div class="row">
-    <div class="text-center mb-3">
-        <img 
-            src="<%= product.img %>" 
-            class="show-img rounded mx-auto d-block w-100"
-        />
-    </div>
-    <div class="col-12">
-        <div class="mb-3">
-            <div class="fs-4 mb-3">
-                <p>Listing Title:</p>
+<form
+    method="POST"
+    action="/product/<%= product._id %>/?_method=PUT"
+>
+    <div class="row bg-secondary p-3">
+        <div class="container-fluid col-12 d-flex justify-content-end">
+        <% if (username) { %>
+            <div class="d-flex align-items-center">
+                <a 
+                    class="nav-link link-light text-center fw-bold" 
+                    aria-current="page" 
+                    href="/product/<%= product._id %>"
+                >
+                    Back   
+                </a>
                 <input
-                    class="form-control"
-                    type="text"
-                    name="name"
-                    value="<%= product.name %>"
+                    class="btn btn-secondary fw-bold" 
+                    type="submit" 
+                    value="Save Changes"
                 >
             </div>
-            <div class="fs-4 mb-3">
-                <p>Price:</p>
-                <div class="input-group mb-3">
-                    <div class="input-group-text">
-                        S$
-                    </div> 
+        <% }; %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center mb-3">
+            <img 
+                src="<%= product.img %>" 
+                class="show-img rounded mx-auto d-block w-100"
+            />
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="fs-4 mb-3">
+                    <p>Listing Title:</p>
                     <input
                         class="form-control"
                         type="text"
-                        name="price"
-                        value="<%= product.price %>"
+                        name="name"
+                        value="<%= product.name %>"
+                    >
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Price:</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            S$
+                        </div> 
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="price"
+                            value="<%= product.price %>"
+                        >
+                    </div>
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Condition:</p>
+                    <select 
+                        class="form-select"
+                        name="condition"
+                    >
+                        <option value="<%= product.condition %>" selected hidden><%= product.condition %></option>
+                        <option value="Brand New">Brand New</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Used">Used</option>
+                        <option value="Heavily Used">Heavily Used</option>
+                    </select>
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Description:</p>
+                    <textarea 
+                        class="form-control h-25"
+                        name="description"
+                        placeholder="Describe what you are selling and include any information that a buyer might be interested in."
+                    ><%= product.description %></textarea>
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Category:</p>
+                    <select 
+                        class="form-select"
+                        name="category"
+                    >
+                        <option value="<%= product.category %>" selected hidden><%= product.category %></option>
+                        <option value="Bicycles">Bicycles</option>
+                        <option value="Books">Books</option>
+                        <option value="Card Games">Card Games</option>
+                        <option value="Video Games">Video Games</option>
+                    </select>
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Meetup Location:</p>
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="meetLocation"
+                        value="<%= product.meetLocation %>"
                     >
                 </div>
             </div>
-            <div class="fs-4 mb-3">
-                <p>Condition:</p>
-                <select 
-                    class="form-select"
-                    name="condition"
-                >
-                    <option value="1" selected hidden><%= product.condition %></option>
-                    <option value="2">Brand New</option>
-                    <option value="3">Like New</option>
-                    <option value="4">Used</option>
-                    <option value="5">Heavily Used</option>
-                </select>
-            </div>
-            <div class="fs-4 mb-3">
-                <p>Description:</p>
-                <textarea 
-                    class="form-control h-25"
-                    name="description"
-                    placeholder="Describe what you are selling and include any information that a buyer might be interested in."
-                ><%= product.description %></textarea>
-            </div>
-            <div class="fs-4 mb-3">
-                <p>Category:</p>
-                <select 
-                    class="form-select"
-                    name="category"
-                >
-                    <option value="1" selected hidden><%= product.category %></option>
-                    <option value="2">Bicycles</option>
-                    <option value="3">Books</option>
-                    <option value="4">Card Games</option>
-                    <option value="5">Video Games</option>
-                </select>
-            </div>
-            <div class="fs-4 mb-3">
-                <p>Meetup Location:</p>
-                <input
-                    class="form-control"
-                    type="text"
-                    name="meetLocation"
-                    value="<%= product.meetLocation %>"
-                >
-            </div>
         </div>
     </div>
-</div>
+</form>
 <%- include("../partials/footer.ejs") %>
