@@ -1,8 +1,8 @@
 // DEPENDENCIES
 const express = require("express");
-const controller = express.Router();
-
 const Product = require("../models/product");
+
+const controller = express.Router();
 
 // SEED DATA FOR TESTING
 // const seedData = require("../models/seed");
@@ -17,7 +17,7 @@ const Product = require("../models/product");
 controller.get("/", async (req, res) => {
     const allProducts = await Product.find();
 
-    res.render("index.ejs", {
+    res.render("products/index.ejs", {
         allProducts 
     })
 });
@@ -30,9 +30,10 @@ controller.get("/:id", async (req, res) => {
         }
     );
 
-    res.render("show.ejs",  {
+    res.render("products/show.ejs",  {
         product: product[0]
     });
 });
 
+// EXPORTS
 module.exports = controller;

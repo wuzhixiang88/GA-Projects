@@ -30,7 +30,6 @@ dbConnection.on("disconnected", () => console.log("Mongo disconnected..."));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-// SESSION
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -39,6 +38,7 @@ app.use(session({
 
 app.use((req, res, next) => {
     res.locals.username = req.session.username;
+    res.locals.firstname = req.session.firstname;
     next();
 });
 

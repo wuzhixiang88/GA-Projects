@@ -7,11 +7,11 @@ const controller = express.Router();
 
 // ROUTES
 controller.get("/signup", (req, res) => {
-    res.render("signup.ejs")
+    res.render("users/signup.ejs")
 });
 
 controller.get("/login", (req, res) => {
-    res.render("login.ejs")
+    res.render("users/login.ejs")
 });
 
 controller.get("/logout", (req, res) => {
@@ -26,6 +26,8 @@ controller.post("/signup", async (req, res) => {
 
         await User.create(
             {
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
                 username: req.body.username,
                 password: hashedPassword
             }
@@ -51,6 +53,7 @@ controller.post("/login", async (req, res) => {
 
     if (bcrypt.compareSync(req.body.password, selectedUser.password)) {
         req.session.username = selectedUser.username;
+        req.session.firstname = selectedUser.firstname;
 
         res.redirect("/");
 

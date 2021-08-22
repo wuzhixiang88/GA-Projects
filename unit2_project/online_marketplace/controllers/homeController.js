@@ -1,8 +1,8 @@
 // DEPENDENCIES
 const express = require("express");
-const controller = express.Router();
-
 const Product = require("../models/product");
+
+const controller = express.Router();
 
 // ROUTES
 controller.get("/", async (req, res) => {

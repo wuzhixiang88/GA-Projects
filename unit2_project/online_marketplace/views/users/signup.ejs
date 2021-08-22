@@ -1,10 +1,26 @@
-<%- include("partials/header.ejs") %>
+<%- include("../partials/header.ejs") %>
 <div class="row bg-light">
     <form 
         class="row ps-4 g-3"
         method="POST"
         action="/user/signup"
     >
+        <div class="col-md-6">
+            <input
+                class="form-control"  
+                type="text"
+                name="firstname"                     
+                placeholder="First Name"
+            >
+        </div>
+        <div class="col-md-6">
+            <input 
+                class="form-control" 
+                type="text"
+                name="lastname" 
+                placeholder="Last Name"
+            >
+        </div>
         <div class="col-md-6">
             <input
                 class="form-control"  
@@ -33,7 +49,7 @@
             <input 
                 class="form-control"
                 type="text"
-                name="postalCode" 
+                name="postcode" 
                 placeholder="Postal Code"
             >
         </div>
@@ -67,4 +83,4 @@
         </div>
     </form>
 </div>
-<%- include("partials/footer.ejs") %>
+<%- include("../partials/footer.ejs") %>
