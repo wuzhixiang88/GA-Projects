@@ -13,65 +13,50 @@
 
     <body>
         <div class="container">
-            <div class="row">
-                <nav class="navbar navbar-expand-lg navbar-light bg-primary p-3">
-                    <div class="container-fluid">
-                        <div class="navbar-brand fw-bold">
-                            <a 
-                                class="shop-name text-dark fw-bold" 
-                                href="/" 
-                            >
-                                ONLINE MARKETPLACE
-                            </a>
-                        </div>
-                        <div class="container-fluid w-50">
-                            <form class="d-flex mb-0">
-                                <input 
-                                    class="form-control" 
-                                    type="search" 
-                                    placeholder="Search for an item" 
-                                    aria-label="Search">
-                            </form>
-                        </div>
-                        <% if (username) { %>
-                            <div class="text-white me-5">
-                                Hello, <%= username %>
-                            </div>
-                        <% }; %>
-                        <div>
-                            <ul class="navbar-nav">
-                                <% if (username) { %>
-                                <li class="nav-item border border-dark rounded-pill bg-light p-1">
-                                    <a 
-                                        class="nav-link active text-center" 
-                                        aria-current="page" 
-                                        href="/user/logout"
-                                    >
-                                        Logout    
-                                    </a>
-                                </li>
-                                <% } else { %>
-                                <li class="nav-item border border-dark rounded-pill bg-light me-3 p-1">
-                                    <a 
-                                        class="nav-link active text-center" 
-                                        aria-current="page" 
-                                        href="/user/signup"
-                                    >
-                                        Register    
-                                    </a>
-                                </li>
-                                <li class="nav-item border border-dark rounded-pill bg-light p-1">
-                                    <a 
-                                        class="nav-link active text-center" 
-                                        aria-current="page" 
-                                        href="/user/login"
-                                    >
-                                        Login    
-                                    </a>
-                                </li>
-                                <% }; %>
-                            </ul>
-                        </div>
+            <div class="row bg-primary p-3">
+                <div class="container-fluid col-md-6 w-50">
+                    <div class="fs-5 fw-bold mt-1">
+                        <a 
+                            class="shop-name text-dark fw-bold" 
+                            href="/" 
+                        >
+                            ONLINE MARKETPLACE
+                        </a>
                     </div>
-                </nav>
+                </div>
+                <div class="container-fluid col-md-6 d-flex justify-content-end w-50">
+                    <% if (username) { %>
+                    <div class="d-flex align-items-center text-white me-5">
+                        Hello, <%= username %>
+                    </div>
+                    <div class="nav-item border border-dark rounded-pill bg-light">
+                        <a 
+                            class="nav-link active text-center" 
+                            aria-current="page" 
+                            href="/user/logout"
+                        >
+                            Logout    
+                        </a>
+                    </div>
+                    <% } else { %>
+                    <div class="d-flex align-items-center border border-dark rounded-pill bg-light me-3">
+                        <a 
+                            class="nav-link active text-center" 
+                            aria-current="page" 
+                            href="/user/signup"
+                        >
+                            Register    
+                        </a>
+                    </div>
+                    <div class="d-flex align-items-center border border-dark rounded-pill bg-light">
+                        <a 
+                            class="nav-link active text-center" 
+                            aria-current="page" 
+                            href="/user/login"
+                        >
+                            Login    
+                        </a>
+                    </div>
+                    <% }; %>
+                </div>
             </div>

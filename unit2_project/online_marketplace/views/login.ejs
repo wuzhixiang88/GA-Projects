@@ -1,35 +1,35 @@
 <%- include("partials/header.ejs") %>
-    <div class="row bg-light">
-        <form 
-            class="row ps-4 g-3"
-            method="POST"
-            action="/user/login"
-        >
-            <div class="col-md-6">
-                <input
-                    class="form-control"  
-                    type="text"
-                    name="username"                     
-                    placeholder="Username"
-                >
-            </div>
-            <div class="col-md-6">
-                <input 
-                    class="form-control" 
-                    type="password"
-                    name="password"
-                    placeholder="Passsword"
-                >
-            </div>
-            <div class="col-12">
-                <button 
-                    class="btn btn-primary me-3"
-                    type="submit" 
-                >
-                    Log in
-                </button>
-                    Don't have an account? <a href="/user/signup">Sign up now</a>
-            </div>
-        </form>
-    </div>
+<div class="row bg-light">
+    <form 
+        class="row ps-4 g-3"
+        method="POST"
+        action="/user/login"
+    >
+        <div class="col-md-6">
+            <input
+                class="form-control"  
+                type="text"
+                name="username"                     
+                placeholder="Username"
+            >
+        </div>
+        <div class="col-md-6">
+            <input 
+                class="form-control" 
+                type="password"
+                name="password"
+                placeholder="Passsword"
+            >
+        </div>
+        <div class="col-12">
+            <button 
+                class="btn btn-primary me-3"
+                type="submit" 
+            >
+                Log in
+            </button>
+                Don't have an account? <a href="/user/signup">Sign up now</a>
+        </div>
+    </form>
+</div>
 <%- include("partials/footer.ejs") %>

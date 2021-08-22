@@ -1,30 +1,54 @@
 <%- include("partials/header.ejs") %>
-    <div class="row bg-light">
-        <% for (let i = 0; i < allProducts.length; i++) { %>
-            <div class="col-md-3 mt-5 mb-5">
-                <div class="container-fluid">
-                    <div>
-                        <a href="/product/<%= allProducts[i]._id %>">
-                            <img 
-                                src="<%= allProducts[i].img %>" 
-                                class="index-img img-thumbnail rounded mx-auto d-block w-100"
-                            />
-                        </a>
-                    </div>
-                    <div class="fw-bold text-truncate">
-                        <%= allProducts[i].name %>
-                    </div>
-                    <div>
-                        $<%= allProducts[i].price %>
-                    </div>
-                    <div class="text-truncate">
-                        <%= allProducts[i].description %>
-                    </div>
-                    <div>
-                        <%= allProducts[i].condition %>
-                    </div>
+<div class="row bg-secondary p-3">
+    <div class="container-fluid col-md-6 w-50">
+        <form class="mb-0">
+            <input 
+                class="form-control" 
+                type="search" 
+                placeholder="Search for an item" 
+                aria-label="Search">
+        </form>
+    </div>
+    <div class="container-fluid col-md-6 d-flex justify-content-end w-50">
+    <% if (username) { %>
+        <div class="d-flex align-items-center border border-dark rounded-pill bg-light">
+            <a 
+                class="nav-link active text-center" 
+                aria-current="page" 
+                href="/product"
+            >
+                My Listing    
+            </a>
+        </div>
+    <% }; %>
+    </div>
+</div>
+<div class="row bg-light">
+    <% for (let i = 0; i < allProducts.length; i++) { %>
+        <div class="col-md-3 mt-5 mb-5">
+            <div class="container-fluid">
+                <div>
+                    <a href="/product/<%= allProducts[i]._id %>">
+                        <img 
+                            src="<%= allProducts[i].img %>" 
+                            class="index-img img-thumbnail rounded mx-auto d-block w-100"
+                        />
+                    </a>
+                </div>
+                <div class="fw-bold text-truncate">
+                    <%= allProducts[i].name %>
+                </div>
+                <div>
+                    $<%= allProducts[i].price %>
+                </div>
+                <div class="text-truncate">
+                    <%= allProducts[i].description %>
+                </div>
+                <div>
+                    <%= allProducts[i].condition %>
                 </div>
             </div>
-        <% }; %>
-    </div>
+        </div>
+    <% }; %>
+</div>
 <%- include("partials/footer.ejs") %>
