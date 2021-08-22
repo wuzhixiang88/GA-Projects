@@ -1,4 +1,26 @@
 <%- include("../partials/header.ejs") %>
+<div class="row bg-secondary p-3">
+    <div class="container-fluid col-12 d-flex justify-content-end">
+    <% if (username) { %>
+        <div class="d-flex align-items-center">
+            <a 
+                class="nav-link active link-light text-center fw-bold" 
+                aria-current="page" 
+                href="/product"
+            >
+                Back   
+            </a>
+            <a 
+                class="nav-link active link-light text-center fw-bold" 
+                aria-current="page" 
+                href="/product/<%= product._id %>/edit"
+            >
+                Edit Item   
+            </a>
+        </div>
+    <% }; %>
+    </div>
+</div>
 <div class="row">
     <div class="text-center mb-3">
         <img 
@@ -51,7 +73,9 @@
         </div>
         <div>
             <div class="input-group mb-3">
-                <div class="input-group-text">S$</div> 
+                <div class="input-group-text">
+                    S$
+                </div> 
                 <input 
                     class="form-control" 
                     type="text" 

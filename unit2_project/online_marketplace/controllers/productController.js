@@ -24,14 +24,27 @@ controller.get("/", async (req, res) => {
 
 // SHOW ROUTE
 controller.get("/:id", async (req, res) => {
-    const product = await Product.find(
+    const product = await Product.findOne(
         {
             _id: req.params.id
         }
     );
 
     res.render("products/show.ejs",  {
-        product: product[0]
+        product
+    });
+});
+
+// EDIT ROUTE
+controller.get("/:id/edit", async (req, res) => {
+    const product = await Product.findOne(
+        {
+            _id: req.params.id
+        }
+    );
+
+    res.render("products/edit.ejs", {
+        product
     });
 });
 
