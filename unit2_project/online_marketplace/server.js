@@ -4,6 +4,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+const session = require("express-session");
+
 const mongoose = require("mongoose");
 const dbConnection = mongoose.connection;
 
@@ -28,10 +30,27 @@ dbConnection.on("disconnected", () => console.log("Mongo disconnected..."));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
+// SESSION
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use((req, res, next) => {
+    res.locals.username = req.session.username;
+    next();
+});
+
 // ROUTERS
 app.use(homeController);
 app.use("/user", userController);
 app.use("/product", productController);
+
+app.use("*", (req, res) => {
+    res.status(404);
+    res.send("Page is not found.")
+});
 
 // LISTEN
 const server = app.listen(port, () => {

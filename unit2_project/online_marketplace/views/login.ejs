@@ -1,17 +1,23 @@
 <%- include("partials/header.ejs") %>
     <div class="row bg-light">
-        <form class="row ps-4 g-3">
+        <form 
+            class="row ps-4 g-3"
+            method="POST"
+            action="/user/login"
+        >
             <div class="col-md-6">
                 <input
                     class="form-control"  
-                    type="text"                     
+                    type="text"
+                    name="username"                     
                     placeholder="Username"
                 >
             </div>
             <div class="col-md-6">
                 <input 
                     class="form-control" 
-                    type="password" 
+                    type="password"
+                    name="password"
                     placeholder="Passsword"
                 >
             </div>
@@ -22,7 +28,7 @@
                 >
                     Log in
                 </button>
-                    Don't have an account? <a href="/user/register">Sign up now</a>
+                    Don't have an account? <a href="/user/signup">Sign up now</a>
             </div>
         </form>
     </div>

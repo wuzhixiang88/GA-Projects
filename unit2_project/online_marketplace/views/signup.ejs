@@ -1,17 +1,23 @@
 <%- include("partials/header.ejs") %>
     <div class="row bg-light">
-        <form class="row ps-4 g-3">
+        <form 
+            class="row ps-4 g-3"
+            method="POST"
+            action="/user/signup"
+        >
             <div class="col-md-6">
                 <input
                     class="form-control"  
-                    type="text"                     
+                    type="text"
+                    name="username"                     
                     placeholder="Username"
                 >
             </div>
             <div class="col-md-6">
                 <input 
                     class="form-control" 
-                    type="password" 
+                    type="password"
+                    name="password" 
                     placeholder="Passsword"
                 >
             </div>
@@ -19,18 +25,23 @@
                 <input 
                     class="form-control" 
                     type="text" 
+                    name="email"
                     placeholder="Email"
                 >
             </div>
             <div class="col-md-6">
                 <input 
                     class="form-control"
-                    type="text" 
+                    type="text"
+                    name="postalCode" 
                     placeholder="Postal Code"
                 >
             </div>
             <div class="col-md-6">
-                <select class="form-select">
+                <select 
+                    class="form-select"
+                    name="country"
+                >
                     <option value="1">Select a country</option>
                     <option value="2">Malaysia</option>
                     <option value="3" selected>Singapore</option>
@@ -40,7 +51,8 @@
             <div class="col-md-6">
                 <input 
                     class="form-control" 
-                    type="text" 
+                    type="text"
+                    name="city" 
                     placeholder="City"
                 >
             </div>
