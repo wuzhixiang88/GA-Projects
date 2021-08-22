@@ -1,0 +1,13 @@
+.shop-name {
+    text-decoration: none;
+}
+
+.index-img {
+    height: 200px;
+    object-fit: contain;
+}
+
+.show-img {
+    height: 500px;
+    object-fit: contain;
+}

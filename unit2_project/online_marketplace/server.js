@@ -7,6 +7,8 @@ const app = express();
 const mongoose = require("mongoose");
 const dbConnection = mongoose.connection;
 
+const homeController = require("./controllers/homeController");
+const userController = require("./controllers/userController");
 const productController = require("./controllers/productController");
 
 // CONFIGURATION
@@ -27,6 +29,8 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
 // ROUTERS
+app.use(homeController);
+app.use("/user", userController);
 app.use("/product", productController);
 
 // LISTEN

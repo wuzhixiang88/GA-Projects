@@ -3,7 +3,7 @@
         <div class="text-center mb-3">
             <img 
                 src="<%= product.img %>" 
-                class="rounded mx-auto d-block w-100"
+                class="show-img rounded mx-auto d-block w-100"
             />
         </div>
         <div class="col-md-9">
@@ -43,14 +43,26 @@
                 ></textarea>
             </div>
             <div class="mb-5">
-                <input class="form-control btn btn-success mb-3" type="submit" value="Send message to seller">
+                <input 
+                    class="form-control btn btn-success mb-3" 
+                    type="submit" 
+                    value="Send message to seller"
+                >
             </div>
             <div>
                 <div class="input-group mb-3">
                     <div class="input-group-text">S$</div> 
-                    <input class="form-control" type="text" value="<%= product.price  %>"> 
+                    <input 
+                        class="form-control" 
+                        type="text" 
+                        value="<%= product.price %>"
+                    > 
                 </div>                 
-                <input class="form-control btn btn-danger" type="submit" value="Make Offer">
+                <input 
+                    class="form-control btn btn-danger" 
+                    type="submit" 
+                    value="Make Offer"
+                >
             </div>
         </div>
     </div>

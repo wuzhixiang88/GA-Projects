@@ -5,27 +5,65 @@
             rel="stylesheet" 
             href="/bootstrap/css/bootstrap.min.css"
         >
+        <link 
+            rel="stylesheet" 
+            href="/main.css"
+        >
     </head>
 
     <body>
         <div class="container">
             <div class="row">
-                <nav class="navbar navbar-expand-lg navbar-light p-3 bg-primary">
+                <nav class="navbar navbar-expand-lg navbar-light bg-primary p-3">
                     <div class="container-fluid">
-                        <h1 class="navbar-brand fw-bold">
-                            ONLINE MARKETPLACE
-                        </h1>
-                        <ul class="navbar-nav">
-                            <li class="nav-item border border-dark rounded-pill bg-light p-1">
-                                <a 
-                                    class="nav-link active text-center" 
-                                    aria-current="page" 
-                                    href="/product"
-                                >
-                                    Home    
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="navbar-brand fw-bold">
+                            <a 
+                                class="shop-name text-dark fw-bold" 
+                                href="/" 
+                            >
+                                ONLINE MARKETPLACE
+                            </a>
+                        </div>
+                        <div class="container-fluid w-50">
+                            <form class="d-flex mb-0">
+                                <input 
+                                    class="form-control" 
+                                    type="search" 
+                                    placeholder="Search for an item" 
+                                    aria-label="Search">
+                            </form>
+                        </div>
+                        <div>
+                            <ul class="navbar-nav">
+                                <li class="nav-item border border-dark rounded-pill bg-light me-3 p-1">
+                                    <a 
+                                        class="nav-link active text-center" 
+                                        aria-current="page" 
+                                        href="/user/register"
+                                    >
+                                        Register    
+                                    </a>
+                                </li>
+                                <li class="nav-item border border-dark rounded-pill bg-light p-1">
+                                    <a 
+                                        class="nav-link active text-center" 
+                                        aria-current="page" 
+                                        href="/user/login"
+                                    >
+                                        Login    
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item border border-dark rounded-pill bg-light p-1">
+                                    <a 
+                                        class="nav-link active text-center" 
+                                        aria-current="page" 
+                                        href="/product"
+                                    >
+                                        Home    
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
                     </div>
                 </nav>
             </div>

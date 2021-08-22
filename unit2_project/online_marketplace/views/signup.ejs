@@ -1,0 +1,58 @@
+<%- include("partials/header.ejs") %>
+    <div class="row bg-light">
+        <form class="row ps-4 g-3">
+            <div class="col-md-6">
+                <input
+                    class="form-control"  
+                    type="text"                     
+                    placeholder="Username"
+                >
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control" 
+                    type="password" 
+                    placeholder="Passsword"
+                >
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="Email"
+                >
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control"
+                    type="text" 
+                    placeholder="Postal Code"
+                >
+            </div>
+            <div class="col-md-6">
+                <select class="form-select">
+                    <option value="1">Select a country</option>
+                    <option value="2">Malaysia</option>
+                    <option value="3" selected>Singapore</option>
+                    <option value="4">Taiwan</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="City"
+                >
+            </div>
+            <div class="col-12">
+                <button 
+                    class="btn btn-primary me-3"
+                    type="submit" 
+                >
+                    Sign up
+                </button>
+                    Have an account? <a href="/user/login">Log in now</a>
+            </div>
+        </form>
+    </div>
+<%- include("partials/footer.ejs") %>
