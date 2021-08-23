@@ -22,6 +22,11 @@ controller.get("/", async (req, res) => {
     })
 });
 
+// NEW ROUTE
+controller.get("/new", async (req, res) => {
+    res.render("products/new.ejs");
+});
+
 // SHOW ROUTE
 controller.get("/:id", async (req, res) => {
     const product = await Product.findOne(
