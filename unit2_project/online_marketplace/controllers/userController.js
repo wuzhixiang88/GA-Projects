@@ -52,6 +52,7 @@ controller.post("/login", async (req, res) => {
     }
 
     if (bcrypt.compareSync(req.body.password, selectedUser.password)) {
+        req.session.userid = selectedUser._id;
         req.session.username = selectedUser.username;
         req.session.firstname = selectedUser.firstname;
 

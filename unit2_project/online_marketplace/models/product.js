@@ -3,6 +3,10 @@ const { Schema } = mongoose;
 
 const productSchema = new Schema(
     {
+        seller: {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        },
         name: {
             type: String,
             required: true

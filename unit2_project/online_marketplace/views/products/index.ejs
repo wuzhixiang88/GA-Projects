@@ -26,29 +26,29 @@
 </div>
 
 <div class="row bg-light">
-    <% for (let i = 0; i < allProducts.length; i++) { %>
+    <% for (let i = 0; i < userProductList.length; i++) { %>
         <div class="col-md-3 mt-5 mb-5">
             <div class="container-fluid">
                 <div>
-                    <a href="/product/<%= allProducts[i]._id %>">
+                    <a href="/product/<%= userProductList[i]._id %>">
                         <img 
-                            src="<%= allProducts[i].img %>" 
+                            src="<%= userProductList[i].img %>" 
                             class="index-img img-thumbnail rounded mx-auto d-block w-100"
-                            alt="<%= allProducts[i].name %>"
+                            alt="<%= userProductList[i].name %>"
                         />
                     </a>
                 </div>
                 <div class="fw-bold text-truncate">
-                    <%= allProducts[i].name %>
+                    <%= userProductList[i].name %>
                 </div>
                 <div>
-                    $<%= allProducts[i].price %>
+                    $<%= userProductList[i].price %>
                 </div>
                 <div class="text-truncate">
-                    <%= allProducts[i].description %>
+                    <%= userProductList[i].description %>
                 </div>
                 <div>
-                    <%= allProducts[i].condition %>
+                    <%= userProductList[i].condition %>
                 </div>
             </div>
         </div>

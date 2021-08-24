@@ -15,10 +15,14 @@ const controller = express.Router();
 
 // INDEX ROUTE
 controller.get("/", async (req, res) => {
-    const allProducts = await Product.find();
+    const userProductList = await Product.find(
+        {
+            user: req.session.userid
+        }
+    );
 
     res.render("products/index.ejs", {
-        allProducts 
+        userProductList 
     })
 });
 
@@ -57,6 +61,7 @@ controller.get("/:id/edit", async (req, res) => {
 controller.post("/", async (req, res) => {
     await Product.create(
         {
+            user: req.session.userid,
             name: req.body.name,
             description: req.body.description,
             img: req.body.img,
