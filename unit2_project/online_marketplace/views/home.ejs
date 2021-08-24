@@ -14,7 +14,11 @@
             <a 
                 class="btn btn-secondary text-center fw-bold" 
                 role="button"
-                href="#"
+                <% if (username) { %>
+                href="/product/new"
+                <% } else { %>
+                href="/user/login"
+                <% }; %>
             >
                 Sell   
             </a>

@@ -17,7 +17,7 @@ const controller = express.Router();
 controller.get("/", async (req, res) => {
     const userProductList = await Product.find(
         {
-            user: req.session.userid
+            seller: req.session.userid
         }
     );
 
@@ -61,7 +61,7 @@ controller.get("/:id/edit", async (req, res) => {
 controller.post("/", async (req, res) => {
     await Product.create(
         {
-            user: req.session.userid,
+            seller: req.session.userid,
             name: req.body.name,
             description: req.body.description,
             img: req.body.img,
