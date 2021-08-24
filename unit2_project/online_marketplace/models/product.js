@@ -32,6 +32,16 @@ const productSchema = new Schema(
         },
         meetLocation: {
             type: String
+        },
+        status: {
+            type: String,
+            default: "For Sale"
+        },
+        buyer: {
+            type: String
+        },
+        offer: {
+            type: Number
         }
     },
     {

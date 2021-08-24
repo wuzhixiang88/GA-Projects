@@ -43,11 +43,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 app.use(sessionUserInfo);
-// app.use((req, res, next) => {
-//     res.locals.username = req.session.username;
-//     res.locals.firstname = req.session.firstname;
-//     next();
-// });
 
 // ROUTERS
 app.use(homeController);
