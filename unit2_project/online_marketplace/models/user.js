@@ -9,17 +9,17 @@ const userSchema = new Schema(
         },
         lastname: {
             type: String,
-            unique: true,
             required: true
         },
         username: {
             type: String,
-            unique: true,
-            required: true
+            required: true,
+            unique: true
         },
         password: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         }
     },
     {
