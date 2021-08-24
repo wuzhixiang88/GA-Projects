@@ -53,6 +53,23 @@ controller.get("/:id/edit", async (req, res) => {
     });
 });
 
+// CREATE ROUTE
+controller.post("/", async (req, res) => {
+    await Product.create(
+        {
+            name: req.body.name,
+            description: req.body.description,
+            img: req.body.img,
+            price: req.body.price,
+            category: req.body.category,
+            condition: req.body.condition,
+            meetLocation: req.body.meetLocation
+        }
+    );
+
+    res.redirect("/product");
+});
+
 // UPDATE ROUTE
 controller.put("/:id", async (req, res) => {
     await Product.updateOne(
