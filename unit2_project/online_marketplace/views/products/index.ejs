@@ -1,8 +1,8 @@
 <%- include("../partials/header.ejs") %>
 <div class="row bg-secondary p-3">
     <div class="container-fluid col-12 d-flex">
-        <div class="me-auto text-white ms-2 fs-4">
-            Listings
+        <div class="me-auto text-white fs-4 ms-2">
+            My Listings
         </div>
         <% if (username) { %>
         <div class="d-flex justify-content-end align-items-center">
@@ -24,6 +24,7 @@
         <% }; %>
     </div>    
 </div>
+
 <div class="row bg-light">
     <% for (let i = 0; i < allProducts.length; i++) { %>
         <div class="col-md-3 mt-5 mb-5">

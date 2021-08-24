@@ -89,5 +89,16 @@ controller.put("/:id", async (req, res) => {
     res.redirect(`/product/${req.params.id}`);
 });
 
+// DESTROY ROUTE
+controller.delete("/:id", async (req, res) => {
+    await Product.findOneAndDelete(
+        {
+            _id: req.params.id
+        }
+    );
+
+    res.redirect("/product");
+});
+
 // EXPORTS
 module.exports = controller;
