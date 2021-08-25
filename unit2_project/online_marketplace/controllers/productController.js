@@ -38,7 +38,8 @@ controller.get("/:id", async (req, res) => {
             _id: req.params.id
         }
     );
-
+    // console.log("product " + product.seller)
+    // console.log("product " + typeof product.seller)
     res.render("products/show.ejs",  {
         product
     });

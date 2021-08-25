@@ -1,12 +1,26 @@
 <%- include("../partials/header.ejs") %>
 <form
     method="POST"
-    action="/product/<%= product._id %>/?_method=PUT"
+    action="/product/<%= product._id %>/?_method=DELETE"
+    class="mb-0"
 >
     <div class="row bg-secondary p-3">
-        <div class="container-fluid col-12 d-flex justify-content-end">
-        <% if (username) { %>
-            <div class="d-flex align-items-center">
+        <div class="container-fluid col-12 d-flex">
+            <% if (username) { %>
+            <div class="me-auto ms-2 fs-4">
+                <input
+                    class="btn btn-danger text-center fw-bold" 
+                    type="submit" 
+                    value="Delete Item"
+                >
+            </div>
+</form>
+<form
+    method="POST"
+    action="/product/<%= product._id %>/?_method=PUT"
+    class="mb-0"
+>
+            <div class="d-flex justify-content-end align-items-center">
                 <a 
                     class="btn btn-secondary text-center fw-bold" 
                     role="button"
@@ -20,10 +34,10 @@
                     value="Save Changes"
                 >
             </div>
-        <% }; %>
+            <% }; %>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="mb-3">
             <img 
@@ -100,5 +114,5 @@
             </div>
         </div>
     </div>
-</form>
+</form>   
 <%- include("../partials/footer.ejs") %>
