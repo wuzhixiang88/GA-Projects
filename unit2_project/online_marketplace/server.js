@@ -50,8 +50,7 @@ app.use("/user", userController);
 app.use("/product", isUserLoggedIn, productController);
 
 app.use("*", (req, res) => {
-    res.status(404);
-    res.send("Page is not found.")
+    res.status(404).send();
 });
 
 // LISTEN

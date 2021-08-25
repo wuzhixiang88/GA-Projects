@@ -36,7 +36,7 @@ controller.post("/signup", async (req, res) => {
         res.send(`Your account has been create successfully!`);
 
     } catch (err) {
-        res.send(`Unable to create a new account!\n${err.message}`)
+        res.send(`Unable to create a new account! Error: ${err.message}`)
     }
 });
 
@@ -55,8 +55,7 @@ controller.post("/login", async (req, res) => {
         req.session.userid = selectedUser._id;
         req.session.username = selectedUser.username;
         req.session.firstname = selectedUser.firstname;
-        // console.log("user " + req.session.userid)
-        // console.log("user " + typeof req.session.userid)
+
         res.redirect("/");
 
     } else {
