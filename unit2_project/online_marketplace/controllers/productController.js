@@ -18,7 +18,7 @@ controller.get("/", async (req, res) => {
     try {
         const userProductList = await Product.find(
             {
-                seller: req.session.userid
+                sellerID: req.session.userid
             }
         );
     
@@ -82,7 +82,8 @@ controller.post("/", async (req, res) => {
     try {
         await Product.create(
             {
-                seller: req.session.userid,
+                sellerID: req.session.userid,
+                sellerUsername: req.session.username,
                 name: req.body.name,
                 description: req.body.description,
                 img: req.body.img,

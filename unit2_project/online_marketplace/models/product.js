@@ -3,8 +3,12 @@ const { Schema } = mongoose;
 
 const productSchema = new Schema(
     {
-        seller: {
+        sellerID: {
             type: Schema.Types.ObjectId,
+            ref: "User"
+        },
+        sellerUsername: {
+            type: Schema.Types.String,
             ref: "User"
         },
         name: {
@@ -37,7 +41,7 @@ const productSchema = new Schema(
             type: String,
             default: "For Sale"
         },
-        buyer: {
+        buyerUsername: {
             type: String
         },
         offer: {
