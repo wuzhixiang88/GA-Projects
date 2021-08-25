@@ -6,11 +6,16 @@ const controller = express.Router();
 
 // ROUTES
 controller.get("/", async (req, res) => {
-    const allProducts = await Product.find();
+    try {
+        const allProducts = await Product.find();
+    
+        res.render("home.ejs", {
+            allProducts 
+        });
 
-    res.render("home.ejs", {
-        allProducts 
-    })
+    } catch (err) {
+        res.status(400).send();
+    };
 });
 
 // EXPORTS
