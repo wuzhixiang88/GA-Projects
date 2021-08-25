@@ -30,10 +30,13 @@
     <% for (let i = 0; i < allProducts.length; i++) { %>
         <div class="col-md-3 mt-5 mb-5">
             <div class="container-fluid">
-                <div>
+                <div class="fs-5">
                     <%= allProducts[i].sellerUsername %>
                 </div>
-                <div>
+                <div class="fw-light">
+                    Posted On: <%= new Date(allProducts[i].updatedAt).toISOString().slice(0, 10) %>
+                </div>
+                <div class="mt-1 mb-1">
                     <a href="/product/<%= allProducts[i]._id %>">
                         <img 
                             src="<%= allProducts[i].img %>" 
