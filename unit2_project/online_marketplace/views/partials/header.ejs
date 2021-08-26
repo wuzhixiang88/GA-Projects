@@ -14,76 +14,79 @@
 
     <body>
         <div class="container">
-            <div class="row bg-primary p-3">
-                <div class="container-fluid col-md-6 w-50">
-                    <div class="fs-5 fw-bold mt-1">
-                        <a 
-                            class="btn btn-primary text-dark fs-4 fw-bold ms-1 p-1" 
-                            href="/" 
-                        >
-                            ONLINE MARKETPLACE
-                        </a>
-                    </div>
-                </div>
-                <div class="container-fluid col-md-6 d-flex justify-content-end w-50">
-                    <% if (username) { %>
-                    <div class="d-flex align-items-center">
-                        <div class="btn-group">
-                            <button 
-                                type="button" 
-                                class="dropdown-toggle btn btn-danger text-white fw-bold" 
-                                data-bs-toggle="dropdown" 
-                                aria-expanded="false"
+            <header>
+                <div class="row bg-primary p-3">
+                    <div class="container-fluid col-md-6 w-50">
+                        <div class="fs-5 fw-bold mt-1">
+                            <a 
+                                class="btn btn-primary text-dark fs-4 fw-bold ms-1 p-1" 
+                                href="/" 
                             >
-                                Hello, <%= firstname %>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a 
-                                        class="dropdown-item" 
-                                        href="#"
-                                    >
-                                        Edit Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a 
-                                        class="dropdown-item" 
-                                        href="/product"
-                                    >
-                                        My Listing
-                                    </a>
-                                </li>
-                                <li>
-                                    <a 
-                                        class="dropdown-item" 
-                                        href="/user/logout"
-                                    >
-                                        Logout
-                                    </a>
-                                </li>
-                            </ul>
+                                ONLINE MARKETPLACE
+                            </a>
                         </div>
                     </div>
-                    <% } else { %>
-                    <div class="d-flex align-items-center">
-                        <a 
-                            class="btn btn-primary text-center fw-bold" 
-                            role="button"
-                            href="/user/signup"
-                        >
-                            Register    
-                        </a>
+                    <div class="container-fluid col-md-6 d-flex justify-content-end w-50">
+                        <% if (username) { %>
+                        <div class="d-flex align-items-center">
+                            <div class="btn-group">
+                                <button 
+                                    type="button" 
+                                    class="dropdown-toggle btn btn-danger text-white fw-bold" 
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false"
+                                >
+                                    Hello, <%= firstname %>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a 
+                                            class="dropdown-item" 
+                                            href="#"
+                                        >
+                                            Edit Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a 
+                                            class="dropdown-item" 
+                                            href="/product"
+                                        >
+                                            My Listing
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a 
+                                            class="dropdown-item" 
+                                            href="/user/logout"
+                                        >
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <% } else { %>
+                        <div class="d-flex align-items-center">
+                            <a 
+                                class="btn btn-primary text-center fw-bold" 
+                                role="button"
+                                href="/user/signup"
+                            >
+                                Register    
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <a 
+                                class="btn btn-primary text-center fw-bold" 
+                                role="button"
+                                href="/user/login"
+                            >
+                                Login    
+                            </a>
+                        </div>
+                        <% }; %>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <a 
-                            class="btn btn-primary text-center fw-bold" 
-                            role="button"
-                            href="/user/login"
-                        >
-                            Login    
-                        </a>
-                    </div>
-                    <% }; %>
                 </div>
-            </div>
+            </header>
+        </div>
