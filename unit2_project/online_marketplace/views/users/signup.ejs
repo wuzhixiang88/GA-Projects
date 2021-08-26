@@ -1,86 +1,87 @@
 <%- include("../partials/header.ejs") %>
-<div class="row bg-light">
-    <form 
-        class="row ps-4 g-3"
-        method="POST"
-        action="/user/signup"
-    >
-        <div class="col-md-6">
-            <input
-                class="form-control"  
-                type="text"
-                name="firstname"                     
-                placeholder="First Name"
-            >
-        </div>
-        <div class="col-md-6">
-            <input 
-                class="form-control" 
-                type="text"
-                name="lastname" 
-                placeholder="Last Name"
-            >
-        </div>
-        <div class="col-md-6">
-            <input
-                class="form-control"  
-                type="text"
-                name="username"                     
-                placeholder="Username"
-            >
-        </div>
-        <div class="col-md-6">
-            <input 
-                class="form-control" 
-                type="password"
-                name="password" 
-                placeholder="Passsword"
-            >
-        </div>
-        <div class="col-md-6">
-            <input 
-                class="form-control" 
-                type="text" 
-                name="email"
-                placeholder="Email"
-            >
-        </div>
-        <div class="col-md-6">
-            <input 
-                class="form-control"
-                type="text"
-                name="postcode" 
-                placeholder="Postal Code"
-            >
-        </div>
-        <div class="col-md-6">
-            <select 
-                class="form-select"
-                name="country"
-            >
-                <option value="1" disabled>Select a country</option>
-                <option value="2">Malaysia</option>
-                <option value="3" selected>Singapore</option>
-                <option value="4">Taiwan</option>
-            </select>
-        </div>
-        <div class="col-md-6">
-            <input 
-                class="form-control" 
-                type="text"
-                name="city" 
-                placeholder="City"
-            >
-        </div>
-        <div class="col-12">
-            <button 
-                class="btn btn-primary me-3"
-                type="submit" 
-            >
-                Sign up
-            </button>
-                Have an account? <a href="/user/login">Log in now</a>
-        </div>
-    </form>
+<div class="container">
+    <div class="row bg-light">
+        <form 
+            class="row ps-4 g-3"
+            method="POST"
+            action="/user/signup"
+        >
+            <div class="col-md-6">
+                <input
+                    class="form-control"  
+                    type="text"
+                    name="firstname"                     
+                    placeholder="First Name"
+                >
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control" 
+                    type="text"
+                    name="lastname" 
+                    placeholder="Last Name"
+                >
+            </div>
+            <div class="col-md-6">
+                <input
+                    class="form-control"  
+                    type="text"
+                    name="username"                     
+                    placeholder="Username"
+                >
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control" 
+                    type="password"
+                    name="password" 
+                    placeholder="Passsword"
+                >
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control" 
+                    type="text" 
+                    name="email"
+                    placeholder="Email"
+                >
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control"
+                    type="text"
+                    name="postcode" 
+                    placeholder="Postal Code"
+                >
+            </div>
+            <div class="col-md-6">
+                <select 
+                    class="form-select"
+                    name="country"
+                >
+                    <option value="1" disabled>Select a country</option>
+                    <option value="2">Malaysia</option>
+                    <option value="3" selected>Singapore</option>
+                    <option value="4">Taiwan</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <input 
+                    class="form-control" 
+                    type="text"
+                    name="city" 
+                    placeholder="City"
+                >
+            </div>
+            <div class="col-12">
+                <button 
+                    class="btn btn-primary me-3"
+                    type="submit" 
+                >
+                    Sign up
+                </button>
+                    Have an account? <a href="/user/login">Log in now</a>
+            </div>
+        </form>
+    </div>
 </div>
-<%- include("../partials/footer.ejs") %>

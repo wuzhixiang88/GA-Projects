@@ -1,57 +1,67 @@
 <%- include("../partials/header.ejs") %>
-<div class="row bg-secondary p-3">
-    <div class="container-fluid col-12 d-flex">
-        <div class="me-auto text-white fs-4 ms-2">
-            My Listings
-        </div>
-        <% if (username) { %>
-        <div class="d-flex justify-content-end align-items-center">
-            <form class="me-3 mb-0">
-                <input 
-                    class="form-control" 
-                    type="search" 
-                    placeholder="Search listing" 
-                    aria-label="Search">
-            </form>
-            <a 
-                class="btn btn-secondary text-center fw-bold" 
-                role="button"
-                href="/product/new"
-            >
-                Add Item   
-            </a>
-        </div>
-        <% }; %>
-    </div>    
-</div>
+<div class="container">
+    <div class="row bg-secondary p-3">
+        <div class="container-fluid col-12 d-flex">
+            <div class="me-auto text-white fs-4 ms-2">
+                My Listings
+            </div>
+            <% if (username) { %>
+            <div class="d-flex justify-content-end align-items-center">
+                <form class="me-3 mb-0">
+                    <input 
+                        class="form-control" 
+                        type="search" 
+                        placeholder="Search listing" 
+                        aria-label="Search">
+                </form>
+                <a 
+                    class="btn btn-secondary text-center fw-bold" 
+                    role="button"
+                    href="/product/new"
+                >
+                    List Item   
+                </a>
+            </div>
+            <% }; %>
+        </div>    
+    </div>
 
-<div class="row bg-light">
-    <% for (let i = 0; i < userProductList.length; i++) { %>
-        <div class="col-md-3 mt-5 mb-5">
-            <div class="container-fluid">
-                <div>
-                    <a href="/product/<%= userProductList[i]._id %>">
-                        <img 
-                            src="<%= userProductList[i].img %>" 
-                            class="index-img img-thumbnail rounded mx-auto d-block w-100"
-                            alt="<%= userProductList[i].name %>"
-                        />
-                    </a>
-                </div>
-                <div class="fw-bold text-truncate">
-                    <%= userProductList[i].name %>
-                </div>
-                <div>
-                    $<%= userProductList[i].price %>
-                </div>
-                <div class="text-truncate">
-                    <%= userProductList[i].description %>
-                </div>
-                <div>
-                    <%= userProductList[i].condition %>
+    <div class="row bg-light">
+        <% for (let i = 0; i < userProductList.length; i++) { %>
+            <div class="col-md-3 mt-5 mb-5">
+                <div class="container-fluid">
+                    <div class="card">
+                        <a
+                            href="/product/<%= userProductList[i]._id %>" 
+                            class="img-cards"
+                        >
+                            <img 
+                                src="<%= userProductList[i].img %>" 
+                                class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-100"
+                                alt="<%= userProductList[i].name %>"
+                            />
+                            <div class="card-body m-0 p-0">
+                                <h5 class="card-text bg-info text-center text-dark">
+                                    For Sale
+                                </h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="fw-bold text-truncate">
+                        <%= userProductList[i].name %>
+                    </div>
+                    <div>
+                        $<%= userProductList[i].price %>
+                    </div>
+                    <div class="text-truncate">
+                        <%= userProductList[i].description %>
+                    </div>
+                    <div>
+                        <%= userProductList[i].condition %>
+                    </div>
                 </div>
             </div>
-        </div>
-    <% }; %>
+        <% }; %>
+    </div>
 </div>
 <%- include("../partials/footer.ejs") %>

@@ -1,112 +1,114 @@
 <%- include("../partials/header.ejs") %>
-<form
-    method=""
-    action=""
->
-    <div class="row bg-secondary p-3">
-        <div class="container-fluid col-12">
-            <% if (username  && userid == product.sellerID) { %>
-            <div class="d-flex justify-content-end align-items-center">
-                
-                <a 
-                    class="btn btn-secondary text-center fw-bold" 
-                    role="button"
-                    href="/product"
-                >
-                    Back   
-                </a>
-                <a 
-                    class="btn btn-secondary text-center fw-bold" 
-                    role="button"
-                    href="/product/<%= product._id %>/edit"
-                >
-                    Edit Item   
-                </a>
+<div class="container">
+    <form
+        method=""
+        action=""
+    >
+        <div class="row bg-secondary p-3">
+            <div class="container-fluid col-12">
+                <% if (username  && userid == product.sellerID) { %>
+                <div class="d-flex justify-content-end align-items-center">
+                    
+                    <a 
+                        class="btn btn-secondary text-center fw-bold" 
+                        role="button"
+                        href="/product"
+                    >
+                        Back   
+                    </a>
+                    <a 
+                        class="btn btn-secondary text-center fw-bold" 
+                        role="button"
+                        href="/product/<%= product._id %>/edit"
+                    >
+                        Edit Item   
+                    </a>
+                </div>
+                <% } else { %>
+                <div class="d-flex justify-content-end align-items-center">
+                    <a 
+                        class="btn btn-secondary text-center fw-bold" 
+                        role="button" 
+                        href="/"
+                    >
+                        Back   
+                    </a>
+                </div>
+                <% }; %>
             </div>
-            <% } else { %>
-            <div class="d-flex justify-content-end align-items-center">
-                <a 
-                    class="btn btn-secondary text-center fw-bold" 
-                    role="button" 
-                    href="/"
-                >
-                    Back   
-                </a>
+        </div>
+
+        <div class="row">
+            <div class="text-center mb-3">
+                <img 
+                    src="<%= product.img %>" 
+                    class="show-img rounded mx-auto d-block w-100"
+                />
+            </div>
+            <div class="col-md-9">
+                <div class="border-bottom mb-3">
+                    <div class="fs-2 mb-3">
+                        <%= product.name %>
+                    </div>
+                    <div class="fs-2 fw-bold mb-3">
+                        $<%= product.price %>
+                    </div>
+                    <div class="fs-3 mb-3">
+                        <%= product.condition %>
+                    </div>
+                </div>
+                <div class="border-bottom mb-3">
+                    <h3 class="mb-3">Description</h3>
+                    <div class="mb-3">
+                        Category: <%= product.category %>
+                    </div>
+                    <div class="mb-3">
+                        <%= product.description %>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h3 class="mb-3">Meetup Location</h3>
+                    <div class="mb-3">
+                        <%= product.meetLocation %>
+                    </div>
+                </div>
+            </div>
+            <% if (userid != product.sellerID) { %>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <textarea 
+                        class="form-control h-50"
+                        name="message"
+                        placeholder="Write a custom message..."
+                    ></textarea>
+                </div>
+                <div class="mb-5">
+                    <input 
+                        class="form-control btn btn-success mb-3" 
+                        type="" 
+                        value="Send message to seller"
+                    >
+                </div>
+                <div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            S$
+                        </div> 
+                        <input 
+                            class="form-control" 
+                            type="text" 
+                            value="<%= product.price %>"
+                        > 
+                    </div>                 
+                    <input 
+                        class="form-control btn btn-danger" 
+                        type="" 
+                        value="Make Offer"
+                    >
+                </div>
             </div>
             <% }; %>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="text-center mb-3">
-            <img 
-                src="<%= product.img %>" 
-                class="show-img rounded mx-auto d-block w-100"
-            />
-        </div>
-        <div class="col-md-9">
-            <div class="border-bottom mb-3">
-                <div class="fs-2 mb-3">
-                    <%= product.name %>
-                </div>
-                <div class="fs-2 fw-bold mb-3">
-                    $<%= product.price %>
-                </div>
-                <div class="fs-3 mb-3">
-                    <%= product.condition %>
-                </div>
-            </div>
-            <div class="border-bottom mb-3">
-                <h3 class="mb-3">Description</h3>
-                <div class="mb-3">
-                    Category: <%= product.category %>
-                </div>
-                <div class="mb-3">
-                    <%= product.description %>
-                </div>
-            </div>
-            <div class="border-bottom mb-3">
-                <h3 class="mb-3">Meetup Location</h3>
-                <div class="mb-3">
-                    <%= product.meetLocation %>
-                </div>
-            </div>
-        </div>
-        <% if (userid != product.sellerID) { %>
-        <div class="col-md-3">
-            <div class="mb-3">
-                <textarea 
-                    class="form-control h-50"
-                    name="message"
-                    placeholder="Write a custom message..."
-                ></textarea>
-            </div>
-            <div class="mb-5">
-                <input 
-                    class="form-control btn btn-success mb-3" 
-                    type="" 
-                    value="Send message to seller"
-                >
-            </div>
-            <div>
-                <div class="input-group mb-3">
-                    <div class="input-group-text">
-                        S$
-                    </div> 
-                    <input 
-                        class="form-control" 
-                        type="text" 
-                        value="<%= product.price %>"
-                    > 
-                </div>                 
-                <input 
-                    class="form-control btn btn-danger" 
-                    type="" 
-                    value="Make Offer"
-                >
-            </div>
-        </div>
-        <% }; %>
-    </div>
-</form>
+    </form>
+</div>
 <%- include("../partials/footer.ejs") %>

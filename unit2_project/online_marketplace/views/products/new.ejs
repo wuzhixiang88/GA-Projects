@@ -1,103 +1,106 @@
 <%- include("../partials/header.ejs") %>
-<form
-    method="POST"
-    action="/product"
->
-    <div class="row bg-secondary p-3">
-        <div class="container-fluid col-12 d-flex justify-content-end">
-            <div class="d-flex align-items-center">
-                <a 
-                    class="btn btn-secondary text-center fw-bold" 
-                    role="button"
-                    href="/product"
-                >
-                    Back   
-                </a>
-                <input
-                    class="btn btn-secondary text-center fw-bold" 
-                    type="submit" 
-                    value="Save Changes"
-                >
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="mb-3">
-            <div class="fs-4 mb-3">
-                <p>Image URL:</p>
-                <input
-                    class="form-control"
-                    type="text"
-                    name="img"
-                >
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="fs-4 mb-3">
-                <p>Listing Title:</p>
-                <input
-                    class="form-control"
-                    type="text"
-                    name="name"
-                >
-            </div>
-            <div class="fs-4 mb-3">
-                <p>Price:</p>
-                <div class="input-group mb-3">
-                    <div class="input-group-text">
-                        S$
-                    </div> 
+<div class="container">
+    <form
+        method="POST"
+        action="/product"
+    >
+        <div class="row bg-secondary p-3">
+            <div class="container-fluid col-12 d-flex justify-content-end">
+                <div class="d-flex align-items-center">
+                    <a 
+                        class="btn btn-secondary text-center fw-bold" 
+                        role="button"
+                        href="/product"
+                    >
+                        Back   
+                    </a>
                     <input
-                        class="form-control"
-                        type="text"
-                        name="price"
+                        class="btn btn-success text-center fw-bold" 
+                        type="submit" 
+                        value="Save Changes"
                     >
                 </div>
             </div>
-            <div class="fs-4 mb-3">
-                <p>Condition:</p>
-                <select 
-                    class="form-select"
-                    name="condition"
-                >
-                    <option value="" selected hidden>Choose</option>
-                    <option value="Brand New">Brand New</option>
-                    <option value="Like New">Like New</option>
-                    <option value="Used">Used</option>
-                    <option value="Heavily Used">Heavily Used</option>
-                </select>
+        </div>
+        
+        <div class="row">
+            <div class="mb-3">
+                <div class="fs-4 mb-3">
+                    <p>Image URL:</p>
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="img"
+                    >
+                </div>
             </div>
-            <div class="fs-4 mb-3">
-                <p>Description:</p>
-                <textarea 
-                    class="form-control h-25"
-                    name="description"
-                    placeholder="Describe what you are selling and include any information that a buyer might be interested in."
-                ></textarea>
-            </div>
-            <div class="fs-4 mb-3">
-                <p>Category:</p>
-                <select 
-                    class="form-select"
-                    name="category"
-                >
-                    <option value="" selected hidden>Choose a category</option>
-                    <option value="Bicycles">Bicycles</option>
-                    <option value="Books">Books</option>
-                    <option value="Card Games">Card Games</option>
-                    <option value="Video Games">Video Games</option>
-                </select>
-            </div>
-            <div class="fs-4 mb-3">
-                <p>Meetup Location:</p>
-                <input
-                    class="form-control"
-                    type="text"
-                    name="meetLocation"
-                >
+            <div class="mb-3">
+                <div class="fs-4 mb-3">
+                    <p>Listing Title:</p>
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="name"
+                    >
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Price:</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            S$
+                        </div> 
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="price"
+                        >
+                    </div>
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Condition:</p>
+                    <select 
+                        class="form-select"
+                        name="condition"
+                    >
+                        <option value="" selected hidden>Choose</option>
+                        <option value="Brand New">Brand New</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Used">Used</option>
+                        <option value="Heavily Used">Heavily Used</option>
+                    </select>
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Description:</p>
+                    <textarea 
+                        class="form-control"
+                        rows="5"
+                        name="description"
+                        placeholder="Describe what you are selling and include any information that a buyer might be interested in."
+                    ></textarea>
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Category:</p>
+                    <select 
+                        class="form-select"
+                        name="category"
+                    >
+                        <option value="" selected hidden>Choose a category</option>
+                        <option value="Bicycles">Bicycles</option>
+                        <option value="Books">Books</option>
+                        <option value="Card Games">Card Games</option>
+                        <option value="Video Games">Video Games</option>
+                    </select>
+                </div>
+                <div class="fs-4 mb-3">
+                    <p>Meetup Location:</p>
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="meetLocation"
+                    >
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 <%- include("../partials/footer.ejs") %>

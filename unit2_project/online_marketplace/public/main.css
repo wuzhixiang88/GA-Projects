@@ -7,3 +7,7 @@
     height: 500px;
     object-fit: contain;
 }
+
+.img-cards {
+    text-decoration: none;
+}
