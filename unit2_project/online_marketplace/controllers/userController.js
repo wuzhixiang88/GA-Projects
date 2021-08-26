@@ -19,6 +19,10 @@ controller.get("/logout", (req, res) => {
     res.redirect("/");
 });
 
+controller.get("/inbox", (req, res) => {
+    res.render("users/inbox.ejs");
+});
+
 controller.post("/signup", async (req, res) => {
     try {
         const salt = await bcrypt.genSalt(10);

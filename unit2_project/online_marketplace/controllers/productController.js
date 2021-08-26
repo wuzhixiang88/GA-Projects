@@ -13,7 +13,6 @@ controller.get("/", async (req, res) => {
                 sellerID: req.session.userid
             }
         );
-        console.log(userProductList)
     
         res.render("products/index.ejs", {
             userProductList 
@@ -42,7 +41,6 @@ controller.get("/:id", async (req, res) => {
                 _id: req.params.id
             }
         );
-        console.log(product)
     
         res.render("products/show.ejs",  {
             product
