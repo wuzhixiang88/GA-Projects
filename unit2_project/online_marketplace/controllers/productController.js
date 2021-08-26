@@ -1,17 +1,9 @@
 // DEPENDENCIES
 const express = require("express");
+const imgUpload = require("../middlewares/imgUpload");
 const Product = require("../models/product");
 
 const controller = express.Router();
-
-// SEED DATA FOR TESTING
-// const seedData = require("../models/seed");
-
-// controller.get("/seed", async (req, res) => {
-//     Product.create(seedData);
-    
-//     res.send("Added Seed Data!")
-// });
 
 // INDEX ROUTE
 controller.get("/", async (req, res) => {
@@ -21,6 +13,7 @@ controller.get("/", async (req, res) => {
                 sellerID: req.session.userid
             }
         );
+        console.log(userProductList)
     
         res.render("products/index.ejs", {
             userProductList 
@@ -49,6 +42,7 @@ controller.get("/:id", async (req, res) => {
                 _id: req.params.id
             }
         );
+        console.log(product)
     
         res.render("products/show.ejs",  {
             product
@@ -78,7 +72,7 @@ controller.get("/:id/edit", async (req, res) => {
 });
 
 // CREATE ROUTE
-controller.post("/", async (req, res) => {
+controller.post("/", imgUpload.single("productImg"), async (req, res) => {
     try {
         await Product.create(
             {
@@ -86,7 +80,7 @@ controller.post("/", async (req, res) => {
                 sellerUsername: req.session.username,
                 name: req.body.name,
                 description: req.body.description,
-                img: req.body.img,
+                img: `images/${req.file.filename}`,
                 price: req.body.price,
                 category: req.body.category,
                 condition: req.body.condition,

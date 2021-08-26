@@ -49,9 +49,7 @@ app.use(homeController);
 app.use("/user", userController);
 app.use("/product", isUserLoggedIn, productController);
 
-app.use("*", (req, res) => {
-    res.status(404).send();
-});
+app.use("*", (req, res) => { res.status(400).send() });
 
 // LISTEN
 const server = app.listen(port, () => {
