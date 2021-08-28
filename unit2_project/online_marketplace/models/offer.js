@@ -4,22 +4,23 @@ const { Schema } = mongoose;
 const offerSchema = new Schema(
     {
         sellerUsername: {
-            type: Schema.Types.String,
-            ref: "User"
+            type: String,
+            required: true
         },
         buyerUsername: {
-            type: Schema.Types.String,
-            ref: "User"
+            type: String,
+            required: true
         },
         productName: {
-            type: Schema.Types.String,
-            ref: "Product"
+            type: String,
+            required: true
         },
         productImg: {
             type: String
         },
         offer: {
-            type: Number
+            type: Number,
+            required: true
         }
     },
     {
