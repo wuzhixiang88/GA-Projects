@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const messageSchema = new Schema(
+const offerSchema = new Schema(
     {
         sellerUsername: {
             type: Schema.Types.String,
@@ -15,9 +15,11 @@ const messageSchema = new Schema(
             type: Schema.Types.String,
             ref: "Product"
         },
-        content: {
-            type: String,
-            required: true
+        productImg: {
+            type: String
+        },
+        offer: {
+            type: Number
         }
     },
     {
@@ -25,6 +27,6 @@ const messageSchema = new Schema(
     }
 );
 
-const Message = mongoose.model("Message", messageSchema);
+const Offer = mongoose.model("Offer", offerSchema);
 
-module.exports = Message;
+module.exports = Offer;
