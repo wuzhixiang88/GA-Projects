@@ -40,6 +40,12 @@ controller.get("/:id", async (req, res) => {
             {
                 _id: req.params.id
             }
+        )
+        .populate(
+            {
+                path: "sellerID",
+                select: "username"
+            }
         );
     
         res.render("products/show.ejs",  {

@@ -1,12 +1,15 @@
 // DEPENDENCIES
 const express = require("express");
 const bcrypt = require("bcrypt");
+const isUserLoggedIn = require("../middlewares/isUserLoggedIn");
 const User = require("../models/user");
+const Offer = require("../models/offer");
 
 const controller = express.Router();
 
 // ROUTES
-controller.get("/signup", (req, res) => {
+controller.get("/signup", async (req, res) => {
+
     res.render("users/signup.ejs")
 });
 
@@ -19,8 +22,23 @@ controller.get("/logout", (req, res) => {
     res.redirect("/");
 });
 
-controller.get("/inbox", (req, res) => {
-    res.render("users/inbox.ejs");
+controller.get("/inbox", isUserLoggedIn, async (req, res) => {
+    const allOffers = await Offer.find(
+        {
+            $or: [
+                {
+                    sellerUsername: req.session.username
+                },
+                {
+                    buyerUsername: req.session.username
+                }
+            ]
+        }
+    );
+
+    res.render("users/inbox.ejs", {
+        allOffers
+    });
 });
 
 controller.post("/signup", async (req, res) => {
@@ -64,6 +82,25 @@ controller.post("/login", async (req, res) => {
 
     } else {
         return res.send(`Wrong password`);
+    };
+});
+
+controller.post("/inbox", isUserLoggedIn, async (req, res) => {
+    try {
+        await Offer.create(
+            {
+                sellerUsername: req.body.sellerUsername,
+                buyerUsername: req.session.username,
+                productName: req.body.productName,
+                productImg: req.body.productImg,
+                offer: req.body.offer,
+            }
+        );
+        
+        res.redirect("/user/inbox");
+
+    } catch (err) {
+        res.send(err);
     };
 });
 
