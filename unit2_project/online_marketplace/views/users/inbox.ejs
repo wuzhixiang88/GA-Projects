@@ -18,7 +18,55 @@
     </div>
 
     <div class="row bg-light">
-        
+        <% for (let i = 0; i < allMessages.length; i++) { %>
+            <% if (allMessages[i].buyerUsername === username) { %>
+                <div class="col-md-8 border-bottom">
+                    <div>
+                        <%= allMessages[i].sellerUsername %>
+                    </div>
+                    <div class="fw-bold">
+                        <%= allMessages[i].productName %>
+                    </div>
+                    <div>
+                        Your Offer: <%= allMessages[i].offer %>
+                    </div>
+                </div>
+                <div class="col-md-4 border-bottom">
+                    <div class="text-center">
+                        <%= new Date(allMessages[i].updatedAt).toISOString().slice(0, 10) %>
+                    </div>
+                    <div>
+                        <img
+                            src="<%= allMessages[i].productImg %>"
+                            class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
+                        >
+                    </div>
+                </div>
+          <% } else { %>
+            <div class="col-md-8 border-bottom">
+                <div>
+                    <%= allMessages[i].buyerUsername %>
+                </div>
+                <div class="fw-bold">
+                    <%= allMessages[i].productName %>
+                </div>
+                <div>
+                    Offered You: <%= allMessages[i].offer %>
+                </div>
+            </div>
+            <div class="col-md-4 border-bottom">
+                <div class="text-center">
+                    <%= new Date(allMessages[i].updatedAt).toISOString().slice(0, 10) %>
+                </div>
+                <div>
+                    <img
+                        src="<%= allMessages[i].productImg %>"
+                        class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50"
+                    >
+                </div>
+            </div>
+            <% }; %>
+        <% }; %>
     </div>
 </div>
 <%- include("../partials/footer.ejs") %>
