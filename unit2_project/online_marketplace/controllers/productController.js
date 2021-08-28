@@ -75,10 +75,9 @@ controller.post("/", imgUpload.single("productImg"), async (req, res) => {
         await Product.create(
             {
                 sellerID: req.session.userid,
-                sellerUsername: req.session.username,
                 name: req.body.name,
                 description: req.body.description,
-                img: `images/${req.file.filename}`,
+                img: `/images/${req.file.filename}`,
                 price: req.body.price,
                 category: req.body.category,
                 condition: req.body.condition,
