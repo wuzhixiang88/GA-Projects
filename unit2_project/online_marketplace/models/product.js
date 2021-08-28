@@ -7,10 +7,6 @@ const productSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User"
         },
-        sellerUsername: {
-            type: Schema.Types.String,
-            ref: "User"
-        },
         name: {
             type: String,
             required: true
