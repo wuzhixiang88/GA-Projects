@@ -21,6 +21,10 @@ const offerSchema = new Schema(
         offer: {
             type: Number,
             required: true
+        },
+        status: {
+            type: String,
+            default: "Offered"
         }
     },
     {
