@@ -34,13 +34,12 @@
                 </div>
                 <% if (allOffers[i].status === "Offered") { %>
                 <div class="ms-4 mb-3">
-                    <button 
+                    <input 
                         type="text" 
-                        class="btn btn-success"
+                        class="form-control btn btn-success"
+                        value="Offered"
                         disabled
                     >
-                        Offered
-                    </button>
                 </div>
                 <% }; %>
             </div>
@@ -68,6 +67,7 @@
                         Offered You: $<%= allOffers[i].offer %>
                     </div>
                 </div>
+                <% if (allOffers[i].status === "Offered") { %>
                 <div class="d-flex ms-4 mb-3">
                     <form
                         method="POST"
@@ -75,12 +75,17 @@
                         class="mb-0"
                     >
                         <div class="me-3">
-                            <button 
+                            <input 
                                 type="submit" 
-                                class="btn btn-success"
+                                class="form-control btn btn-success"
+                                name="sellerAction"
+                                value="Accept Offer"
                             >
-                                Accept Offer
-                            </button>
+                            <input
+                                type="hidden"
+                                name="offerID"
+                                value="<%= allOffers[i]._id %>"
+                            >
                         </div>
                     </form>
                     <form
@@ -89,15 +94,43 @@
                         class="mb-0"
                     >
                         <div>
-                            <button 
+                            <input 
                                 type="submit" 
-                                class="btn btn-danger"
+                                class="form-control btn btn-danger"
+                                name="sellerAction"
+                                value="Reject Offer"
                             >
-                                Reject Offer
-                            </button>
+                            <input
+                                type="hidden"
+                                name="offerID"
+                                value="<%= allOffers[i]._id %>"
+                            >
                         </div>
                     </form>
                 </div>
+                <% } else if (allOffers[i].status === "Accepted") { %>
+                <div class="d-flex ms-4 mb-3">
+                    <div class="me-3">
+                        <input 
+                            type="text" 
+                            class="form-control btn btn-success"
+                            value="Accepted Offer"
+                            disabled
+                        >
+                    </div>
+                </div>
+                <% } else { %>
+                <div class="d-flex ms-4 mb-3">
+                    <div class="me-3">
+                        <input 
+                            type="text" 
+                            class="form-control btn btn-danger"
+                            value="Rejected Offer"
+                            disabled
+                        >
+                    </div>
+                </div>
+                <% }; %>
             </div>
             <div class="col-md-4 border-bottom">
                 <div class="text-center">

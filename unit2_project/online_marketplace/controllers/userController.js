@@ -23,22 +23,27 @@ controller.get("/logout", (req, res) => {
 });
 
 controller.get("/inbox", isUserLoggedIn, async (req, res) => {
-    const allOffers = await Offer.find(
-        {
-            $or: [
-                {
-                    sellerUsername: req.session.username
-                },
-                {
-                    buyerUsername: req.session.username
-                }
-            ]
-        }
-    );
-
-    res.render("users/inbox.ejs", {
-        allOffers
-    });
+    try {
+        const allOffers = await Offer.find(
+            {
+                $or: [
+                    {
+                        sellerUsername: req.session.username
+                    },
+                    {
+                        buyerUsername: req.session.username
+                    }
+                ]
+            }
+        );
+    
+        res.render("users/inbox.ejs", {
+            allOffers
+        });
+    
+    } catch (err) {
+        res.send(err);
+    }
 });
 
 controller.post("/signup", async (req, res) => {
@@ -89,8 +94,8 @@ controller.post("/inbox", isUserLoggedIn, async (req, res) => {
     try {
         await Offer.create(
             {
-                sellerUsername: req.body.sellerUsername,
                 buyerUsername: req.session.username,
+                sellerUsername: req.body.sellerUsername,
                 productName: req.body.productName,
                 productImg: req.body.productImg,
                 offer: req.body.offer,
@@ -99,6 +104,36 @@ controller.post("/inbox", isUserLoggedIn, async (req, res) => {
         
         res.redirect("/user/inbox");
 
+    } catch (err) {
+        res.send(err);
+    };
+});
+
+controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
+    try {
+        if (req.body.sellerAction === "Accept Offer") {
+            await Offer.updateOne(
+                {
+                    _id: req.body.offerID
+                },
+                {
+                    status: "Accepted"
+                }
+            );
+
+        } else if (req.body.sellerAction === "Reject Offer") {
+            await Offer.updateOne(
+                {
+                    _id: req.body.offerID
+                },
+                {
+                    status: "Rejected"
+                }
+            );
+        };
+
+        res.redirect("/user/inbox");
+        
     } catch (err) {
         res.send(err);
     };

@@ -2,6 +2,7 @@
 const express = require("express");
 const imgUpload = require("../middlewares/imgUpload");
 const Product = require("../models/product");
+const Offer = require("../models/offer");
 
 const controller = express.Router();
 
@@ -47,13 +48,20 @@ controller.get("/:id", async (req, res) => {
                 select: "username"
             }
         );
+
+        const offer = await Offer.findOne(
+            {
+                productName: product.name
+            }
+        );
     
         res.render("products/show.ejs",  {
-            product
+            product,
+            offer
         });
 
     } catch (err) {
-        res.status(400).send();
+        res.send(err);
     };
 });
 
