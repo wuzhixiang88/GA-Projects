@@ -79,7 +79,7 @@
                         <%= allOffers[i].buyerUsername %>
                     </div>
                     <div class="fw-bold mb-3">
-                        <%= allOffers[i].productName %>
+                        <%= allOffers[i].productID.name %>
                     </div>
                     <div class="mb-3">
                         Offered You: $<%= allOffers[i].offer %>
@@ -103,6 +103,11 @@
                                 type="hidden"
                                 name="offerID"
                                 value="<%= allOffers[i]._id %>"
+                            >
+                            <input
+                                type="hidden"
+                                name="productID"
+                                value="<%= allOffers[i].productID._id %>"
                             >
                         </div>
                     </form>
@@ -156,7 +161,7 @@
                 </div>
                 <div>
                     <img
-                        src="<%= allOffers[i].productImg %>"
+                        src="<%= allOffers[i].productID.img %>"
                         class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                     >
                 </div>

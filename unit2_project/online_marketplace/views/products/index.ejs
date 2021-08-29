@@ -41,9 +41,19 @@
                                 alt="<%= userProductList[i].name %>"
                             />
                             <div class="card-body m-0 p-0">
-                                <h5 class="card-text bg-info text-center text-dark">
-                                    For Sale
+                                <% if (userProductList[i].status === "Reserved") { %>
+                                <h5 class="card-text bg-warning text-center text-dark">
+                                    <%= userProductList[i].status %>
                                 </h5>
+                                <% } else if (userProductList[i].status === "Sold") { %>
+                                <h5 class="card-text bg-danger text-center text-dark">
+                                    <%= userProductList[i].status %>
+                                </h5>
+                                <% } else { %>
+                                <h5 class="card-text bg-info text-center text-dark">
+                                    <%= userProductList[i].status %>
+                                </h5>
+                                <% } %>
                             </div>
                         </a>
                     </div>

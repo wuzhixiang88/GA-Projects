@@ -3,6 +3,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const isUserLoggedIn = require("../middlewares/isUserLoggedIn");
 const User = require("../models/user");
+const Product = require("../models/product");
 const Offer = require("../models/offer");
 
 const controller = express.Router();
@@ -41,7 +42,7 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
                 select: ["name", "img"]
             }
         );
-        
+
         res.render("users/inbox.ejs", {
             allOffers
         });
@@ -122,6 +123,15 @@ controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
                 },
                 {
                     status: "Accepted"
+                }
+            );
+
+            await Product.updateOne(
+                {
+                    _id: req.body.productID
+                },
+                {
+                    status: "Reserved"
                 }
             );
 
