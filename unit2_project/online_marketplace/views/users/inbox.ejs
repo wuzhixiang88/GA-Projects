@@ -41,6 +41,24 @@
                         disabled
                     >
                 </div>
+                <% } else if (allOffers[i].status === "Accepted") { %>
+                <div class="ms-4 mb-3">
+                    <input 
+                        type="text" 
+                        class="form-control btn btn-success"
+                        value="Offered Accepted"
+                        disabled
+                    >
+                </div>
+                <% } else { %>
+                <div class="ms-4 mb-3">
+                    <input 
+                        type="text" 
+                        class="form-control btn btn-danger"
+                        value="Offered Rejected"
+                        disabled
+                    >
+                </div>
                 <% }; %>
             </div>
             <div class="col-md-4 border-bottom">
