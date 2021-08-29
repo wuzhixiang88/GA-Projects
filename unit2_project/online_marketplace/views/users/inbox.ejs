@@ -26,7 +26,7 @@
                         <%= allOffers[i].sellerUsername %>
                     </div>
                     <div class="fw-bold mb-3">
-                        <%= allOffers[i].productName %>
+                        <%= allOffers[i].productID.name %>
                     </div>
                     <div class="mb-3">
                         Your Offer: $<%= allOffers[i].offer %>
@@ -67,7 +67,7 @@
                 </div>
                 <div>
                     <img
-                        src="<%= allOffers[i].productImg %>"
+                        src="<%= allOffers[i].productID.img %>"
                         class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                     >
                 </div>

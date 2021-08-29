@@ -51,7 +51,7 @@ controller.get("/:id", async (req, res) => {
 
         const offer = await Offer.findOne(
             {
-                productName: product.name
+                productID: product._id
             }
         );
     

@@ -3,6 +3,10 @@ const { Schema } = mongoose;
 
 const offerSchema = new Schema(
     {
+        productID: {
+            type: Schema.Types.ObjectId,
+            ref: "Product"
+        },
         sellerUsername: {
             type: String,
             required: true
@@ -10,13 +14,6 @@ const offerSchema = new Schema(
         buyerUsername: {
             type: String,
             required: true
-        },
-        productName: {
-            type: String,
-            required: true
-        },
-        productImg: {
-            type: String
         },
         offer: {
             type: Number,

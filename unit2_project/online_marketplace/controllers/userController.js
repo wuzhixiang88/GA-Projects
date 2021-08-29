@@ -8,8 +8,7 @@ const Offer = require("../models/offer");
 const controller = express.Router();
 
 // ROUTES
-controller.get("/signup", async (req, res) => {
-
+controller.get("/signup", (req, res) => {
     res.render("users/signup.ejs")
 });
 
@@ -35,8 +34,14 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
                     }
                 ]
             }
+        )
+        .populate(
+            {
+                path: "productID",
+                select: ["name", "img"]
+            }
         );
-    
+        
         res.render("users/inbox.ejs", {
             allOffers
         });
@@ -90,14 +95,13 @@ controller.post("/login", async (req, res) => {
     };
 });
 
-controller.post("/inbox", isUserLoggedIn, async (req, res) => {
+controller.post("/inbox", async (req, res) => {
     try {
         await Offer.create(
             {
                 buyerUsername: req.session.username,
                 sellerUsername: req.body.sellerUsername,
-                productName: req.body.productName,
-                productImg: req.body.productImg,
+                productID: req.body.productID,
                 offer: req.body.offer,
             }
         );
