@@ -20,38 +20,83 @@
     <div class="row bg-light">
         <% for (let i = 0; i < allOffers.length; i++) { %>
             <% if (allOffers[i].buyerUsername === username) { %>
-                <div class="col-md-8 border-bottom">
-                    <div>
+            <div class="col-md-8 d-flex align-items-start flex-column me-auto border-bottom">
+                <div class="mb-auto ms-4">
+                    <div class="mb-3">
                         <%= allOffers[i].sellerUsername %>
                     </div>
-                    <div class="fw-bold">
+                    <div class="fw-bold mb-3">
                         <%= allOffers[i].productName %>
                     </div>
-                    <div>
-                        Your Offer: <%= allOffers[i].offer %>
+                    <div class="mb-3">
+                        Your Offer: $<%= allOffers[i].offer %>
                     </div>
                 </div>
-                <div class="col-md-4 border-bottom">
-                    <div class="text-center">
-                        <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
-                    </div>
-                    <div>
-                        <img
-                            src="<%= allOffers[i].productImg %>"
-                            class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
-                        >
-                    </div>
+                <% if (allOffers[i].status === "Offered") { %>
+                <div class="ms-4 mb-3">
+                    <button 
+                        type="text" 
+                        class="btn btn-success"
+                        disabled
+                    >
+                        Offered
+                    </button>
                 </div>
-          <% } else { %>
-            <div class="col-md-8 border-bottom">
-                <div>
-                    <%= allOffers[i].buyerUsername %>
-                </div>
-                <div class="fw-bold">
-                    <%= allOffers[i].productName %>
+                <% }; %>
+            </div>
+            <div class="col-md-4 border-bottom">
+                <div class="text-center">
+                    <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
                 </div>
                 <div>
-                    Offered You: <%= allOffers[i].offer %>
+                    <img
+                        src="<%= allOffers[i].productImg %>"
+                        class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
+                    >
+                </div>
+            </div>
+            <% } else { %>
+            <div class="col-md-8 d-flex align-items-start flex-column me-auto border-bottom">
+                <div class="mb-auto ms-4">
+                    <div class="mb-3">
+                        <%= allOffers[i].buyerUsername %>
+                    </div>
+                    <div class="fw-bold mb-3">
+                        <%= allOffers[i].productName %>
+                    </div>
+                    <div class="mb-3">
+                        Offered You: $<%= allOffers[i].offer %>
+                    </div>
+                </div>
+                <div class="d-flex ms-4 mb-3">
+                    <form
+                        method="POST"
+                        action="/user/inbox/?_method=PATCH"
+                        class="mb-0"
+                    >
+                        <div class="me-3">
+                            <button 
+                                type="submit" 
+                                class="btn btn-success"
+                            >
+                                Accept Offer
+                            </button>
+                        </div>
+                    </form>
+                    <form
+                        method="POST"
+                        action="/user/inbox/?_method=PATCH"
+                        class="mb-0"
+                    >
+                        <div>
+                            <button 
+                                type="submit" 
+                                class="btn btn-danger"
+                            >
+                                Reject Offer
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="col-md-4 border-bottom">
@@ -61,7 +106,7 @@
                 <div>
                     <img
                         src="<%= allOffers[i].productImg %>"
-                        class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50"
+                        class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                     >
                 </div>
             </div>

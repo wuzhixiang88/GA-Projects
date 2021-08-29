@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row bg-secondary p-3">
         <div class="container-fluid col-12">
-            <% if (username  && userid == product.sellerID) { %>
+            <% if ((username) && (userid == product.sellerID._id)) { %>
             <div class="d-flex justify-content-end align-items-center">
                 
                 <a 
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <% if (userid != product.sellerID) { %>
+        <% if (userid != product.sellerID._id) { %>
         <div class="col-md-3">
             <form>
                 <div class="mb-3">
@@ -87,6 +87,7 @@
                     >
                 </div>
             </form>
+            <% if (!offer || offer.status === "Rejected" ) { %>
             <form
                 method="POST"
                 action="/user/inbox"
@@ -125,6 +126,33 @@
                     >
                 </div>
             </form>
+            <% } else { %>
+                <form
+                method=""
+                action=""
+            >
+                <div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            S$
+                        </div> 
+                        <input 
+                            class="form-control" 
+                            type="text"
+                            name="offer"
+                            value="<%= product.price %>"
+                            disabled
+                        > 
+                    </div>                 
+                    <input 
+                        class="form-control btn btn-success"
+                        type="text"
+                        value="Offered"
+                        disabled
+                    >
+                </div>
+            </form>
+            <% }; %>
         </div>
         <% }; %>
     </div>
