@@ -51,7 +51,14 @@ controller.get("/:id", async (req, res) => {
 
         const offer = await Offer.findOne(
             {
-                productID: product._id
+                $and: [
+                    {
+                        buyerUsername: req.session.username
+                    },
+                    {
+                        productID: product._id
+                    }
+                ]
             }
         );
     
