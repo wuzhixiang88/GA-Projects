@@ -7,10 +7,17 @@ const controller = express.Router();
 // ROUTES
 controller.get("/", async (req, res) => {
     try {
-        const allProducts = await Product.find().populate(
+        const allProducts = await Product.find(
+            {
+                status: {
+                    $eq: "For Sale"
+                }
+            }
+        )
+        .populate(
             {
                 path: "sellerID",
-                select: "username"
+                select: "username",
             }
         );
     
