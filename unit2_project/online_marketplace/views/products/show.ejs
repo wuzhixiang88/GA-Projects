@@ -3,33 +3,33 @@
     <div class="row bg-secondary p-3">
         <div class="container-fluid col-12">
             <% if ((username) && (userid == product.sellerID._id)) { %>
-            <div class="d-flex justify-content-end align-items-center">
-                
-                <a 
-                    class="btn btn-secondary text-center fw-bold" 
-                    role="button"
-                    href="/product"
-                >
-                    Back   
-                </a>
-                <a 
-                    class="btn btn-secondary text-center fw-bold" 
-                    role="button"
-                    href="/product/<%= product._id %>/edit"
-                >
-                    Edit Item   
-                </a>
-            </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    
+                    <a 
+                        class="btn btn-secondary text-center fw-bold" 
+                        role="button"
+                        href="/product"
+                    >
+                        Back   
+                    </a>
+                    <a 
+                        class="btn btn-secondary text-center fw-bold" 
+                        role="button"
+                        href="/product/<%= product._id %>/edit"
+                    >
+                        Edit Item   
+                    </a>
+                </div>
             <% } else { %>
-            <div class="d-flex justify-content-end align-items-center">
-                <a 
-                    class="btn btn-secondary text-center fw-bold" 
-                    role="button" 
-                    href="/"
-                >
-                    Back   
-                </a>
-            </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <a 
+                        class="btn btn-secondary text-center fw-bold" 
+                        role="button" 
+                        href="/"
+                    >
+                        Back   
+                    </a>
+                </div>
             <% }; %>
         </div>
     </div>
@@ -70,85 +70,80 @@
             </div>
         </div>
         <% if (userid != product.sellerID._id) { %>
-        <div class="col-md-3">
-            <form>
-                <div class="mb-3">
-                    <textarea 
-                        class="form-control h-50"
-                        name="message"
-                        placeholder="Write a custom message..."
-                    ></textarea>
-                </div>
-                <div class="mb-5">
-                    <input 
-                        class="form-control btn btn-success mb-3" 
-                        type="" 
-                        value="Send message to seller"
-                    >
-                </div>
-            </form>
-            <% if (!offer || offer.status === "Rejected" ) { %>
-            <form
-                method="POST"
-                action="/user/inbox"
-            >
-                <div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-text">
-                            S$
-                        </div> 
+            <div class="col-md-3">
+                <form>
+                    <div class="mb-3">
+                        <textarea 
+                            class="form-control h-50"
+                            name="message"
+                            placeholder="Write a custom message..."
+                        ></textarea>
+                    </div>
+                    <div class="mb-5">
                         <input 
-                            class="form-control" 
-                            type="text"
-                            name="offer"
-                            value="<%= product.price %>"
-                        > 
-                    </div>                 
-                    <input 
-                        class="form-control btn btn-danger" 
-                        type="submit" 
-                        value="Make Offer"
+                            class="form-control btn btn-success mb-3" 
+                            type="" 
+                            value="Send message to seller"
+                        >
+                    </div>
+                </form>
+                <% if (!offer || offer.status === "Rejected" ) { %>
+                    <form
+                        method="POST"
+                        action="/user/inbox"
                     >
-                    <input
-                        type="hidden"
-                        name="productID"
-                        value="<%= product._id %>"
-                    >
-                    <input
-                        type="hidden"
-                        name="sellerUsername"
-                        value="<%= product.sellerID.username %>"
-                    >
-                </div>
-            </form>
-            <% } else { %>
-                <form
-                method=""
-                action=""
-            >
-                <div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-text">
-                            S$
-                        </div> 
+                        <div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    S$
+                                </div> 
+                                <input 
+                                    class="form-control" 
+                                    type="text"
+                                    name="offer"
+                                    value="<%= product.price %>"
+                                > 
+                            </div>                 
+                            <input 
+                                class="form-control btn btn-danger" 
+                                type="submit" 
+                                value="Make Offer"
+                            >
+                            <input
+                                type="hidden"
+                                name="productID"
+                                value="<%= product._id %>"
+                            >
+                            <input
+                                type="hidden"
+                                name="sellerUsername"
+                                value="<%= product.sellerID.username %>"
+                            >
+                        </div>
+                    </form>
+                <% } else { %>
+                    <div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                S$
+                            </div> 
+                            <input 
+                                class="form-control" 
+                                type="text"
+                                name="offer"
+                                value="<%= product.price %>"
+                                disabled
+                            > 
+                        </div>                 
                         <input 
-                            class="form-control" 
+                            class="form-control btn btn-success"
                             type="text"
-                            name="offer"
-                            value="<%= product.price %>"
+                            value="Offered"
                             disabled
-                        > 
-                    </div>                 
-                    <input 
-                        class="form-control btn btn-success"
-                        type="text"
-                        value="Offered"
-                        disabled
-                    >
-                </div>
-            </form>
-            <% }; %>
-        </div>
+                        >
+                    </div>
+                <% }; %>
+            </div>
         <% }; %>
     </div>
 </div>

@@ -20,152 +20,152 @@
     <div class="row bg-light">
         <% for (let i = 0; i < allOffers.length; i++) { %>
             <% if (allOffers[i].buyerUsername === username) { %>
-            <div class="col-md-8 d-flex align-items-start flex-column me-auto border-bottom">
-                <div class="mb-auto ms-4">
-                    <div class="mb-3">
-                        <%= allOffers[i].sellerUsername %>
+                <div class="col-md-8 d-flex align-items-start flex-column me-auto border-bottom">
+                    <div class="mb-auto ms-4">
+                        <div class="mb-3">
+                            <%= allOffers[i].sellerUsername %>
+                        </div>
+                        <div class="fw-bold mb-3">
+                            <%= allOffers[i].productID.name %>
+                        </div>
+                        <div class="mb-3">
+                            Your Offer: $<%= allOffers[i].offer %>
+                        </div>
                     </div>
-                    <div class="fw-bold mb-3">
-                        <%= allOffers[i].productID.name %>
-                    </div>
-                    <div class="mb-3">
-                        Your Offer: $<%= allOffers[i].offer %>
-                    </div>
-                </div>
-                <% if (allOffers[i].status === "Offered") { %>
-                <div class="ms-4 mb-3">
-                    <input 
-                        type="text" 
-                        class="form-control btn btn-success"
-                        value="Offered"
-                        disabled
-                    >
-                </div>
-                <% } else if (allOffers[i].status === "Accepted") { %>
-                <div class="ms-4 mb-3">
-                    <input 
-                        type="text" 
-                        class="form-control btn btn-success"
-                        value="Offered Accepted"
-                        disabled
-                    >
-                </div>
-                <% } else { %>
-                <div class="ms-4 mb-3">
-                    <input 
-                        type="text" 
-                        class="form-control btn btn-danger"
-                        value="Offered Rejected"
-                        disabled
-                    >
-                </div>
-                <% }; %>
-            </div>
-            <div class="col-md-4 border-bottom">
-                <div class="text-center">
-                    <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
-                </div>
-                <div>
-                    <img
-                        src="<%= allOffers[i].productID.img %>"
-                        class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
-                    >
-                </div>
-            </div>
-            <% } else { %>
-            <div class="col-md-8 d-flex align-items-start flex-column me-auto border-bottom">
-                <div class="mb-auto ms-4">
-                    <div class="mb-3">
-                        <%= allOffers[i].buyerUsername %>
-                    </div>
-                    <div class="fw-bold mb-3">
-                        <%= allOffers[i].productID.name %>
-                    </div>
-                    <div class="mb-3">
-                        Offered You: $<%= allOffers[i].offer %>
-                    </div>
-                </div>
-                <% if (allOffers[i].status === "Offered") { %>
-                <div class="d-flex ms-4 mb-3">
-                    <form
-                        method="POST"
-                        action="/user/inbox/?_method=PATCH"
-                        class="mb-0"
-                    >
-                        <div class="me-3">
+                    <% if (allOffers[i].status === "Offered") { %>
+                        <div class="ms-4 mb-3">
                             <input 
-                                type="submit" 
+                                type="text" 
                                 class="form-control btn btn-success"
-                                name="sellerAction"
-                                value="Accept Offer"
-                            >
-                            <input
-                                type="hidden"
-                                name="offerID"
-                                value="<%= allOffers[i]._id %>"
-                            >
-                            <input
-                                type="hidden"
-                                name="productID"
-                                value="<%= allOffers[i].productID._id %>"
+                                value="Offered"
+                                disabled
                             >
                         </div>
-                    </form>
-                    <form
-                        method="POST"
-                        action="/user/inbox/?_method=PATCH"
-                        class="mb-0"
-                    >
-                        <div>
+                    <% } else if (allOffers[i].status === "Accepted") { %>
+                        <div class="ms-4 mb-3">
                             <input 
-                                type="submit" 
-                                class="form-control btn btn-danger"
-                                name="sellerAction"
-                                value="Reject Offer"
-                            >
-                            <input
-                                type="hidden"
-                                name="offerID"
-                                value="<%= allOffers[i]._id %>"
+                                type="text" 
+                                class="form-control btn btn-success"
+                                value="Offered Accepted"
+                                disabled
                             >
                         </div>
-                    </form>
+                    <% } else { %>
+                        <div class="ms-4 mb-3">
+                            <input 
+                                type="text" 
+                                class="form-control btn btn-danger"
+                                value="Offered Rejected"
+                                disabled
+                            >
+                        </div>
+                    <% }; %>
                 </div>
-                <% } else if (allOffers[i].status === "Accepted") { %>
-                <div class="d-flex ms-4 mb-3">
-                    <div class="me-3">
-                        <input 
-                            type="text" 
-                            class="form-control btn btn-success"
-                            value="Accepted Offer"
-                            disabled
+                <div class="col-md-4 border-bottom">
+                    <div class="text-center">
+                        <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
+                    </div>
+                    <div>
+                        <img
+                            src="<%= allOffers[i].productID.img %>"
+                            class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                         >
                     </div>
                 </div>
-                <% } else { %>
-                <div class="d-flex ms-4 mb-3">
-                    <div class="me-3">
-                        <input 
-                            type="text" 
-                            class="form-control btn btn-danger"
-                            value="Rejected Offer"
-                            disabled
+            <% } else { %>
+                <div class="col-md-8 d-flex align-items-start flex-column me-auto border-bottom">
+                    <div class="mb-auto ms-4">
+                        <div class="mb-3">
+                            <%= allOffers[i].buyerUsername %>
+                        </div>
+                        <div class="fw-bold mb-3">
+                            <%= allOffers[i].productID.name %>
+                        </div>
+                        <div class="mb-3">
+                            Offered You: $<%= allOffers[i].offer %>
+                        </div>
+                    </div>
+                    <% if (allOffers[i].status === "Offered") { %>
+                        <div class="d-flex ms-4 mb-3">
+                            <form
+                                method="POST"
+                                action="/user/inbox/?_method=PATCH"
+                                class="mb-0"
+                            >
+                                <div class="me-3">
+                                    <input 
+                                        type="submit" 
+                                        class="form-control btn btn-success"
+                                        name="sellerAction"
+                                        value="Accept Offer"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="offerID"
+                                        value="<%= allOffers[i]._id %>"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="productID"
+                                        value="<%= allOffers[i].productID._id %>"
+                                    >
+                                </div>
+                            </form>
+                            <form
+                                method="POST"
+                                action="/user/inbox/?_method=PATCH"
+                                class="mb-0"
+                            >
+                                <div>
+                                    <input 
+                                        type="submit" 
+                                        class="form-control btn btn-danger"
+                                        name="sellerAction"
+                                        value="Reject Offer"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="offerID"
+                                        value="<%= allOffers[i]._id %>"
+                                    >
+                                </div>
+                            </form>
+                        </div>
+                    <% } else if (allOffers[i].status === "Accepted") { %>
+                        <div class="d-flex ms-4 mb-3">
+                            <div class="me-3">
+                                <input 
+                                    type="text" 
+                                    class="form-control btn btn-success"
+                                    value="Accepted Offer"
+                                    disabled
+                                >
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="d-flex ms-4 mb-3">
+                            <div class="me-3">
+                                <input 
+                                    type="text" 
+                                    class="form-control btn btn-danger"
+                                    value="Rejected Offer"
+                                    disabled
+                                >
+                            </div>
+                        </div>
+                    <% }; %>
+                </div>
+                <div class="col-md-4 border-bottom">
+                    <div class="text-center">
+                        <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
+                    </div>
+                    <div>
+                        <img
+                            src="<%= allOffers[i].productID.img %>"
+                            class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                         >
                     </div>
                 </div>
-                <% }; %>
-            </div>
-            <div class="col-md-4 border-bottom">
-                <div class="text-center">
-                    <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
-                </div>
-                <div>
-                    <img
-                        src="<%= allOffers[i].productID.img %>"
-                        class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
-                    >
-                </div>
-            </div>
             <% }; %>
         <% }; %>
     </div>
