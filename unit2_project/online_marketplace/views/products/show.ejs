@@ -149,7 +149,7 @@
                 <div>
                     <form
                         method="POST"
-                        action="/product/<% product._id %>/?_method=PATCH"
+                        action="/product/<%= product._id %>/?_method=PATCH"
                     >
                         <% if (product.status !== "Sold") { %>               
                             <input 
@@ -159,7 +159,7 @@
                             >
                         <% } else { %>
                             <input 
-                                class="form-control btn btn-info" 
+                                class="form-control btn btn-danger 
                                 type="text" 
                                 value="<%= product.status %>"
                                 disabled

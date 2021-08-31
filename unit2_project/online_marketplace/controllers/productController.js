@@ -137,6 +137,24 @@ controller.put("/:id", async (req, res) => {
     };
 });
 
+controller.patch("/:id", async (req, res) => {
+    try {
+        await Product.updateOne(
+            {
+                _id: req.params.id
+            },
+            {
+                status: "Sold"
+            }
+        );
+
+        res.redirect(`/product/${req.params.id}`);
+
+    } catch (err) {
+        res.send(err);
+    };
+});
+
 // DESTROY ROUTE
 controller.delete("/:id", async (req, res) => {
     try {
