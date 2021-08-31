@@ -26,7 +26,7 @@ controller.get("/", async (req, res) => {
         });
 
     } catch (err) {
-        res.status(400).send();
+        res.send(err);
     };
 });
 

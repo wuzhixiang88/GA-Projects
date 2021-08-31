@@ -144,6 +144,30 @@
                     </div>
                 <% }; %>
             </div>
+        <% } else { %>
+            <div class="col-md-3">
+                <div>
+                    <form
+                        method="POST"
+                        action="/product/<% product._id %>/?_method=PATCH"
+                    >
+                        <% if (product.status !== "Sold") { %>               
+                            <input 
+                                class="form-control btn btn-danger" 
+                                type="submit" 
+                                value="Mark As Sold"
+                            >
+                        <% } else { %>
+                            <input 
+                                class="form-control btn btn-info" 
+                                type="text" 
+                                value="<%= product.status %>"
+                                disabled
+                            >
+                        <% };%>
+                    </form>
+                </div>
+            </div>
         <% }; %>
     </div>
 </div>

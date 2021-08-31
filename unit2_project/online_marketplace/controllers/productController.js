@@ -20,7 +20,7 @@ controller.get("/", async (req, res) => {
         })
 
     } catch (err) {
-        res.status(400).send();
+        res.send(err);
     };
 });
 
@@ -30,7 +30,7 @@ controller.get("/new", (req, res) => {
         res.render("products/new.ejs");
 
     } catch (err) {
-        res.status(400).send();
+        res.send(err);
     };
 });
 
@@ -86,7 +86,7 @@ controller.get("/:id/edit", async (req, res) => {
         });
 
     } catch (err) {
-        res.status(400).send();
+        res.send(err);
     };
 });
 
@@ -109,7 +109,7 @@ controller.post("/", imgUpload.single("productImg"), async (req, res) => {
         res.redirect("/product");
 
     } catch (err) {
-        res.status(400).send();
+        res.send(err);
     };
 });
 
@@ -133,7 +133,7 @@ controller.put("/:id", async (req, res) => {
         res.redirect(`/product/${req.params.id}`);
 
     } catch (err) {
-        res.status(400).send();
+        res.send(err);
     };
 });
 
@@ -149,7 +149,7 @@ controller.delete("/:id", async (req, res) => {
         res.redirect("/product");
 
     } catch {
-        res.status(400).send();
+        res.send(err);
     };
 });
 
