@@ -66,10 +66,12 @@
                         <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
                     </div>
                     <div>
-                        <img
-                            src="<%= allOffers[i].productID.img %>"
-                            class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
-                        >
+                        <a href="/product/<%= allOffers[i].productID._id %>">
+                            <img
+                                src="<%= allOffers[i].productID.img %>"
+                                class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
+                            >
+                        </a>
                     </div>
                 </div>
             <% } else { %>
@@ -160,10 +162,12 @@
                         <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
                     </div>
                     <div>
-                        <img
-                            src="<%= allOffers[i].productID.img %>"
-                            class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
-                        >
+                        <a href="/product/<%= allOffers[i].productID._id %>">
+                            <img
+                                src="<%= allOffers[i].productID.img %>"
+                                class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
+                            >
+                        </a>
                     </div>
                 </div>
             <% }; %>
