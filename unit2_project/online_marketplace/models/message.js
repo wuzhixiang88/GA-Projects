@@ -3,16 +3,22 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema(
     {
-        sellerUsername: {
+        userOne: {
             type: String,
             required: true
         },
-        buyerUsername: {
+        userTwo: {
             type: String,
             required: true
         },
         messages: {
-            type: [{ user: String, body: String }],
+            type: [
+                { 
+                    username: String,
+                    body: String 
+                }
+            ],
+            required: true
         }
     },
     {
