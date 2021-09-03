@@ -71,10 +71,14 @@
         </div>
         <% if (userid != product.sellerID._id) { %>
             <div class="col-md-3">
-                <form>
+                <form
+                    method="POST"
+                    action="/user/inbox"
+                >
                     <div class="mb-3">
                         <textarea 
-                            class="form-control h-50"
+                            class="form-control"
+                            rows="8"
                             name="message"
                             placeholder="Write a custom message..."
                         ></textarea>
@@ -82,8 +86,13 @@
                     <div class="mb-5">
                         <input 
                             class="form-control btn btn-success mb-3" 
-                            type="" 
+                            type="submit" 
                             value="Send message to seller"
+                        >
+                        <input
+                            type="hidden"
+                            name="sellerUsername"
+                            value="<%= product.sellerID.username %>"
                         >
                     </div>
                 </form>

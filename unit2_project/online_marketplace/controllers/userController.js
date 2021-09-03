@@ -5,6 +5,7 @@ const isUserLoggedIn = require("../middlewares/isUserLoggedIn");
 const User = require("../models/user");
 const Product = require("../models/product");
 const Offer = require("../models/offer");
+const Message = require("../models/message");
 
 const controller = express.Router();
 
@@ -43,8 +44,22 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
             }
         );
 
+        const allMessages = await Message.find(
+            {
+                $or: [
+                    {
+                        userOne: req.session.username
+                    },
+                    {
+                        userTwo: req.session.username
+                    }
+                ]
+            }
+        );
+
         res.render("users/inbox.ejs", {
-            allOffers
+            allOffers,
+            allMessages
         });
     
     } catch (err) {
@@ -98,14 +113,31 @@ controller.post("/login", async (req, res) => {
 
 controller.post("/inbox", async (req, res) => {
     try {
-        await Offer.create(
-            {
-                buyerUsername: req.session.username,
-                sellerUsername: req.body.sellerUsername,
-                productID: req.body.productID,
-                offer: req.body.offer,
-            }
-        );
+        if (req.body.message) {
+            await Message.create(
+                {
+                    userOne: req.session.username,
+                    userTwo: req.body.sellerUsername,
+                    messages: [
+                        {
+                            username: req.session.username,
+                            body: req.body.message
+                        }
+                    ]
+                }
+            );
+        };
+
+        if (req.body.offer) {
+            await Offer.create(
+                {
+                    buyerUsername: req.session.username,
+                    sellerUsername: req.body.sellerUsername,
+                    productID: req.body.productID,
+                    offer: req.body.offer,
+                }
+            );
+        };
         
         res.redirect("/user/inbox");
 
