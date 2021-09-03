@@ -55,7 +55,7 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
                     }
                 ]
             }
-        );
+        )
 
         res.render("users/inbox.ejs", {
             allOffers,
@@ -65,6 +65,23 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
     } catch (err) {
         res.send(err);
     }
+});
+
+controller.get("/inbox/:id", isUserLoggedIn, async (req, res) => {
+    try {
+        const conversation = await Message.findOne(
+            {
+                _id: req.params.id
+            }
+        );
+
+        res.render("users/message.ejs", {
+            conversation
+        });
+
+    } catch (err) {
+        res.send(err);
+    };
 });
 
 controller.post("/signup", async (req, res) => {
@@ -183,6 +200,29 @@ controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
     } catch (err) {
         res.send(err);
     };
+});
+
+controller.patch("/inbox/:id", isUserLoggedIn, async (req, res) => {
+    try {
+        await Message.updateOne(
+            {
+                _id: req.body.messageId
+            },
+            {
+                $push: {
+                    messages: {
+                        username: req.session.username,
+                        body: req.body.message
+                    }
+                }
+            }
+        );
+
+        res.redirect(`/user/inbox/${req.params.id}`)
+
+    } catch (err) {
+        res.send(err);
+    }
 });
 
 // EXPORTS

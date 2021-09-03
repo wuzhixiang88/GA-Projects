@@ -20,25 +20,28 @@
     <div class="row bg-light">
         <% for (let i = 0; i < allMessages.length; i++) { %>
             <div class="container border-bottom">
-                <div class="mb-3 ms-4">
-                    <% if (allMessages[i].userOne === username) { %>
-                        <%= allMessages[i].userTwo %>
-                    <% } else { %>
-                        <%= allMessages[i].userOne %>
-                    <% }; %>
-                </div>
+                <a 
+                    href="/user/inbox/<%= allMessages[i]._id %>"
+                    class="message-link"
+                >
+                    <div class="mb-3 ms-4">
+                        <% if (allMessages[i].userOne === username) { %>
+                            <%= allMessages[i].userTwo %>
+                        <% } else { %>
+                            <%= allMessages[i].userOne %>
+                        <% }; %>
+                    </div>
 
-                <% for (let j = 0; j < allMessages[i].messages.length; j++) { %>
-                    <% if (allMessages[i].messages[j].username !== username) { %>
+                    <% if (allMessages[i].messages[allMessages[i].messages.length - 1].username !== username) { %>
                         <p class="d-flex justify-content-start ms-4">
-                            <%= allMessages[i].messages[j].body %>
+                            <%= allMessages[i].messages[allMessages[i].messages.length - 1].body %>
                         </p>
                     <% } else { %>
                         <p class="d-flex justify-content-end me-3">
-                            <%= allMessages[i].messages[j].body %>
+                            <%= allMessages[i].messages[allMessages[i].messages.length - 1].body %>
                         </p>
                     <% }; %>
-                <% }; %>
+                </a>
             </div>
         <% }; %>
 
