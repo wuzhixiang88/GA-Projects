@@ -17,26 +17,23 @@
         </div>    
     </div>
 
-    <div class="row bg-light">
-        <% for (let i = 0; i < allThreads.length; i++) { %>
-
-            <div class="mb-3 ms-4">
-                <% if (allThreads[i].buyerUsername === username) { %>
-                    <%= allThreads[i].sellerUsername %>
-                <% } else { %>
-                    <%= allThreads[i].buyerUsername %>
-                <% }; %>
-            </div>
-
+    <% for (let i = 0; i < allThreads.length; i++) { %>
+        <div class="row bg-light">
             <% if (allThreads[i].buyerUsername === username) { %>
+                <div class="mb-3 ms-4">
+                    <%= allThreads[i].sellerUsername %>
+                </div>
+
                 <div class="col-md-8 d-flex align-items-start flex-column me-auto">
                     <div class="mb-auto ms-4">
                         <div class="fw-bold mb-3">
                             <%= allThreads[i].productId.name %>
                         </div>
-                        <div class="mb-3">
-                            Your Offer: $<%= allThreads[i].offer %>
-                        </div>
+                        <% if (allThreads[i].offer) { %>
+                            <div class="mb-3">
+                                Your Offer: $<%= allThreads[i].offer %>
+                            </div>
+                        <% }; %>
                     </div>
                     <% if (allThreads[i].status === "Offered") { %>
                         <div class="ms-4 mb-3">
@@ -56,7 +53,7 @@
                                 disabled
                             >
                         </div>
-                    <% } else { %>
+                    <% } else if (allThreads[i].status === "Rejected") { %>
                         <div class="ms-4 mb-3">
                             <input 
                                 type="text" 
@@ -65,33 +62,32 @@
                                 disabled
                             >
                         </div>
+                    <% } else if (allThreads[i].status === "Sold") { %>
+                        <div class="ms-4 mb-3">
+                            <input 
+                                type="text" 
+                                class="form-control btn btn-success"
+                                value="Deal Completed"
+                                disabled
+                            >
+                        </div>
                     <% }; %>
                 </div>
-                <div class="col-md-4">
-                    <div class="text-center">
-                        <%= new Date(allThreads[i].updatedAt).toISOString().slice(0, 10) %>
-                    </div>
-                    <div>
-                        <a href="/product/<%= allThreads[i].productId._id %>">
-                            <img
-                                src="<%= allThreads[i].productId.img %>"
-                                class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
-                            >
-                        </a>
-                    </div>
-                </div>
             <% } else { %>
+                <div class="mb-3 ms-4">
+                    <%= allThreads[i].buyerUsername %>
+                </div>
+
                 <div class="col-md-8 d-flex align-items-start flex-column me-auto">
                     <div class="mb-auto ms-4">
-                        <div class="mb-3">
-                            <%= allThreads[i].buyerUsername %>
-                        </div>
                         <div class="fw-bold mb-3">
                             <%= allThreads[i].productId.name %>
                         </div>
-                        <div class="mb-3">
-                            Offered You: $<%= allThreads[i].offer %>
-                        </div>
+                        <% if (allThreads[i].offer) { %>
+                            <div class="mb-3">
+                                Offered You: $<%= allThreads[i].offer %>
+                            </div>
+                        <% }; %>
                     </div>
                     <% if (allThreads[i].status === "Offered") { %>
                         <div class="d-flex ms-4 mb-3">
@@ -109,7 +105,7 @@
                                     >
                                     <input
                                         type="hidden"
-                                        name="offerID"
+                                        name="threadId"
                                         value="<%= allThreads[i]._id %>"
                                     >
                                     <input
@@ -133,7 +129,7 @@
                                     >
                                     <input
                                         type="hidden"
-                                        name="offerID"
+                                        name="threadId"
                                         value="<%= allThreads[i]._id %>"
                                     >
                                 </div>
@@ -150,7 +146,7 @@
                                 >
                             </div>
                         </div>
-                    <% } else { %>
+                    <% } else if (allThreads[i].status === "Rejected") { %>
                         <div class="d-flex ms-4 mb-3">
                             <div class="me-3">
                                 <input 
@@ -161,22 +157,32 @@
                                 >
                             </div>
                         </div>
+                    <% } else if (allThreads[i].status === "Sold") { %>
+                        <div class="ms-4 mb-3">
+                            <input 
+                                type="text" 
+                                class="form-control btn btn-success"
+                                value="Deal Completed"
+                                disabled
+                            >
+                        </div>
                     <% }; %>
                 </div>
-                <div class="col-md-4 border-bottom">
-                    <div class="text-center">
-                        <%= new Date(allThreads[i].updatedAt).toISOString().slice(0, 10) %>
-                    </div>
-                    <div>
-                        <a href="/product/<%= allThreads[i].productId._id %>">
-                            <img
-                                src="<%= allThreads[i].productId.img %>"
-                                class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
-                            >
-                        </a>
-                    </div>
-                </div>
             <% }; %>
+
+            <div class="col-md-2 me-3">
+                <div class="text-center">
+                    <%= new Date(allThreads[i].updatedAt).toISOString().slice(0, 10) %>
+                </div>
+                <div>
+                    <a href="/product/<%= allThreads[i].productId._id %>">
+                        <img
+                            src="<%= allThreads[i].productId.img %>"
+                            class="inbox-img img-thumbnail card-img-top rounded mx-auto d-block mb-3"
+                        >
+                    </a>
+                </div>
+            </div>
             
             <% if (allThreads[i].messages.length !== 0) { %>
                 <div class="container border-bottom">
@@ -186,19 +192,23 @@
                     >
     
                         <% if (allThreads[i].messages[allThreads[i].messages.length - 1].username !== username) { %>
-                            <p class="d-flex justify-content-start ms-4">
-                                <%= allThreads[i].messages[allThreads[i].messages.length - 1].body %>
-                            </p>
+                            <div class="d-flex flex-row rounded">
+                                <div class="inbox-message ms-4 mt-3 mb-3 px-3 py-1">
+                                    <%= allThreads[i].messages[allThreads[i].messages.length - 1].body %>
+                                </div>
+                            </div>
                         <% } else { %>
-                            <p class="d-flex justify-content-end me-3">
-                                <%= allThreads[i].messages[allThreads[i].messages.length - 1].body %>
-                            </p>
+                            <div class="d-flex flex-row-reverse rounded">
+                                <div class="inbox-own-message text-white m-3 px-3 py-1">
+                                    <%= allThreads[i].messages[allThreads[i].messages.length - 1].body %>
+                                </div>
+                            </div>
                         <% }; %>
                     </a>
                 </div>
             <% }; %>
 
-        <% }; %>
-    </div>
+        </div>
+    <% }; %>
 </div>
 <%- include("../partials/footer.ejs") %>

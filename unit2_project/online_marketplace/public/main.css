@@ -8,6 +8,21 @@
     object-fit: contain;
 }
 
+.inbox-img {
+    height: 100px;
+    object-fit: contain;
+}
+
+.inbox-own-message {
+    background-color: blue;
+    border-radius: 25px;
+}
+
+.inbox-message {
+    background-color: lightgrey;
+    border-radius: 25px;
+}
+
 .img-cards, .message-link {
     color: black;
     text-decoration: none;

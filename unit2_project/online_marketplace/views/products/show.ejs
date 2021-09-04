@@ -101,7 +101,28 @@
                         >
                     </div>
                 </form>
-                <% if (!offer || offer.status === "Rejected" ) { %>
+                <% if (thread && thread.offer && thread.status !== "Rejected") { %>
+                    <div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                S$
+                            </div> 
+                            <input 
+                                class="form-control" 
+                                type="text"
+                                name="offer"
+                                value="<%= product.price %>"
+                                disabled
+                            > 
+                        </div>                 
+                        <input 
+                            class="form-control btn btn-success"
+                            type="text"
+                            value="Offered"
+                            disabled
+                        >
+                    </div>
+                <% } else { %>
                     <form
                         method="POST"
                         action="/user/inbox"
@@ -135,27 +156,6 @@
                             >
                         </div>
                     </form>
-                <% } else { %>
-                    <div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                S$
-                            </div> 
-                            <input 
-                                class="form-control" 
-                                type="text"
-                                name="offer"
-                                value="<%= product.price %>"
-                                disabled
-                            > 
-                        </div>                 
-                        <input 
-                            class="form-control btn btn-success"
-                            type="text"
-                            value="Offered"
-                            disabled
-                        >
-                    </div>
                 <% }; %>
             </div>
         <% } else { %>
@@ -170,6 +170,11 @@
                                 class="form-control btn btn-danger" 
                                 type="submit" 
                                 value="Mark As Sold"
+                            >
+                            <input
+                                type="hidden"
+                                name="productId"
+                                value="<%= product._id %>"
                             >
                         <% } else { %>
                             <input 

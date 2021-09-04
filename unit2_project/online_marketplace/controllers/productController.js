@@ -49,7 +49,7 @@ controller.get("/:id", async (req, res) => {
             }
         );
 
-        const offer = await Thread.findOne(
+        const thread = await Thread.findOne(
             {
                 $and: [
                     {
@@ -61,13 +61,16 @@ controller.get("/:id", async (req, res) => {
                 ]
             },
             {
-                offer: 1
+                _id: 0,
+                offer: 1,
+                status: 1
             }
         );
+        console.log(thread)
     
         res.render("products/show.ejs",  {
             product,
-            offer
+            thread
         });
 
     } catch (err) {
@@ -142,6 +145,22 @@ controller.put("/:id", async (req, res) => {
 
 controller.patch("/:id", async (req, res) => {
     try {
+        await Thread.updateOne(
+            {
+                $and: [
+                    {
+                        productId: req.body.productId
+                    },
+                    {
+                        status: "Accepted"
+                    }
+                ]
+            },
+            {
+                status: "Sold"
+            }
+        );
+
         await Product.updateOne(
             {
                 _id: req.params.id

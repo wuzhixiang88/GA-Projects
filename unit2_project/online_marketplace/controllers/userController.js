@@ -58,6 +58,12 @@ controller.get("/inbox/:id", isUserLoggedIn, async (req, res) => {
             {
                 _id: req.params.id
             }
+        )
+        .populate(
+            {
+                path: "productId",
+                select: ["name", "img"]
+            }
         );
 
         res.render("users/message.ejs", {
@@ -232,9 +238,9 @@ controller.post("/inbox", async (req, res) => {
 controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
     try {
         if (req.body.sellerAction === "Accept Offer") {
-            await Offer.updateOne(
+            await Thread.updateOne(
                 {
-                    _id: req.body.offerID
+                    _id: req.body.threadId
                 },
                 {
                     status: "Accepted"
@@ -251,9 +257,9 @@ controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
             );
 
         } else if (req.body.sellerAction === "Reject Offer") {
-            await Offer.updateOne(
+            await Thread.updateOne(
                 {
-                    _id: req.body.offerID
+                    _id: req.body.threadId
                 },
                 {
                     status: "Rejected"
@@ -270,19 +276,35 @@ controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
 
 controller.patch("/inbox/:id", isUserLoggedIn, async (req, res) => {
     try {
-        await Thread.updateOne(
-            {
-                _id: req.body.threadId
-            },
-            {
-                $push: {
-                    messages: {
-                        username: req.session.username,
-                        body: req.body.message
-                    }
+        if (req.body.sellerAction === "Accept Offer") {
+            await Thread.updateOne(
+                {
+                    _id: req.body.threadId
+                },
+                {
+                    status: "Accepted"
                 }
-            }
-        );
+            );
+
+            await Product.updateOne(
+                {
+                    _id: req.body.productId
+                },
+                {
+                    status: "Reserved"
+                }
+            );
+
+        } else if (req.body.sellerAction === "Reject Offer") {
+            await Thread.updateOne(
+                {
+                    _id: req.body.threadId
+                },
+                {
+                    status: "Rejected"
+                }
+            );
+        };
 
         res.redirect(`/user/inbox/${req.params.id}`)
 
