@@ -66,7 +66,6 @@ controller.get("/:id", async (req, res) => {
                 status: 1
             }
         );
-        console.log(thread)
     
         res.render("products/show.ejs",  {
             product,
