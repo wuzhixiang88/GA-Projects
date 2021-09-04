@@ -276,6 +276,22 @@ controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
 
 controller.patch("/inbox/:id", isUserLoggedIn, async (req, res) => {
     try {
+        if (req.body.message) {
+            await Thread.updateOne(
+                {
+                    _id: req.body.threadId
+                },
+                {
+                    $push: {
+                        messages: {
+                            username: req.session.username,
+                            body: req.body.message
+                        }
+                    }
+                }
+            );
+        };
+
         if (req.body.sellerAction === "Accept Offer") {
             await Thread.updateOne(
                 {
