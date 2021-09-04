@@ -8,6 +8,7 @@
     object-fit: contain;
 }
 
-.img-cards {
+.img-cards, .message-link {
+    color: black;
     text-decoration: none;
 }
