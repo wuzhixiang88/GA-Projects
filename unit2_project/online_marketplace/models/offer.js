@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const offerSchema = new Schema(
     {
-        productID: {
+        productId: {
             type: Schema.Types.ObjectId,
             ref: "Product"
         },

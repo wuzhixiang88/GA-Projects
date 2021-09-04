@@ -11,7 +11,7 @@ controller.get("/", async (req, res) => {
     try {
         const userProductList = await Product.find(
             {
-                sellerID: req.session.userid
+                sellerId: req.session.userid
             }
         );
     
@@ -44,7 +44,7 @@ controller.get("/:id", async (req, res) => {
         )
         .populate(
             {
-                path: "sellerID",
+                path: "sellerId",
                 select: "username"
             }
         );
@@ -56,7 +56,7 @@ controller.get("/:id", async (req, res) => {
                         buyerUsername: req.session.username
                     },
                     {
-                        productID: product._id
+                        productId: product._id
                     }
                 ]
             }
@@ -95,7 +95,7 @@ controller.post("/", imgUpload.single("productImg"), async (req, res) => {
     try {
         await Product.create(
             {
-                sellerID: req.session.userid,
+                sellerId: req.session.userid,
                 name: req.body.name,
                 description: req.body.description,
                 img: `/images/${req.file.filename}`,

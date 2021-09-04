@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row bg-secondary p-3">
         <div class="container-fluid col-12">
-            <% if ((username) && (userid == product.sellerID._id)) { %>
+            <% if ((username) && (userid == product.sellerId._id)) { %>
                 <div class="d-flex justify-content-end align-items-center">
                     
                     <a 
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <% if (userid != product.sellerID._id) { %>
+        <% if (userid != product.sellerId._id) { %>
             <div class="col-md-3">
                 <form
                     method="POST"
@@ -92,7 +92,7 @@
                         <input
                             type="hidden"
                             name="sellerUsername"
-                            value="<%= product.sellerID.username %>"
+                            value="<%= product.sellerId.username %>"
                         >
                     </div>
                 </form>
@@ -120,13 +120,13 @@
                             >
                             <input
                                 type="hidden"
-                                name="productID"
+                                name="productId"
                                 value="<%= product._id %>"
                             >
                             <input
                                 type="hidden"
                                 name="sellerUsername"
-                                value="<%= product.sellerID.username %>"
+                                value="<%= product.sellerId.username %>"
                             >
                         </div>
                     </form>

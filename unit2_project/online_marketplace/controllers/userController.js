@@ -39,7 +39,7 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
         )
         .populate(
             {
-                path: "productID",
+                path: "productId",
                 select: ["name", "img"]
             }
         );
@@ -150,7 +150,7 @@ controller.post("/inbox", async (req, res) => {
                 {
                     buyerUsername: req.session.username,
                     sellerUsername: req.body.sellerUsername,
-                    productID: req.body.productID,
+                    productId: req.body.productId,
                     offer: req.body.offer,
                 }
             );
@@ -177,7 +177,7 @@ controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
 
             await Product.updateOne(
                 {
-                    _id: req.body.productID
+                    _id: req.body.productId
                 },
                 {
                     status: "Reserved"

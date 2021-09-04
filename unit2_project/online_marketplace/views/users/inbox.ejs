@@ -53,7 +53,7 @@
                             <%= allOffers[i].sellerUsername %>
                         </div>
                         <div class="fw-bold mb-3">
-                            <%= allOffers[i].productID.name %>
+                            <%= allOffers[i].productId.name %>
                         </div>
                         <div class="mb-3">
                             Your Offer: $<%= allOffers[i].offer %>
@@ -93,9 +93,9 @@
                         <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
                     </div>
                     <div>
-                        <a href="/product/<%= allOffers[i].productID._id %>">
+                        <a href="/product/<%= allOffers[i].productId._id %>">
                             <img
-                                src="<%= allOffers[i].productID.img %>"
+                                src="<%= allOffers[i].productId.img %>"
                                 class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                             >
                         </a>
@@ -108,7 +108,7 @@
                             <%= allOffers[i].buyerUsername %>
                         </div>
                         <div class="fw-bold mb-3">
-                            <%= allOffers[i].productID.name %>
+                            <%= allOffers[i].productId.name %>
                         </div>
                         <div class="mb-3">
                             Offered You: $<%= allOffers[i].offer %>
@@ -135,8 +135,8 @@
                                     >
                                     <input
                                         type="hidden"
-                                        name="productID"
-                                        value="<%= allOffers[i].productID._id %>"
+                                        name="productId"
+                                        value="<%= allOffers[i].productId._id %>"
                                     >
                                 </div>
                             </form>
@@ -189,9 +189,9 @@
                         <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
                     </div>
                     <div>
-                        <a href="/product/<%= allOffers[i].productID._id %>">
+                        <a href="/product/<%= allOffers[i].productId._id %>">
                             <img
-                                src="<%= allOffers[i].productID.img %>"
+                                src="<%= allOffers[i].productId.img %>"
                                 class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                             >
                         </a>
