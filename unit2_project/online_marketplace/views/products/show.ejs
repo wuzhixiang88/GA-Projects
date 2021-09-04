@@ -82,79 +82,34 @@
             </div>
         </div>
         <% if (userid != product.sellerId._id) { %>
-            <div class="col-md-3">
-                <form
-                    method="POST"
-                    action="/user/inbox"
-                >
-                    <div class="mb-3">
-                        <textarea 
-                            class="form-control"
-                            rows="8"
-                            name="message"
-                            placeholder="Write a custom message..."
-                        ></textarea>
-                    </div>
-                    <div class="mb-5">
-                        <input 
-                            class="form-control btn btn-success mb-3" 
-                            type="submit" 
-                            value="Send message to seller"
-                        >
-                        <input
-                            type="hidden"
-                            name="productId"
-                            value="<%= product._id %>"
-                        >
-                        <input
-                            type="hidden"
-                            name="sellerUsername"
-                            value="<%= product.sellerId.username %>"
-                        >
-                    </div>
-                </form>
-                <% if (thread && thread.offer && thread.status !== "Rejected") { %>
-                    <div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                S$
-                            </div> 
-                            <input 
-                                class="form-control" 
-                                type="text"
-                                name="offer"
-                                value="<%= product.price %>"
-                                disabled
-                            > 
-                        </div>                 
-                        <input 
-                            class="form-control btn btn-success"
-                            type="text"
-                            value="Offered"
-                            disabled
-                        >
-                    </div>
-                <% } else { %>
+            <% if (product.status === "Sold") { %>
+                <div class="col-md-3">
+                    <input 
+                        class="form-control btn btn-danger 
+                        type="text" 
+                        value="<%= product.status %>"
+                        disabled
+                    >
+                </div>
+            <% } else { %>
+                <div class="col-md-3">
                     <form
                         method="POST"
                         action="/user/inbox"
                     >
-                        <div>
-                            <div class="input-group mb-3">
-                                <div class="input-group-text">
-                                    S$
-                                </div> 
-                                <input 
-                                    class="form-control" 
-                                    type="text"
-                                    name="offer"
-                                    value="<%= product.price %>"
-                                > 
-                            </div>                 
+                        <div class="mb-3">
+                            <textarea 
+                                class="form-control"
+                                rows="8"
+                                name="message"
+                                placeholder="Write a custom message..."
+                            ></textarea>
+                        </div>
+                        <div class="mb-5">
                             <input 
-                                class="form-control btn btn-danger" 
+                                class="form-control btn btn-success mb-3" 
                                 type="submit" 
-                                value="Make Offer"
+                                value="Send message to seller"
                             >
                             <input
                                 type="hidden"
@@ -168,8 +123,64 @@
                             >
                         </div>
                     </form>
-                <% }; %>
-            </div>
+                    <% if (thread && thread.offer && thread.status !== "Rejected") { %>
+                        <div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    S$
+                                </div> 
+                                <input 
+                                    class="form-control" 
+                                    type="text"
+                                    name="offer"
+                                    value="<%= product.price %>"
+                                    disabled
+                                > 
+                            </div>                 
+                            <input 
+                                class="form-control btn btn-success"
+                                type="text"
+                                value="Offered"
+                                disabled
+                            >
+                        </div>
+                    <% } else { %>
+                        <form
+                            method="POST"
+                            action="/user/inbox"
+                        >
+                            <div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-text">
+                                        S$
+                                    </div> 
+                                    <input 
+                                        class="form-control" 
+                                        type="text"
+                                        name="offer"
+                                        value="<%= product.price %>"
+                                    > 
+                                </div>                 
+                                <input 
+                                    class="form-control btn btn-danger" 
+                                    type="submit" 
+                                    value="Make Offer"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="productId"
+                                    value="<%= product._id %>"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="sellerUsername"
+                                    value="<%= product.sellerId.username %>"
+                                >
+                            </div>
+                        </form>
+                    <% }; %>
+                </div>
+            <% }; %>
         <% } else { %>
             <div class="col-md-3">
                 <div>
