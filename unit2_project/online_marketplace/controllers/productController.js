@@ -2,7 +2,7 @@
 const express = require("express");
 const imgUpload = require("../middlewares/imgUpload");
 const Product = require("../models/product");
-const Offer = require("../models/offer");
+const Thread = require("../models/thread");
 
 const controller = express.Router();
 
@@ -49,7 +49,7 @@ controller.get("/:id", async (req, res) => {
             }
         );
 
-        const offer = await Offer.findOne(
+        const offer = await Thread.findOne(
             {
                 $and: [
                     {
@@ -59,6 +59,9 @@ controller.get("/:id", async (req, res) => {
                         productId: product._id
                     }
                 ]
+            },
+            {
+                offer: 1
             }
         );
     

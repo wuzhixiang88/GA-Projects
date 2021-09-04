@@ -4,8 +4,7 @@ const bcrypt = require("bcrypt");
 const isUserLoggedIn = require("../middlewares/isUserLoggedIn");
 const User = require("../models/user");
 const Product = require("../models/product");
-const Offer = require("../models/offer");
-const Message = require("../models/message");
+const Thread = require("../models/thread");
 
 const controller = express.Router();
 
@@ -25,14 +24,14 @@ controller.get("/logout", (req, res) => {
 
 controller.get("/inbox", isUserLoggedIn, async (req, res) => {
     try {
-        const allOffers = await Offer.find(
+        const allThreads = await Thread.find(
             {
                 $or: [
                     {
-                        sellerUsername: req.session.username
+                        buyerUsername: req.session.username
                     },
                     {
-                        buyerUsername: req.session.username
+                        sellerUsername: req.session.username
                     }
                 ]
             }
@@ -44,22 +43,8 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
             }
         );
 
-        const allMessages = await Message.find(
-            {
-                $or: [
-                    {
-                        userOne: req.session.username
-                    },
-                    {
-                        userTwo: req.session.username
-                    }
-                ]
-            }
-        )
-
         res.render("users/inbox.ejs", {
-            allOffers,
-            allMessages
+            allThreads
         });
     
     } catch (err) {
@@ -69,14 +54,14 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
 
 controller.get("/inbox/:id", isUserLoggedIn, async (req, res) => {
     try {
-        const conversation = await Message.findOne(
+        const thread = await Thread.findOne(
             {
                 _id: req.params.id
             }
         );
 
         res.render("users/message.ejs", {
-            conversation
+            thread
         });
 
     } catch (err) {
@@ -130,34 +115,115 @@ controller.post("/login", async (req, res) => {
 
 controller.post("/inbox", async (req, res) => {
     try {
-        if (req.body.message) {
-            await Message.create(
-                {
-                    userOne: req.session.username,
-                    userTwo: req.body.sellerUsername,
-                    messages: [
-                        {
-                            username: req.session.username,
-                            body: req.body.message
+        const thread = await Thread.findOne(
+            {
+                $and: [
+                    {
+                        $or: [
+                            {
+                                buyerUsername: req.body.sellerUsername
+                            },
+                            {
+                                sellerUsername: req.body.sellerUsername
+                            }
+                        ]
+                    },
+                    {
+                        productId: req.body.productId
+                    }
+                ]
+            }
+        );
+
+        if (!thread) {
+            if (req.body.message) {
+                await Thread.create(
+                    {
+                        buyerUsername: req.session.username,
+                        sellerUsername: req.body.sellerUsername,
+                        productId: req.body.productId,
+                        messages: [
+                            {
+                                username: req.session.username,
+                                body: req.body.message
+                            }
+                        ]
+                    }
+                );
+            };
+    
+            if (req.body.offer) {
+                await Thread.create(
+                    {
+                        buyerUsername: req.session.username,
+                        sellerUsername: req.body.sellerUsername,
+                        productId: req.body.productId,
+                        offer: req.body.offer,
+                        status: "Offered"
+                    }
+                );
+            };
+
+        } else {
+            if (req.body.message) {
+                await Thread.updateOne(
+                    {
+                        $and: [
+                            {
+                                $or: [
+                                    {
+                                        buyerUsername: req.body.sellerUsername
+                                    },
+                                    {
+                                        sellerUsername: req.body.sellerUsername
+                                    }
+                                ]
+                            },
+                            {
+                                productId: req.body.productId
+                            }
+                        ]
+                    },
+                    {
+                        $push: {
+                            messages: {
+                                username: req.session.username,
+                                body: req.body.message
+                            }
                         }
-                    ]
-                }
-            );
+                    }
+                );
+            };
+
+            if (req.body.offer) {
+                await Thread.updateOne(
+                    {
+                        $and: [
+                            {
+                                $or: [
+                                    {
+                                        buyerUsername: req.body.sellerUsername
+                                    },
+                                    {
+                                        sellerUsername: req.body.sellerUsername
+                                    }
+                                ]
+                            },
+                            {
+                                productId: req.body.productId
+                            }
+                        ]
+                    },
+                    {
+                        offer: req.body.offer,
+                        status: "Offered"
+                    }
+                );
+            };
         };
 
-        if (req.body.offer) {
-            await Offer.create(
-                {
-                    buyerUsername: req.session.username,
-                    sellerUsername: req.body.sellerUsername,
-                    productId: req.body.productId,
-                    offer: req.body.offer,
-                }
-            );
-        };
+        res.redirect(`/user/inbox`)
         
-        res.redirect("/user/inbox");
-
     } catch (err) {
         res.send(err);
     };
@@ -204,9 +270,9 @@ controller.patch("/inbox", isUserLoggedIn, async (req, res) => {
 
 controller.patch("/inbox/:id", isUserLoggedIn, async (req, res) => {
     try {
-        await Message.updateOne(
+        await Thread.updateOne(
             {
-                _id: req.body.messageId
+                _id: req.body.threadId
             },
             {
                 $push: {

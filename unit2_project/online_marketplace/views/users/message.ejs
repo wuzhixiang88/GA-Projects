@@ -3,7 +3,7 @@
     <div class="row bg-secondary p-3">
         <div class="container-fluid col-12 d-flex">
             <div class="me-auto text-white fs-4 ms-2">
-                Message
+                Chat
             </div>
             <div class="d-flex justify-content-end align-items-center">
                 <a 
@@ -20,21 +20,21 @@
     <div class="row bg-light">
         <div class="container border-bottom">
             <div class="mb-3 ms-4">
-                <% if (conversation.userOne === username) { %>
-                    <%= conversation.userTwo %> 
+                <% if (thread.buyerUsername === username) { %>
+                    <%= thread.sellerUsername %> 
                 <% } else { %>
-                    <%= conversation.userOne %>
+                    <%= thread.buyerUsername %>
                 <% }; %>
             </div>
 
-            <% for (let i = 0; i < conversation.messages.length; i++) { %>
-                <% if (conversation.messages[i].username !== username) { %>
+            <% for (let i = 0; i < thread.messages.length; i++) { %>
+                <% if (thread.messages[i].username !== username) { %>
                     <p class="d-flex justify-content-start ms-4">
-                        <%= conversation.messages[i].body %>
+                        <%= thread.messages[i].body %>
                     </p>
                 <% } else { %>
                     <p class="d-flex justify-content-end me-3">
-                        <%= conversation.messages[i].body %>
+                        <%= thread.messages[i].body %>
                     </p>
                 <% }; %>
             <% }; %>
@@ -42,7 +42,7 @@
         <div class="container-fluid border-bottom">
             <form
                 method="POST"
-                action="/user/inbox/<%= conversation._id %>/?_method=PATCH"
+                action="/user/inbox/<%= thread._id %>/?_method=PATCH"
                 class="mb-0"
             >
                 <div class="col-md-12 ms-1 p-3">
@@ -61,8 +61,8 @@
                         </button>
                         <input
                             type="hidden"
-                            name="messageId"
-                            value="<%= conversation._id %>"
+                            name="threadId"
+                            value="<%= thread._id %>"
                         >
                     </div>
                 </div>

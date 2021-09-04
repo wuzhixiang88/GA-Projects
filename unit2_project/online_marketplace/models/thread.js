@@ -1,14 +1,19 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const messageSchema = new Schema(
+const threadSchema = new Schema(
     {
-        userOne: {
+        buyerUsername: {
             type: String,
             required: true
         },
-        userTwo: {
+        sellerUsername: {
             type: String,
+            required: true
+        },
+        productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
             required: true
         },
         messages: {
@@ -18,7 +23,12 @@ const messageSchema = new Schema(
                     body: String 
                 }
             ],
-            required: true
+        },
+        offer: {
+            type: Number,
+        },
+        status: {
+            type: String,
         }
     },
     {
@@ -26,6 +36,6 @@ const messageSchema = new Schema(
     }
 );
 
-const Message = mongoose.model("Message", messageSchema);
+const Thread = mongoose.model("Thread", threadSchema);
 
-module.exports = Message;
+module.exports = Thread;

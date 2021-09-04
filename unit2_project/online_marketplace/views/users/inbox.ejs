@@ -18,48 +18,27 @@
     </div>
 
     <div class="row bg-light">
-        <% for (let i = 0; i < allMessages.length; i++) { %>
-            <div class="container border-bottom">
-                <a 
-                    href="/user/inbox/<%= allMessages[i]._id %>"
-                    class="message-link"
-                >
-                    <div class="mb-3 ms-4">
-                        <% if (allMessages[i].userOne === username) { %>
-                            <%= allMessages[i].userTwo %>
-                        <% } else { %>
-                            <%= allMessages[i].userOne %>
-                        <% }; %>
-                    </div>
+        <% for (let i = 0; i < allThreads.length; i++) { %>
 
-                    <% if (allMessages[i].messages[allMessages[i].messages.length - 1].username !== username) { %>
-                        <p class="d-flex justify-content-start ms-4">
-                            <%= allMessages[i].messages[allMessages[i].messages.length - 1].body %>
-                        </p>
-                    <% } else { %>
-                        <p class="d-flex justify-content-end me-3">
-                            <%= allMessages[i].messages[allMessages[i].messages.length - 1].body %>
-                        </p>
-                    <% }; %>
-                </a>
+            <div class="mb-3 ms-4">
+                <% if (allThreads[i].buyerUsername === username) { %>
+                    <%= allThreads[i].sellerUsername %>
+                <% } else { %>
+                    <%= allThreads[i].buyerUsername %>
+                <% }; %>
             </div>
-        <% }; %>
 
-        <% for (let i = 0; i < allOffers.length; i++) { %>
-            <% if (allOffers[i].buyerUsername === username) { %>
-                <div class="col-md-8 d-flex align-items-start flex-column me-auto border-bottom">
+            <% if (allThreads[i].buyerUsername === username) { %>
+                <div class="col-md-8 d-flex align-items-start flex-column me-auto">
                     <div class="mb-auto ms-4">
-                        <div class="mb-3">
-                            <%= allOffers[i].sellerUsername %>
-                        </div>
                         <div class="fw-bold mb-3">
-                            <%= allOffers[i].productId.name %>
+                            <%= allThreads[i].productId.name %>
                         </div>
                         <div class="mb-3">
-                            Your Offer: $<%= allOffers[i].offer %>
+                            Your Offer: $<%= allThreads[i].offer %>
                         </div>
                     </div>
-                    <% if (allOffers[i].status === "Offered") { %>
+                    <% if (allThreads[i].status === "Offered") { %>
                         <div class="ms-4 mb-3">
                             <input 
                                 type="text" 
@@ -68,7 +47,7 @@
                                 disabled
                             >
                         </div>
-                    <% } else if (allOffers[i].status === "Accepted") { %>
+                    <% } else if (allThreads[i].status === "Accepted") { %>
                         <div class="ms-4 mb-3">
                             <input 
                                 type="text" 
@@ -88,33 +67,33 @@
                         </div>
                     <% }; %>
                 </div>
-                <div class="col-md-4 border-bottom">
+                <div class="col-md-4">
                     <div class="text-center">
-                        <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
+                        <%= new Date(allThreads[i].updatedAt).toISOString().slice(0, 10) %>
                     </div>
                     <div>
-                        <a href="/product/<%= allOffers[i].productId._id %>">
+                        <a href="/product/<%= allThreads[i].productId._id %>">
                             <img
-                                src="<%= allOffers[i].productId.img %>"
+                                src="<%= allThreads[i].productId.img %>"
                                 class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                             >
                         </a>
                     </div>
                 </div>
             <% } else { %>
-                <div class="col-md-8 d-flex align-items-start flex-column me-auto border-bottom">
+                <div class="col-md-8 d-flex align-items-start flex-column me-auto">
                     <div class="mb-auto ms-4">
                         <div class="mb-3">
-                            <%= allOffers[i].buyerUsername %>
+                            <%= allThreads[i].buyerUsername %>
                         </div>
                         <div class="fw-bold mb-3">
-                            <%= allOffers[i].productId.name %>
+                            <%= allThreads[i].productId.name %>
                         </div>
                         <div class="mb-3">
-                            Offered You: $<%= allOffers[i].offer %>
+                            Offered You: $<%= allThreads[i].offer %>
                         </div>
                     </div>
-                    <% if (allOffers[i].status === "Offered") { %>
+                    <% if (allThreads[i].status === "Offered") { %>
                         <div class="d-flex ms-4 mb-3">
                             <form
                                 method="POST"
@@ -131,12 +110,12 @@
                                     <input
                                         type="hidden"
                                         name="offerID"
-                                        value="<%= allOffers[i]._id %>"
+                                        value="<%= allThreads[i]._id %>"
                                     >
                                     <input
                                         type="hidden"
                                         name="productId"
-                                        value="<%= allOffers[i].productId._id %>"
+                                        value="<%= allThreads[i].productId._id %>"
                                     >
                                 </div>
                             </form>
@@ -155,12 +134,12 @@
                                     <input
                                         type="hidden"
                                         name="offerID"
-                                        value="<%= allOffers[i]._id %>"
+                                        value="<%= allThreads[i]._id %>"
                                     >
                                 </div>
                             </form>
                         </div>
-                    <% } else if (allOffers[i].status === "Accepted") { %>
+                    <% } else if (allThreads[i].status === "Accepted") { %>
                         <div class="d-flex ms-4 mb-3">
                             <div class="me-3">
                                 <input 
@@ -186,18 +165,39 @@
                 </div>
                 <div class="col-md-4 border-bottom">
                     <div class="text-center">
-                        <%= new Date(allOffers[i].updatedAt).toISOString().slice(0, 10) %>
+                        <%= new Date(allThreads[i].updatedAt).toISOString().slice(0, 10) %>
                     </div>
                     <div>
-                        <a href="/product/<%= allOffers[i].productId._id %>">
+                        <a href="/product/<%= allThreads[i].productId._id %>">
                             <img
-                                src="<%= allOffers[i].productId.img %>"
+                                src="<%= allThreads[i].productId.img %>"
                                 class="index-img img-thumbnail card-img-top rounded mx-auto d-block w-50 mb-3"
                             >
                         </a>
                     </div>
                 </div>
             <% }; %>
+            
+            <% if (allThreads[i].messages.length !== 0) { %>
+                <div class="container border-bottom">
+                    <a 
+                        href="/user/inbox/<%= allThreads[i]._id %>"
+                        class="message-link"
+                    >
+    
+                        <% if (allThreads[i].messages[allThreads[i].messages.length - 1].username !== username) { %>
+                            <p class="d-flex justify-content-start ms-4">
+                                <%= allThreads[i].messages[allThreads[i].messages.length - 1].body %>
+                            </p>
+                        <% } else { %>
+                            <p class="d-flex justify-content-end me-3">
+                                <%= allThreads[i].messages[allThreads[i].messages.length - 1].body %>
+                            </p>
+                        <% }; %>
+                    </a>
+                </div>
+            <% }; %>
+
         <% }; %>
     </div>
 </div>
