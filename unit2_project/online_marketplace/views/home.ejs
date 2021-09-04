@@ -2,12 +2,18 @@
 <div class="container">
     <div class="row bg-secondary p-3">
         <div class="container-fluid col-md-6 w-50">
-            <form class="ms-2 mb-0">
+            <form 
+                class="ms-2 mb-0"
+                method="GET"
+                action="/"
+            >
                 <input 
                     class="form-control" 
                     type="search" 
                     placeholder="Search for an item" 
-                    aria-label="Search">
+                    aria-label="Search through homepage products"
+                    name="search"
+                >
             </form>
         </div>
         <div class="container-fluid col-md-6 d-flex justify-content-end w-50">
@@ -28,35 +34,35 @@
     </div>
 
     <div class="row bg-light">
-        <% for (let i = 0; i < allProducts.length; i++) { %>
+        <% for (let i = 0; i < products.length; i++) { %>
             <div class="col-md-3 mt-5 mb-5">
                 <div class="container-fluid">
                     <div class="fs-5">
-                        <%= allProducts[i].sellerID.username %>
+                        <%= products[i].sellerId.username %>
                     </div>
                     <div class="fw-light">
-                        Posted On: <%= new Date(allProducts[i].updatedAt).toISOString().slice(0, 10) %>
+                        Posted On: <%= new Date(products[i].updatedAt).toISOString().slice(0, 10) %>
                     </div>
                     <div class="mt-1 mb-1">
-                        <a href="/product/<%= allProducts[i]._id %>">
+                        <a href="/product/<%= products[i]._id %>">
                             <img 
-                                src="<%= allProducts[i].img %>" 
+                                src="<%= products[i].img %>" 
                                 class="index-img img-thumbnail rounded mx-auto d-block w-100"
-                                alt="<%= allProducts[i].name %>"
+                                alt="<%= products[i].name %>"
                             />
                         </a>
                     </div>
                     <div class="fw-bold text-truncate">
-                        <%= allProducts[i].name %>
+                        <%= products[i].name %>
                     </div>
                     <div>
-                        $<%= allProducts[i].price %>
+                        $<%= products[i].price %>
                     </div>
                     <div class="text-truncate">
-                        <%= allProducts[i].description %>
+                        <%= products[i].description %>
                     </div>
                     <div>
-                        <%= allProducts[i].condition %>
+                        <%= products[i].condition %>
                     </div>
                 </div>
             </div>

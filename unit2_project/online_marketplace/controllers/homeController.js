@@ -7,22 +7,47 @@ const controller = express.Router();
 // ROUTES
 controller.get("/", async (req, res) => {
     try {
-        const allProducts = await Product.find(
-            {
-                status: {
-                    $eq: "For Sale"
+        let products = [];
+
+        if (req.query.search) {
+            products = await Product.find(
+                {
+                    $or: [
+                        {
+                            name: req.query.search
+                        },
+                        {
+                            category: req.query.search
+                        }
+                    ]
                 }
-            }
-        )
-        .populate(
-            {
-                path: "sellerID",
-                select: "username",
-            }
-        );
-    
+            )
+            .populate(
+                {
+                    path: "sellerID",
+                    select: "username",
+                }
+            );
+
+        } else {
+            products = await Product.find(
+                {
+                    status: {
+                        $eq: "For Sale"
+                    }
+                }
+            )
+            .populate(
+                {
+                    path: "sellerID",
+                    select: "username",
+                }
+            );
+
+        }
+        
         res.render("home.ejs", {
-            allProducts 
+            products
         });
 
     } catch (err) {
