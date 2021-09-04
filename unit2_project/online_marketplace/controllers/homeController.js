@@ -24,7 +24,7 @@ controller.get("/", async (req, res) => {
             )
             .populate(
                 {
-                    path: "sellerID",
+                    path: "sellerId",
                     select: "username",
                 }
             );
@@ -39,7 +39,7 @@ controller.get("/", async (req, res) => {
             )
             .populate(
                 {
-                    path: "sellerID",
+                    path: "sellerId",
                     select: "username",
                 }
             );
