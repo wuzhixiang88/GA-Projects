@@ -19,195 +19,200 @@
 
     <% for (let i = 0; i < allThreads.length; i++) { %>
         <div class="row bg-light">
-            <% if (allThreads[i].buyerUsername === username) { %>
-                <div class="mb-3 ms-4">
-                    <%= allThreads[i].sellerUsername %>
-                </div>
-
-                <div class="col-md-8 d-flex align-items-start flex-column me-auto">
-                    <div class="mb-auto ms-4">
-                        <div class="fw-bold mb-3">
-                            <%= allThreads[i].productId.name %>
+            <div class="container d-flex">
+                <% if (allThreads[i].buyerUsername === username) { %>
+                    <a 
+                        href="/user/inbox/<%= allThreads[i]._id %>"
+                        class="message-link flex-grow-1 me-auto"
+                    >
+                        <div class="my-2 ms-4">
+                            <%= allThreads[i].sellerUsername %>
                         </div>
-                        <% if (allThreads[i].offer) { %>
-                            <div class="mb-3">
-                                Your Offer: $<%= allThreads[i].offer %>
+                    
+                        <div class="col-md-8 d-flex align-items-start flex-column me-auto">
+                            <div class="mb-auto ms-4">
+                                <div class="fw-bold mb-3">
+                                    <%= allThreads[i].productId.name %>
+                                </div>
+                                <% if (allThreads[i].offer) { %>
+                                    <div class="mb-3">
+                                        Your Offer: $<%= allThreads[i].offer %>
+                                    </div>
+                                <% }; %>
                             </div>
-                        <% }; %>
-                    </div>
-                    <% if (allThreads[i].status === "Offered") { %>
-                        <div class="ms-4 mb-3">
-                            <input 
-                                type="text" 
-                                class="form-control btn btn-success"
-                                value="Offered"
-                                disabled
-                            >
-                        </div>
-                    <% } else if (allThreads[i].status === "Accepted") { %>
-                        <div class="ms-4 mb-3">
-                            <input 
-                                type="text" 
-                                class="form-control btn btn-success"
-                                value="Offered Accepted"
-                                disabled
-                            >
-                        </div>
-                    <% } else if (allThreads[i].status === "Rejected") { %>
-                        <div class="ms-4 mb-3">
-                            <input 
-                                type="text" 
-                                class="form-control btn btn-danger"
-                                value="Offered Rejected"
-                                disabled
-                            >
-                        </div>
-                    <% } else if (allThreads[i].status === "Sold") { %>
-                        <div class="ms-4 mb-3">
-                            <input 
-                                type="text" 
-                                class="form-control btn btn-success"
-                                value="Deal Completed"
-                                disabled
-                            >
-                        </div>
-                    <% }; %>
-                </div>
-            <% } else { %>
-                <div class="mb-3 ms-4">
-                    <%= allThreads[i].buyerUsername %>
-                </div>
-
-                <div class="col-md-8 d-flex align-items-start flex-column me-auto">
-                    <div class="mb-auto ms-4">
-                        <div class="fw-bold mb-3">
-                            <%= allThreads[i].productId.name %>
-                        </div>
-                        <% if (allThreads[i].offer) { %>
-                            <div class="mb-3">
-                                Offered You: $<%= allThreads[i].offer %>
-                            </div>
-                        <% }; %>
-                    </div>
-                    <% if (allThreads[i].status === "Offered") { %>
-                        <div class="d-flex ms-4 mb-3">
-                            <form
-                                method="POST"
-                                action="/user/inbox/?_method=PATCH"
-                                class="mb-0"
-                            >
-                                <div class="me-3">
+                            <% if (allThreads[i].status === "Offered") { %>
+                                <div class="ms-4 mb-3">
                                     <input 
-                                        type="submit" 
+                                        type="text" 
                                         class="form-control btn btn-success"
-                                        name="sellerAction"
-                                        value="Accept Offer"
-                                    >
-                                    <input
-                                        type="hidden"
-                                        name="threadId"
-                                        value="<%= allThreads[i]._id %>"
-                                    >
-                                    <input
-                                        type="hidden"
-                                        name="productId"
-                                        value="<%= allThreads[i].productId._id %>"
+                                        value="Offered"
+                                        disabled
                                     >
                                 </div>
-                            </form>
-                            <form
-                                method="POST"
-                                action="/user/inbox/?_method=PATCH"
-                                class="mb-0"
-                            >
-                                <div>
+                            <% } else if (allThreads[i].status === "Accepted") { %>
+                                <div class="ms-4 mb-3">
                                     <input 
-                                        type="submit" 
-                                        class="form-control btn btn-danger"
-                                        name="sellerAction"
-                                        value="Reject Offer"
-                                    >
-                                    <input
-                                        type="hidden"
-                                        name="threadId"
-                                        value="<%= allThreads[i]._id %>"
+                                        type="text" 
+                                        class="form-control btn btn-success"
+                                        value="Offered Accepted"
+                                        disabled
                                     >
                                 </div>
-                            </form>
+                            <% } else if (allThreads[i].status === "Rejected") { %>
+                                <div class="ms-4 mb-3">
+                                    <input 
+                                        type="text" 
+                                        class="form-control btn btn-danger"
+                                        value="Offered Rejected"
+                                        disabled
+                                    >
+                                </div>
+                            <% } else if (allThreads[i].status === "Sold") { %>
+                                <div class="ms-4 mb-3">
+                                    <input 
+                                        type="text" 
+                                        class="form-control btn btn-success"
+                                        value="Deal Completed"
+                                        disabled
+                                    >
+                                </div>
+                            <% }; %>
                         </div>
-                    <% } else if (allThreads[i].status === "Accepted") { %>
-                        <div class="d-flex ms-4 mb-3">
-                            <div class="me-3">
-                                <input 
-                                    type="text" 
-                                    class="form-control btn btn-success"
-                                    value="Accepted Offer"
-                                    disabled
-                                >
-                            </div>
+                <% } else { %>
+                        <div class="my-2 ms-4">
+                            <%= allThreads[i].buyerUsername %>
                         </div>
-                    <% } else if (allThreads[i].status === "Rejected") { %>
-                        <div class="d-flex ms-4 mb-3">
-                            <div class="me-3">
-                                <input 
-                                    type="text" 
-                                    class="form-control btn btn-danger"
-                                    value="Rejected Offer"
-                                    disabled
-                                >
-                            </div>
-                        </div>
-                    <% } else if (allThreads[i].status === "Sold") { %>
-                        <div class="ms-4 mb-3">
-                            <input 
-                                type="text" 
-                                class="form-control btn btn-success"
-                                value="Deal Completed"
-                                disabled
-                            >
-                        </div>
-                    <% }; %>
-                </div>
-            <% }; %>
 
-            <div class="col-md-2 me-3">
-                <div class="text-center">
-                    <%= new Date(allThreads[i].updatedAt).toISOString().slice(0, 10) %>
-                </div>
-                <div>
-                    <a href="/product/<%= allThreads[i].productId._id %>">
-                        <img
-                            src="<%= allThreads[i].productId.img %>"
-                            class="inbox-img img-thumbnail card-img-top rounded mx-auto d-block mb-3"
-                        >
+                        <div class="col-md-8 d-flex align-items-start flex-column me-auto">
+                            <div class="mb-auto ms-4">
+                                <div class="fw-bold mb-3">
+                                    <%= allThreads[i].productId.name %>
+                                </div>
+                                <% if (allThreads[i].offer) { %>
+                                    <div class="mb-3">
+                                        Offered You: $<%= allThreads[i].offer %>
+                                    </div>
+                                <% }; %>
+                            </div>
+                            <% if (allThreads[i].status === "Offered") { %>
+                                <div class="d-flex ms-4 mb-3">
+                                    <form
+                                        method="POST"
+                                        action="/user/inbox/?_method=PATCH"
+                                        class="mb-0"
+                                    >
+                                        <div class="me-3">
+                                            <input 
+                                                type="submit" 
+                                                class="form-control btn btn-success"
+                                                name="sellerAction"
+                                                value="Accept Offer"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="threadId"
+                                                value="<%= allThreads[i]._id %>"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="productId"
+                                                value="<%= allThreads[i].productId._id %>"
+                                            >
+                                        </div>
+                                    </form>
+                                    <form
+                                        method="POST"
+                                        action="/user/inbox/?_method=PATCH"
+                                        class="mb-0"
+                                    >
+                                        <div>
+                                            <input 
+                                                type="submit" 
+                                                class="form-control btn btn-danger"
+                                                name="sellerAction"
+                                                value="Reject Offer"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="threadId"
+                                                value="<%= allThreads[i]._id %>"
+                                            >
+                                        </div>
+                                    </form>
+                                </div>
+                            <% } else if (allThreads[i].status === "Accepted") { %>
+                                <div class="d-flex ms-4 mb-3">
+                                    <div class="me-3">
+                                        <input 
+                                            type="text" 
+                                            class="form-control btn btn-success"
+                                            value="Accepted Offer"
+                                            disabled
+                                        >
+                                    </div>
+                                </div>
+                            <% } else if (allThreads[i].status === "Rejected") { %>
+                                <div class="d-flex ms-4 mb-3">
+                                    <div class="me-3">
+                                        <input 
+                                            type="text" 
+                                            class="form-control btn btn-danger"
+                                            value="Rejected Offer"
+                                            disabled
+                                        >
+                                    </div>
+                                </div>
+                            <% } else if (allThreads[i].status === "Sold") { %>
+                                <div class="ms-4 mb-3">
+                                    <input 
+                                        type="text" 
+                                        class="form-control btn btn-success"
+                                        value="Deal Completed"
+                                        disabled
+                                    >
+                                </div>
+                            <% }; %>
+                        </div>
                     </a>
+                <% }; %>
+
+                <div class="col-md-2 me-3">
+                    <div class="text-center">
+                        <%= new Date(allThreads[i].updatedAt).toISOString().slice(0, 10) %>
+                    </div>
+                    <div>
+                        <a href="/product/<%= allThreads[i].productId._id %>">
+                            <img
+                                src="<%= allThreads[i].productId.img %>"
+                                class="inbox-img img-thumbnail card-img-top rounded mx-auto d-block mb-3"
+                            >
+                        </a>
+                    </div>
                 </div>
             </div>
             
-            <% if (allThreads[i].messages.length !== 0) { %>
-                <div class="container border-bottom">
+            <div class="container border-bottom">
+                <% if (allThreads[i].messages.length !== 0) { %>
                     <a 
                         href="/user/inbox/<%= allThreads[i]._id %>"
                         class="message-link"
                     >
-    
                         <% if (allThreads[i].messages[allThreads[i].messages.length - 1].username !== username) { %>
                             <div class="d-flex flex-row rounded">
-                                <div class="inbox-message ms-4 mt-3 mb-3 px-3 py-1">
+                                <div class="inbox-message ms-4 mb-3 px-3 py-1">
                                     <%= allThreads[i].messages[allThreads[i].messages.length - 1].body %>
                                 </div>
                             </div>
                         <% } else { %>
                             <div class="d-flex flex-row-reverse rounded">
-                                <div class="inbox-own-message text-white m-3 px-3 py-1">
+                                <div class="inbox-own-message text-white me-3 mb-3 px-3 py-1">
                                     <%= allThreads[i].messages[allThreads[i].messages.length - 1].body %>
                                 </div>
                             </div>
                         <% }; %>
                     </a>
-                </div>
-            <% }; %>
-
+                <% }; %>
+            </div>
         </div>
     <% }; %>
 </div>
