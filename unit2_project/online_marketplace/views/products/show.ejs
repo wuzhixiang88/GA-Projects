@@ -3,17 +3,62 @@
     <div class="row bg-secondary p-3">
         <div class="container-fluid col-12 d-flex">
             <% if ((username) && (userid == product.sellerId._id)) { %>
-                <div class="me-auto ms-2 fs-4">
+                <div class="me-auto ms-2">
                     <form
                         method="POST"
                         action="/product/<%= product._id %>/?_method=DELETE"
                         class="mb-0"
                     >
-                        <input
-                            class="btn btn-danger text-center fw-bold" 
-                            type="submit" 
-                            value="Delete Item"
+                        <!-- Button trigger modal -->
+                        <button 
+                            type="button" 
+                            class="btn btn-danger fw-bold" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#deleteItem"
                         >
+                            Delete Item
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 
+                                            class="modal-title" 
+                                            id="staticBackdropLabel"
+                                        >
+                                            Delete Item
+                                        </h5>
+                                        <button 
+                                            type="button" 
+                                            class="btn-close" 
+                                            data-bs-dismiss="modal" 
+                                            aria-label="Close"
+                                        ></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        Confirm delete item?
+                                    </div>
+                                    
+                                    <div class="modal-footer">
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-secondary" 
+                                            data-bs-dismiss="modal"
+                                        >
+                                            Close
+                                        </button>
+                                        <button 
+                                            type="submit" 
+                                            class="btn btn-primary"
+                                        >
+                                            Confirm
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div>
@@ -97,7 +142,7 @@
                         type="text" 
                         value="<%= product.status %>"
                         disabled
-                    >
+                    />
                 </div>
             <% } else { %>
                 <div class="col-md-3">
@@ -118,17 +163,17 @@
                                 class="form-control btn btn-success mb-3" 
                                 type="submit" 
                                 value="Send message to seller"
-                            >
+                            />
                             <input
                                 type="hidden"
                                 name="productId"
                                 value="<%= product._id %>"
-                            >
+                            />
                             <input
                                 type="hidden"
                                 name="sellerUsername"
                                 value="<%= product.sellerId.username %>"
-                            >
+                            />
                         </div>
                     </form>
                     <% if (thread && thread.offer && thread.status !== "Rejected") { %>
@@ -143,14 +188,14 @@
                                     name="offer"
                                     value="<%= product.price %>"
                                     disabled
-                                > 
+                                /> 
                             </div>                 
                             <input 
                                 class="form-control btn btn-success"
                                 type="text"
                                 value="Offered"
                                 disabled
-                            >
+                            />
                         </div>
                     <% } else { %>
                         <form
@@ -167,23 +212,23 @@
                                         type="text"
                                         name="offer"
                                         value="<%= product.price %>"
-                                    > 
+                                    /> 
                                 </div>                 
                                 <input 
                                     class="form-control btn btn-danger" 
                                     type="submit" 
                                     value="Make Offer"
-                                >
+                                />
                                 <input
                                     type="hidden"
                                     name="productId"
                                     value="<%= product._id %>"
-                                >
+                                />
                                 <input
                                     type="hidden"
                                     name="sellerUsername"
                                     value="<%= product.sellerId.username %>"
-                                >
+                                />
                             </div>
                         </form>
                     <% }; %>
@@ -201,19 +246,19 @@
                                 class="form-control btn btn-danger" 
                                 type="submit" 
                                 value="Mark As Sold"
-                            >
+                            />
                             <input
                                 type="hidden"
                                 name="productId"
                                 value="<%= product._id %>"
-                            >
+                            />
                         <% } else { %>
                             <input 
                                 class="form-control btn btn-danger 
                                 type="text" 
                                 value="<%= product.status %>"
                                 disabled
-                            >
+                            />
                         <% };%>
                     </form>
                 </div>
