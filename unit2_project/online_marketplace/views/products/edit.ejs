@@ -93,14 +93,27 @@
                 <div class="fs-4 mb-3">
                     <p>Meetup Location:</p>
                     <input
-                        class="form-control"
+                        id="pac-input"
+                        class="form-control controls"
                         type="text"
                         name="meetLocation"
                         value="<%= product.meetLocation %>"
-                    >
+                        placeholder="Search location"
+                    />
+                    <div id="map"></div>
                 </div>
             </div>
         </div>
     </form>
 </div>
+<script 
+    src="https://polyfill.io/v3/polyfill.min.js?features=default"
+></script>
+<script 
+    src="/googleMap.js"
+></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=<%= GMAP_KEY %>&callback=initAutocomplete&libraries=places&v=weekly"
+    async
+></script>
 <%- include("../partials/footer.ejs") %>

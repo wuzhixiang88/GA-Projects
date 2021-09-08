@@ -77,7 +77,15 @@
             <div class="mb-3">
                 <h3 class="mb-3">Meetup Location</h3>
                 <div class="mb-3">
-                    <%= product.meetLocation %>
+                    <p><%= product.meetLocation %></p>
+                    <iframe 
+                        width="600" 
+                        height="450" 
+                        style="border:0" 
+                        loading="lazy" 
+                        allowfullscreen 
+                        src="https://www.google.com/maps/embed/v1/search?q=<%= product.meetLocation %>&key=<%= GMAP_KEY %>"
+                    ></iframe>
                 </div>
             </div>
         </div>

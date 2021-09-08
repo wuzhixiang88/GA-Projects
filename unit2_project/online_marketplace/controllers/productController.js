@@ -27,7 +27,9 @@ controller.get("/", async (req, res) => {
 // NEW ROUTE
 controller.get("/new", (req, res) => {
     try {
-        res.render("products/new.ejs");
+        res.render("products/new.ejs", {
+            GMAP_KEY: process.env.GMAP_KEY
+        });
 
     } catch (err) {
         res.send(err);
@@ -69,7 +71,8 @@ controller.get("/:id", async (req, res) => {
     
         res.render("products/show.ejs",  {
             product,
-            thread
+            thread,
+            GMAP_KEY: process.env.GMAP_KEY
         });
 
     } catch (err) {
@@ -87,7 +90,8 @@ controller.get("/:id/edit", async (req, res) => {
         );
     
         res.render("products/edit.ejs", {
-            product
+            product,
+            GMAP_KEY: process.env.GMAP_KEY
         });
 
     } catch (err) {
