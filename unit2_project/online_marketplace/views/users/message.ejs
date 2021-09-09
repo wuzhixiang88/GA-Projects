@@ -103,6 +103,9 @@
                                             class="form-control btn btn-success"
                                             name="sellerAction"
                                             value="Accept Offer"
+                                            <% if (thread.productId.status === "Reserved" || thread.productId.status === "Sold") { %>
+                                                disabled
+                                            <% }; %>
                                         >
                                         <input
                                             type="hidden"

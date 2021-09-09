@@ -31,7 +31,7 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
         .populate(
             {
                 path: "productId",
-                select: ["name", "img"]
+                select: ["name", "img", "status"]
             }
         );
 
@@ -54,7 +54,7 @@ controller.get("/inbox/:id", isUserLoggedIn, async (req, res) => {
         .populate(
             {
                 path: "productId",
-                select: ["name", "img"]
+                select: ["name", "img", "status"]
             }
         );
 
@@ -128,14 +128,7 @@ controller.post("/inbox", async (req, res) => {
             {
                 $and: [
                     {
-                        $or: [
-                            {
-                                buyerUsername: req.body.sellerUsername
-                            },
-                            {
-                                sellerUsername: req.body.sellerUsername
-                            }
-                        ]
+                        buyerUsername: req.session.username
                     },
                     {
                         productId: req.body.productId
@@ -179,14 +172,7 @@ controller.post("/inbox", async (req, res) => {
                     {
                         $and: [
                             {
-                                $or: [
-                                    {
-                                        buyerUsername: req.body.sellerUsername
-                                    },
-                                    {
-                                        sellerUsername: req.body.sellerUsername
-                                    }
-                                ]
+                                buyerUsername: req.session.username
                             },
                             {
                                 productId: req.body.productId
@@ -209,14 +195,7 @@ controller.post("/inbox", async (req, res) => {
                     {
                         $and: [
                             {
-                                $or: [
-                                    {
-                                        buyerUsername: req.body.sellerUsername
-                                    },
-                                    {
-                                        sellerUsername: req.body.sellerUsername
-                                    }
-                                ]
+                                buyerUsername: req.session.username
                             },
                             {
                                 productId: req.body.productId
