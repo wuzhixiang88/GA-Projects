@@ -9,10 +9,6 @@ const Thread = require("../models/thread");
 const controller = express.Router();
 
 // ROUTES
-controller.get("/signup", (req, res) => {
-    res.render("users/signup.ejs")
-});
-
 controller.get("/logout", (req, res) => {
     req.session.destroy();
     res.redirect("/");
@@ -45,7 +41,7 @@ controller.get("/inbox", isUserLoggedIn, async (req, res) => {
     
     } catch (err) {
         res.send(err);
-    }
+    };
 });
 
 controller.get("/inbox/:id", isUserLoggedIn, async (req, res) => {
@@ -86,11 +82,21 @@ controller.post("/signup", async (req, res) => {
             }
         );
 
-        res.send(`Your account has been create successfully!`);
+        const selectedUser = await User.findOne(
+            {
+                username: req.body.username
+            }
+        );
+
+        req.session.userid = selectedUser._id;
+        req.session.username = selectedUser.username;
+        req.session.firstname = selectedUser.firstname;
+
+        res.redirect("/");
 
     } catch (err) {
         res.send(`Unable to create a new account! Error: ${err.message}`)
-    }
+    };
 });
 
 controller.post("/login", async (req, res) => {
@@ -102,7 +108,7 @@ controller.post("/login", async (req, res) => {
 
     if (!selectedUser) {
         return res.send(`Username does not exist!`)
-    }
+    };
 
     if (bcrypt.compareSync(req.body.password, selectedUser.password)) {
         req.session.userid = selectedUser._id;
@@ -323,7 +329,7 @@ controller.patch("/inbox/:id", isUserLoggedIn, async (req, res) => {
 
     } catch (err) {
         res.send(err);
-    }
+    };
 });
 
 // EXPORTS
