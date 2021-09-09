@@ -13,10 +13,6 @@ controller.get("/signup", (req, res) => {
     res.render("users/signup.ejs")
 });
 
-controller.get("/login", (req, res) => {
-    res.render("users/login.ejs")
-});
-
 controller.get("/logout", (req, res) => {
     req.session.destroy();
     res.redirect("/");
@@ -85,7 +81,8 @@ controller.post("/signup", async (req, res) => {
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 username: req.body.username,
-                password: hashedPassword
+                password: hashedPassword,
+                country: req.body.country
             }
         );
 
