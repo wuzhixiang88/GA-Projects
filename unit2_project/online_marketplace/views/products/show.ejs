@@ -288,11 +288,56 @@
                         action="/product/<%= product._id %>/?_method=PATCH"
                     >
                         <% if (product.status !== "Sold") { %>               
-                            <input 
+                            <!-- Button trigger modal -->
+                            <button 
+                                type="button" 
                                 class="form-control btn btn-danger" 
-                                type="submit" 
-                                value="Mark As Sold"
-                            />
+                                data-bs-toggle="modal" 
+                                data-bs-target="#markSold"
+                            >
+                                Mark As Sold
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="markSold" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 
+                                                class="modal-title" 
+                                                id="staticBackdropLabel"
+                                            >
+                                                Mark As Sold
+                                            </h5>
+                                            <button 
+                                                type="button" 
+                                                class="btn-close" 
+                                                data-bs-dismiss="modal" 
+                                                aria-label="Close"
+                                            ></button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            Confirm mark product as sold?
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                            <button 
+                                                type="button" 
+                                                class="btn btn-secondary" 
+                                                data-bs-dismiss="modal"
+                                            >
+                                                Close
+                                            </button>
+                                            <button 
+                                                type="submit" 
+                                                class="btn btn-primary"
+                                            >
+                                                Confirm
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <input
                                 type="hidden"
                                 name="productId"
