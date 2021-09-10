@@ -160,11 +160,18 @@
                             ></textarea>
                         </div>
                         <div class="mb-5">
-                            <input 
-                                class="form-control btn btn-success mb-3" 
-                                type="submit" 
-                                value="Send message to <%= product.sellerId.username %>"
-                            />
+                            <button 
+                                class="form-control btn btn-success mb-3"
+                                <% if (username) { %>
+                                    type="submit" 
+                                <% } else { %>
+                                    type="button"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#login"
+                                <% }; %>
+                            >
+                                Send message to <%= product.sellerId.username %>
+                            </button>
                             <input
                                 type="hidden"
                                 name="productId"
@@ -219,8 +226,13 @@
                                 <button 
                                     type="button" 
                                     class="form-control btn btn-danger" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#makeOffer"
+                                    <% if (username) { %>
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#makeOffer"
+                                    <% } else { %>
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#login"
+                                    <% }; %>
                                 >
                                     Make Offer
                                 </button>

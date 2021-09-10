@@ -24,7 +24,8 @@
                     <% if (username) { %>
                         href="/product/new"
                     <% } else { %>
-                        href="/user/login"
+                        data-bs-toggle="modal" 
+                        href="#login"
                     <% }; %>
                 >
                     Sell   
