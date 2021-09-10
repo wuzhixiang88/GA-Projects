@@ -27,6 +27,11 @@ controller.get("/", async (req, res) => {
                     path: "sellerId",
                     select: "username",
                 }
+            )
+            .sort(
+                {
+                    updatedAt: -1
+                }
             );
 
         } else {
@@ -42,9 +47,13 @@ controller.get("/", async (req, res) => {
                     path: "sellerId",
                     select: "username",
                 }
+            )
+            .sort(
+                {
+                    updatedAt: -1
+                }
             );
-
-        }
+        };
         
         res.render("home.ejs", {
             products

@@ -14,6 +14,11 @@ controller.get("/", isUserLoggedIn, async (req, res) => {
             {
                 sellerId: req.session.userid
             }
+        )
+        .sort(
+            {
+                updatedAt: -1
+            }
         );
     
         res.render("products/index.ejs", {
