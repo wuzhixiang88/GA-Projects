@@ -34,6 +34,131 @@
         </div>
     </div>
 
+    <div class="row my-3">
+        <div 
+            id="homeCarousel" 
+            class="col-md-8 carousel slide px-0" 
+            data-bs-ride="carousel"
+        >
+            <div class="carousel-indicators">
+                <button 
+                    class="active bg-dark" 
+                    type="button" 
+                    data-bs-target="#homeCarousel" 
+                    data-bs-slide-to="0" 
+                    aria-current="true" 
+                    aria-label="Slide 1"
+                ></button>
+                <button 
+                    class="bg-dark"
+                    type="button" 
+                    data-bs-target="#homeCarousel" 
+                    data-bs-slide-to="1"
+                    aria-label="Slide 2"
+                ></button>
+                <button 
+                    class="bg-dark"
+                    type="button" 
+                    data-bs-target="#homeCarousel" 
+                    data-bs-slide-to="2"
+                    aria-label="Slide 3"
+                ></button>
+                <button 
+                    class="bg-dark"
+                    type="button" 
+                    data-bs-target="#homeCarousel" 
+                    data-bs-slide-to="3"
+                    aria-label="Slide 4"
+                ></button>
+                <button 
+                    class="bg-dark"
+                    type="button" 
+                    data-bs-target="#homeCarousel" 
+                    data-bs-slide-to="4"
+                    aria-label="Slide 5"
+                ></button>
+                <button 
+                    class="bg-dark"
+                    type="button" 
+                    data-bs-target="#homeCarousel" 
+                    data-bs-slide-to="5"
+                    aria-label="Slide 6"
+                ></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img 
+                        src="https://i.imgur.com/lWWEOUI.jpg" 
+                        class="carousel-img d-block w-100" 
+                        alt="..."
+                    />
+                </div>
+                <div class="carousel-item">
+                    <img 
+                        src="https://i.imgur.com/o8RJL7B.jpg" 
+                        class="carousel-img d-block w-100" 
+                        alt="..."
+                    />
+                </div>
+                <div class="carousel-item">
+                    <img 
+                        src="https://i.imgur.com/Anj0xe3.jpg" 
+                        class="carousel-img d-block w-100" 
+                        alt="..."
+                    />
+                </div>
+                <div class="carousel-item">
+                    <img 
+                        src="https://i.imgur.com/Lujbyyw.jpg" 
+                        class="carousel-img d-block w-100" 
+                        alt="..."
+                    />
+                </div>
+                <div class="carousel-item">
+                    <img 
+                        src="https://i.imgur.com/VcGSwG1.png" 
+                        class="carousel-img d-block w-100" 
+                        alt="..."
+                    />
+                </div>
+                <div class="carousel-item">
+                    <img 
+                        src="https://i.imgur.com/U2DG4Pb.jpg" 
+                        class="carousel-img d-block w-100" 
+                        alt="..."
+                    />
+                </div>
+            </div>
+
+            <button 
+                class="carousel-control-prev" 
+                type="button" 
+                data-bs-target="#homeCarousel" 
+                data-bs-slide="prev"
+            >
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button 
+                class="carousel-control-next" 
+                type="button" 
+                data-bs-target="#homeCarousel" 
+                data-bs-slide="next"
+            >
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <div class="col-md-4">
+            <img
+                src="https://i.imgur.com/BhmRxJa.png"
+                class="store-logo ps-2"
+            />
+        </div>
+    </div>
+
     <div class="row bg-light">
         <% for (let i = 0; i < products.length; i++) { %>
             <div class="col-md-3 mt-5 mb-5">

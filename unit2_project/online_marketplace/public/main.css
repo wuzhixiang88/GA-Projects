@@ -28,6 +28,16 @@
     text-decoration: none;
 }
 
+.carousel-img {
+    height: 400px;
+    object-fit: fill;
+}
+
+.store-logo {
+    height: 400px;
+    object-fit: contain;
+}
+
 /* FOR GOOGLE MAPS */
 #map {
     height: 100%;
