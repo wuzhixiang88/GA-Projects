@@ -7,12 +7,17 @@
             </div>
             <% if (username) { %>
                 <div class="d-flex justify-content-end align-items-center">
-                    <form class="me-3 mb-0">
+                    <form 
+                        class="me-3 mb-0"
+                        method="GET"
+                        action="/product"
+                    >
                         <input 
                             class="form-control" 
                             type="search" 
                             placeholder="Search listing" 
                             aria-label="Search"
+                            name="search"
                         />
                     </form>
                     <a 

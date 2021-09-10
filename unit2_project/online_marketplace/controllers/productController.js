@@ -10,20 +10,50 @@ const controller = express.Router();
 // INDEX ROUTE
 controller.get("/", isUserLoggedIn, async (req, res) => {
     try {
-        const userProductList = await Product.find(
-            {
-                sellerId: req.session.userid
-            }
-        )
-        .sort(
-            {
-                updatedAt: -1
-            }
-        );
-    
+        let userProductList = [];
+
+        if (req.query.search) {
+            userProductList = await Product.find(
+                {
+                    $and: [
+                        {
+                            sellerId: req.session.userid
+                        },
+                        {
+                            $or: [
+                                {
+                                    name: req.query.search
+                                },
+                                {
+                                    category: req.query.search
+                                }
+                            ]
+                        }
+                    ]
+                }
+            )
+            .sort(
+                {
+                    updatedAt: -1
+                }
+            );
+
+        } else {
+            userProductList = await Product.find(
+                {
+                    sellerId: req.session.userid
+                }
+            )
+            .sort(
+                {
+                    updatedAt: -1
+                }
+            );
+        };
+
         res.render("products/index.ejs", {
             userProductList 
-        })
+        });
 
     } catch (err) {
         res.send(err);
@@ -144,7 +174,6 @@ controller.put("/:id", isUserLoggedIn, async (req, res) => {
                 meetLocation: req.body.meetLocation
             }
         );
-        console.log(req.method)
     
         res.redirect(`/product/${req.params.id}`);
 
