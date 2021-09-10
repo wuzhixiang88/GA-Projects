@@ -10,7 +10,6 @@ const dbConnection = mongoose.connection;
 const session = require("express-session");
 const methodOverride = require("method-override");
 
-const isUserLoggedIn = require("./middlewares/isUserLoggedIn");
 const sessionUserInfo = require("./middlewares/sessionUserInfo");
 
 const homeController = require("./controllers/homeController");
@@ -47,7 +46,7 @@ app.use(sessionUserInfo);
 // ROUTERS
 app.use(homeController);
 app.use("/user", userController);
-app.use("/product", isUserLoggedIn, productController);
+app.use("/product", productController);
 
 app.use("*", (req, res) => { res.status(400).send() });
 

@@ -1,13 +1,14 @@
 // DEPENDENCIES
 const express = require("express");
 const imgUpload = require("../middlewares/imgUpload");
+const isUserLoggedIn = require("../middlewares/isUserLoggedIn");
 const Product = require("../models/product");
 const Thread = require("../models/thread");
 
 const controller = express.Router();
 
 // INDEX ROUTE
-controller.get("/", async (req, res) => {
+controller.get("/", isUserLoggedIn, async (req, res) => {
     try {
         const userProductList = await Product.find(
             {
@@ -25,7 +26,7 @@ controller.get("/", async (req, res) => {
 });
 
 // NEW ROUTE
-controller.get("/new", (req, res) => {
+controller.get("/new", isUserLoggedIn, (req, res) => {
     try {
         res.render("products/new.ejs", {
             GMAP_KEY: process.env.GMAP_KEY
@@ -81,7 +82,7 @@ controller.get("/:id", async (req, res) => {
 });
 
 // EDIT ROUTE
-controller.get("/:id/edit", async (req, res) => {
+controller.get("/:id/edit", isUserLoggedIn, async (req, res) => {
     try {
         const product = await Product.findOne(
             {
@@ -100,7 +101,7 @@ controller.get("/:id/edit", async (req, res) => {
 });
 
 // CREATE ROUTE
-controller.post("/", imgUpload.single("productImg"), async (req, res) => {
+controller.post("/", isUserLoggedIn, imgUpload.single("productImg"), async (req, res) => {
     try {
         await Product.create(
             {
@@ -123,7 +124,7 @@ controller.post("/", imgUpload.single("productImg"), async (req, res) => {
 });
 
 // UPDATE ROUTE
-controller.put("/:id", async (req, res) => {
+controller.put("/:id", isUserLoggedIn, async (req, res) => {
     try {
         await Product.updateOne(
             {
@@ -138,6 +139,7 @@ controller.put("/:id", async (req, res) => {
                 meetLocation: req.body.meetLocation
             }
         );
+        console.log(req.method)
     
         res.redirect(`/product/${req.params.id}`);
 
@@ -146,7 +148,7 @@ controller.put("/:id", async (req, res) => {
     };
 });
 
-controller.patch("/:id", async (req, res) => {
+controller.patch("/:id", isUserLoggedIn, async (req, res) => {
     try {
         await Thread.updateOne(
             {
@@ -181,7 +183,7 @@ controller.patch("/:id", async (req, res) => {
 });
 
 // DESTROY ROUTE
-controller.delete("/:id", async (req, res) => {
+controller.delete("/:id", isUserLoggedIn, async (req, res) => {
     try {
         await Product.findOneAndDelete(
             {

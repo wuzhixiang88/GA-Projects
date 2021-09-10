@@ -9,7 +9,7 @@ const Thread = require("../models/thread");
 const controller = express.Router();
 
 // ROUTES
-controller.get("/logout", (req, res) => {
+controller.get("/logout", isUserLoggedIn, (req, res) => {
     req.session.destroy();
     res.redirect("/");
 });
@@ -122,7 +122,7 @@ controller.post("/login", async (req, res) => {
     };
 });
 
-controller.post("/inbox", async (req, res) => {
+controller.post("/inbox", isUserLoggedIn, async (req, res) => {
     try {
         const thread = await Thread.findOne(
             {
