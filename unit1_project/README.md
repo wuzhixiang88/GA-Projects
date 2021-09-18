@@ -38,12 +38,12 @@ The general program flow is shown below, consisting of 3 main program states.
 
 #### Miscellaneous
 - Show movable cells for selected chess piece.
-<p align="center">
+<p align="left">
 <img src="https://i.imgur.com/giDWWrl.png" />
 </p>
 
 - Show captured chess pieces.
-<p align="center">
+<p align="left">
 <img src="https://i.imgur.com/MqrgPtE.png" />
 </p>
 
