@@ -1,5 +1,5 @@
 # Online Marketplace
-An Online Marketplace app for consumers to list their products for sale, just like a scaled down version of Carousell.
+An Online Marketplace app for consumers to list their products for sale, just like a scaled down version of Carousell. A <a href="https://zx-online-marketplace.herokuapp.com/" target="_blank" >working version</a> of the app has been deployed on Heroku.
 
 ![image](https://user-images.githubusercontent.com/78526590/133892771-4bee1306-9e5a-4cec-abc0-7c7aef207156.png)
 
