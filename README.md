@@ -8,6 +8,4 @@ An Online Marketplace app for consumers to list their products for sale, just li
 
 Tech Stack: MongoDB, ExpressJS, NodeJS
 
-A working version of the app has been deployed on Heroku and can be accessed via the link below.
-
-https://zx-online-marketplace.herokuapp.com/
+A <a href="https://zx-online-marketplace.herokuapp.com/" >working version</a> of the app has been deployed on Heroku, however Google Maps feature is disabled for that version.
