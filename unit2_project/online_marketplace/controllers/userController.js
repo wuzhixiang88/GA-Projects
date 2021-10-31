@@ -154,7 +154,7 @@ controller.post("/inbox", isUserLoggedIn, async (req, res) => {
                 );
             };
     
-            if (req.body.offer) {
+            if (req.body.offer > 0) {
                 await Thread.create(
                     {
                         buyerUsername: req.session.username,
@@ -190,7 +190,7 @@ controller.post("/inbox", isUserLoggedIn, async (req, res) => {
                 );
             };
 
-            if (req.body.offer) {
+            if (req.body.offer > 0) {
                 await Thread.updateOne(
                     {
                         $and: [
