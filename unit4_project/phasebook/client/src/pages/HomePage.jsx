@@ -9,9 +9,19 @@ import Modal from "react-bootstrap/Modal";
 
 const HomePage = () => {
   const [show, setShow] = useState(false);
+  const [validated, setValidated] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    setValidated(true);
+  };
 
   return (
     <Container fluid className="bg-light">
@@ -25,27 +35,40 @@ const HomePage = () => {
           </Row>
         </Col>
         <Col md={2} className="bg-white rounded">
-          <Form className="mt-3">
+          <Form
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+            className="mt-3"
+          >
             <Form.Group className="mb-3">
               <Form.Control
+                required
                 type="email"
-                placeholder="Enter email"
+                placeholder="Email Address"
                 autoFocus={true}
               />
+              <Form.Control.Feedback type="invalid" className="text-start">
+                Please enter a email address.
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control required type="password" placeholder="Password" />
+              <Form.Control.Feedback type="invalid" className="text-start">
+                Please enter a password.
+              </Form.Control.Feedback>
             </Form.Group>
-          </Form>
-          <div className="d-grid gap-2 border-bottom">
-            <Button variant="primary" type="submit" className="fw-bold">
-              Log In
-            </Button>
-            <p>Forgotten password?</p>
-          </div>
 
-          <div className="d-grid gap-2 my-3">
+            <div className="d-grid gap-2 border-bottom">
+              <Button variant="primary" type="submit" className="fw-bold">
+                Log In
+              </Button>
+              <p>Forgotten password?</p>
+            </div>
+          </Form>
+
+          <div className="d-grid gap-2 my-4">
             <Button
               variant="success"
               type="submit"
@@ -65,47 +88,90 @@ const HomePage = () => {
             <Modal.Header closeButton>
               <Modal.Title>Sign Up</Modal.Title>
             </Modal.Header>
-            <Modal.Body className="show-grid">
-              <Container>
-                <Row>
-                  <Col xs={12} md={6} className="ps-0">
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="text"
-                        placeholder="First Name"
-                        autoFocus={true}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col xs={12} md={6} className="px-0">
-                    <Form.Group className="mb-3">
-                      <Form.Control type="text" placeholder="Surname" />
-                    </Form.Group>
-                  </Col>
-                </Row>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+              <Modal.Body className="show-grid">
+                <Container>
+                  <Row>
+                    <Col xs={12} md={6} className="ps-0">
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          required
+                          type="text"
+                          placeholder="First Name"
+                          autoFocus={true}
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="text-start"
+                        >
+                          Please enter a first name.
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col xs={12} md={6} className="px-0">
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          required
+                          type="text"
+                          placeholder="Surname"
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="text-start"
+                        >
+                          Please enter a surname.
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col className="px-0">
-                    <Form.Group className="mb-3">
-                      <Form.Control type="text" placeholder="Email Address" />
-                    </Form.Group>
-                  </Col>
-                </Row>
+                  <Row>
+                    <Col className="px-0">
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          required
+                          type="email"
+                          placeholder="Email Address"
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="text-start"
+                        >
+                          Please enter a email address.
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col className="px-0">
-                    <Form.Group className="mb-3">
-                      <Form.Control type="password" placeholder="Password" />
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Container>
-            </Modal.Body>
-            <Modal.Footer className="d-flex justify-content-center">
-              <Button variant="success" className="px-5">
-                Sign Up
-              </Button>
-            </Modal.Footer>
+                  <Row>
+                    <Col className="px-0">
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          required
+                          type="password"
+                          placeholder="Password"
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="text-start"
+                        >
+                          Please enter a password.
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Container>
+              </Modal.Body>
+              <Modal.Footer className="d-flex justify-content-center">
+                <Button
+                  variant="success"
+                  type="submit"
+                  className="fw-bold px-5"
+                >
+                  Sign Up
+                </Button>
+              </Modal.Footer>
+            </Form>
           </Modal>
         </Col>
       </Row>
