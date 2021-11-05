@@ -83,6 +83,7 @@ const HomePage = () => {
             show={show}
             onHide={handleClose}
             backdrop="static"
+            centered={true}
             keyboard={false}
           >
             <Modal.Header closeButton>
@@ -98,7 +99,6 @@ const HomePage = () => {
                           required
                           type="text"
                           placeholder="First Name"
-                          autoFocus={true}
                         />
                         <Form.Control.Feedback
                           type="invalid"
