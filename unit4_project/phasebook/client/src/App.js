@@ -1,14 +1,18 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import { Route, Switch } from "react-router";
-import HomePage from "./pages/HomePage";
+import LandingPage from "./pages/LandingPage";
+import UserMainPage from "./pages/UserMainPage";
 
 function App() {
   return (
     <div className="App">
       <Switch>
         <Route exact path="/">
-          <HomePage />
+          <LandingPage />
+        </Route>
+        <Route exact path="/:id">
+          <UserMainPage />
         </Route>
       </Switch>
     </div>
