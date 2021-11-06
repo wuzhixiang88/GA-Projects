@@ -27,9 +27,13 @@ const Header = () => {
               />
             </Navbar.Brand>
           </Col>
-          <Col md={2}>
+          <Col md={1}>
             <Form.Group>
-              <Form.Control type="search" placeholder="Search Phasebook" />
+              <Form.Control
+                type="search"
+                placeholder="Search Phasebook"
+                className="rounded-pill"
+              />
             </Form.Group>
           </Col>
           <Col md="auto" className="d-flex ms-auto">
