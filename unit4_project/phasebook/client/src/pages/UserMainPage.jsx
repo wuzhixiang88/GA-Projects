@@ -1,7 +1,8 @@
 import React from "react";
+import Header from "../components/Header";
 
 const UserMainPage = () => {
-  return <div>User Main Page</div>;
+  return <Header />;
 };
 
 export default UserMainPage;
