@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 
 const Header = () => {
   return (
@@ -17,7 +18,7 @@ const Header = () => {
         <Navbar bg="light" variant="dark" fixed="top">
           <Col md={1}>
             <Navbar.Brand href="#home">
-              <img
+              <Image
                 alt=""
                 src={logo}
                 width="50"
@@ -31,11 +32,15 @@ const Header = () => {
               <Form.Control type="search" placeholder="Search Phasebook" />
             </Form.Group>
           </Col>
-          <Col md={4} className="d-flex ms-auto">
+          <Col md={1} className="d-flex ms-auto">
             <Button variant="secondary" className="rounded-pill me-3">
               Zhixiang
             </Button>
-            <DropdownButton variant="secondary" id="header-dropdown-button">
+            <DropdownButton
+              variant="secondary"
+              id="header-dropdown-button"
+              drop="start"
+            >
               <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
               <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
               <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
