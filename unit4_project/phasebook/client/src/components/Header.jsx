@@ -16,14 +16,14 @@ const Header = () => {
     <Container fluid>
       <Row>
         <Navbar bg="light" variant="dark" fixed="top">
-          <Col md={1}>
-            <Navbar.Brand href="#home">
+          <Col md="auto">
+            <Navbar.Brand href="/">
               <Image
                 alt=""
                 src={logo}
                 width="50"
                 height="30"
-                className="App-logo"
+                className="App-logo me-0"
               />
             </Navbar.Brand>
           </Col>
@@ -39,7 +39,7 @@ const Header = () => {
             <DropdownButton
               variant="secondary"
               id="header-dropdown-button"
-              drop="start"
+              align="end"
             >
               <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
               <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
