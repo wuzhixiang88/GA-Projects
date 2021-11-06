@@ -17,13 +17,13 @@ const Header = () => {
       <Row>
         <Navbar bg="light" variant="dark" fixed="top">
           <Col md="auto">
-            <Navbar.Brand href="/">
+            <Navbar.Brand href="/" className="me-0">
               <Image
                 alt=""
                 src={logo}
                 width="50"
                 height="30"
-                className="App-logo me-0"
+                className="App-logo"
               />
             </Navbar.Brand>
           </Col>
@@ -32,7 +32,7 @@ const Header = () => {
               <Form.Control type="search" placeholder="Search Phasebook" />
             </Form.Group>
           </Col>
-          <Col md={1} className="d-flex ms-auto">
+          <Col md="auto" className="d-flex ms-auto">
             <Button variant="secondary" className="rounded-pill me-3">
               Zhixiang
             </Button>
