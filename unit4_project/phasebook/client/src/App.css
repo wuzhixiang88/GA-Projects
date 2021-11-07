@@ -39,3 +39,7 @@
 #header-dropdown-button {
   border-radius: 20px;
 }
+
+.main-container {
+  background-color: rgb(240, 240, 240);
+}

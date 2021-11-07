@@ -12,7 +12,7 @@ import Image from "react-bootstrap/Image";
 const Profile = () => {
   return (
     <Container fluid>
-      <Row className="justify-content-md-center" bg="light">
+      <Row className="justify-content-md-center">
         <Col md={4}>
           <Card>
             <Card.Img
@@ -29,20 +29,19 @@ const Profile = () => {
         </Col>
       </Row>
       <Row className="justify-content-md-center mt-3">
-        <Col md={1} className="border-bottom">
+        <Col md="auto" className="border-bottom">
           <Image
             alt=""
             src={seedProfilePhoto}
-            width="200"
             height="200"
             className="border rounded-circle mb-3"
           />
         </Col>
         <Col
           md={2}
-          className="d-flex align-items-start flex-column border-bottom"
+          className="d-flex align-items-start flex-column border-bottom mt-5"
         >
-          <div className="fs-2 fw-bold mt-5">Zhixiang Wu</div>
+          <div className="fs-2 fw-bold">Zhixiang Wu</div>
           <div className="fs-6">685 Friends</div>
         </Col>
         <Col md={1} className="position-relative border-bottom">
