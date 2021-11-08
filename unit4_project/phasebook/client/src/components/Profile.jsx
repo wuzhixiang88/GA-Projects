@@ -13,7 +13,7 @@ const Profile = () => {
   return (
     <Container fluid>
       <Row className="justify-content-md-center">
-        <Col md={4}>
+        <Col md={4} className="px-0">
           <Card>
             <Card.Img
               src={seedCoverPhoto}
@@ -44,14 +44,14 @@ const Profile = () => {
         <Col md={1} className="position-relative">
           <Button
             variant="secondary"
-            className="position-absolute bottom-0 end-0 me-3"
+            className="position-absolute bottom-0 end-0 me-1"
           >
             Edit Profile
           </Button>
         </Col>
       </Row>
       <Row className="justify-content-md-center mt-3">
-        <Col md={4} className="d-flex justify-content-start border-top">
+        <Col md={4} className="d-flex justify-content-start border-top px-0">
           <Button variant="outline-primary" className="fw-bold border-0 mt-3">
             Posts
           </Button>

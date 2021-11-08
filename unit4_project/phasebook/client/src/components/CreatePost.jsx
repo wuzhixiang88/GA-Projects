@@ -29,7 +29,7 @@ const CreatePost = () => {
   return (
     <>
       <Row className="justify-content-md-center mt-3">
-        <Col md={4}>
+        <Col md={4} className="px-0">
           <Card className="border-0 rounded-3 my-3">
             <Card.Body className="d-flex py-0">
               <Image
