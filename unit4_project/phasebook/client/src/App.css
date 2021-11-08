@@ -43,3 +43,12 @@
 .main-container {
   background-color: rgb(240, 240, 240);
 }
+
+#post-textarea {
+  height: 100px;
+  resize: none;
+}
+
+#post-textarea:focus {
+  box-shadow: none;
+}
