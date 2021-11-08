@@ -52,16 +52,16 @@ const Profile = () => {
       </Row>
       <Row className="justify-content-md-center mt-3">
         <Col md={4} className="d-flex justify-content-start border-top">
-          <Button variant="outline-primary" className="fw-bold border-0">
+          <Button variant="outline-primary" className="fw-bold border-0 mt-3">
             Posts
           </Button>
-          <Button variant="outline-primary" className="fw-bold border-0">
+          <Button variant="outline-primary" className="fw-bold border-0 mt-3">
             About
           </Button>
-          <Button variant="outline-primary" className="fw-bold border-0">
+          <Button variant="outline-primary" className="fw-bold border-0 mt-3">
             Friends
           </Button>
-          <Button variant="outline-primary" className="fw-bold border-0">
+          <Button variant="outline-primary" className="fw-bold border-0 mt-3">
             Photos
           </Button>
         </Col>
