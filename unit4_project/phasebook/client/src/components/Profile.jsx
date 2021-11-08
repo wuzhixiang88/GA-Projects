@@ -29,32 +29,29 @@ const Profile = () => {
         </Col>
       </Row>
       <Row className="justify-content-md-center mt-3">
-        <Col md="auto" className="border-bottom">
+        <Col md="auto">
           <Image
             alt=""
             src={seedProfilePhoto}
             height="200"
-            className="border rounded-circle mb-3"
+            className="border rounded-circle"
           />
         </Col>
-        <Col
-          md={2}
-          className="d-flex align-items-start flex-column border-bottom mt-5"
-        >
+        <Col md={2} className="d-flex align-items-start flex-column mt-5">
           <div className="fs-2 fw-bold">Zhixiang Wu</div>
           <div className="fs-6">685 Friends</div>
         </Col>
-        <Col md={1} className="position-relative border-bottom">
+        <Col md={1} className="position-relative">
           <Button
             variant="secondary"
-            className="position-absolute bottom-0 end-0 mb-3 me-3"
+            className="position-absolute bottom-0 end-0 me-3"
           >
             Edit Profile
           </Button>
         </Col>
       </Row>
       <Row className="justify-content-md-center mt-3">
-        <Col md={4} className="d-flex justify-content-start">
+        <Col md={4} className="d-flex justify-content-start border-top">
           <Button variant="outline-primary" className="fw-bold border-0">
             Posts
           </Button>
