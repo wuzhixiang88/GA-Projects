@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Header from "../components/Header";
 import Profile from "../components/Profile";
 import CreatePost from "../components/CreatePost";
+import PostFeed from "../components/PostFeed";
 
 const UserMainPage = () => {
   return (
@@ -12,6 +13,7 @@ const UserMainPage = () => {
       <Profile />
       <Container fluid className="main-container">
         <CreatePost />
+        <PostFeed />
       </Container>
     </>
   );

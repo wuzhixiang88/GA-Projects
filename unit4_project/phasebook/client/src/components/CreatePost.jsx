@@ -27,11 +27,11 @@ const CreatePost = () => {
   const handleClosePhotoUploadWindow = () => setPhotoUploadWindow(false);
 
   return (
-    <Container fluid>
+    <>
       <Row className="justify-content-md-center mt-3">
         <Col md={4}>
           <Card className="border-0 rounded-3 my-3">
-            <Card.Body className="d-flex text-start py-0">
+            <Card.Body className="d-flex py-0">
               <Image
                 alt=""
                 src={seedProfilePhoto}
@@ -168,7 +168,7 @@ const CreatePost = () => {
           </Modal.Footer>
         </Form>
       </Modal>
-    </Container>
+    </>
   );
 };
 

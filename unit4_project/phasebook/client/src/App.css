@@ -62,10 +62,24 @@
   background-color: rgb(250, 250, 250);
 }
 
+#like-comment-button:hover,
 .img-upload-label:hover {
   background-color: rgb(230, 230, 230);
 }
 
 .img-upload-form > input {
   display: none;
+}
+
+.post-feed-user {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.post-feed-date {
+  font-size: 12px;
+}
+
+#like-comment-button {
+  background-color: white;
 }
