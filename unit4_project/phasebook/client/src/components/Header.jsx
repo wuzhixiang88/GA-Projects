@@ -1,4 +1,9 @@
 import logo from "../logo.svg";
+import profileIcon from "../profile.png";
+import displayIcon from "../moon.png";
+import settingsIcon from "../settings.png";
+import logoutIcon from "../logout.png";
+import seedProfilePhoto from "../seed_profile_photo.jpg";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "react-bootstrap/Navbar";
@@ -37,20 +42,42 @@ const Header = () => {
             </Form.Group>
           </Col>
           <Col md="auto" className="d-flex ms-auto">
-            <Button variant="secondary" className="rounded-pill me-3">
+            <Button variant="primary" className="rounded-pill me-2 ps-1 py-0">
+              <Image
+                alt=""
+                src={seedProfilePhoto}
+                width="25"
+                height="25"
+                className="border rounded-circle me-2"
+              />
               Zhixiang
             </Button>
+
             <DropdownButton
               title=""
               variant="secondary"
               id="header-dropdown-button"
               align="end"
             >
-              <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item href="#/action-4">Log Out</Dropdown.Item>
+              {[
+                ["Profile", profileIcon],
+                ["Display", displayIcon],
+                ["Settings", settingsIcon],
+                ["Log Out", logoutIcon],
+              ].map((element) => (
+                <>
+                  {element[0] === "Log Out" ? <Dropdown.Divider /> : null}
+                  <Dropdown.Item href="">
+                    <Image
+                      alt=""
+                      src={element[1]}
+                      height="20"
+                      className="mb-1 me-2"
+                    />
+                    {element[0]}
+                  </Dropdown.Item>
+                </>
+              ))}
             </DropdownButton>
           </Col>
         </Navbar>
