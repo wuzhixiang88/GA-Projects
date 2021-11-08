@@ -41,6 +41,7 @@ const Header = () => {
               Zhixiang
             </Button>
             <DropdownButton
+              title=""
               variant="secondary"
               id="header-dropdown-button"
               align="end"

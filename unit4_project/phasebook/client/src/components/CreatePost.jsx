@@ -1,6 +1,7 @@
 import photoIcon from "../photos.png";
-import userIcon from "../users.png";
+import peopleIcon from "../users.png";
 import locationIcon from "../placeholder.png";
+import uploadIcon from "../upload.png";
 import seedProfilePhoto from "../seed_profile_photo.jpg";
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,15 +12,19 @@ import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
+import CloseButton from "react-bootstrap/CloseButton";
 import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
 const CreatePost = () => {
   const [show, setShow] = useState(false);
+  const [photoUploadWindow, setPhotoUploadWindow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleOpenPhotoUploadWindow = () => setPhotoUploadWindow(true);
+  const handleClosePhotoUploadWindow = () => setPhotoUploadWindow(false);
 
   return (
     <Container fluid>
@@ -79,6 +84,38 @@ const CreatePost = () => {
                 </Col>
               </Row>
 
+              {photoUploadWindow ? (
+                <Row>
+                  <Col className="px-0">
+                    <Card className="rounded-3 mb-3">
+                      <Card.Body className="d-flex justify-content-center m-2 p-0">
+                        <Form.Group className="img-upload-form d-flex justify-content-center position-relative">
+                          <Form.Label
+                            htmlFor="file-input"
+                            className="img-upload-label flex-grow-1 position-relative mb-0"
+                          >
+                            <CloseButton
+                              className="position-absolute top-0 end-0 m-2"
+                              onClick={handleClosePhotoUploadWindow}
+                            />
+                            <Image
+                              src={uploadIcon}
+                              className="position-absolute top-50 start-50 translate-middle"
+                            />
+                          </Form.Label>
+                          <Form.Control
+                            type="file"
+                            accept="image/*"
+                            id="file-input"
+                            className="border-0"
+                          />
+                        </Form.Group>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+              ) : null}
+
               <Row>
                 <Col className="px-0">
                   <Card className="rounded-3">
@@ -89,7 +126,7 @@ const CreatePost = () => {
 
                       {[
                         ["Photo", photoIcon],
-                        ["Tag People", userIcon],
+                        ["Tag People", peopleIcon],
                         ["Check In", locationIcon],
                       ].map((element) => (
                         <OverlayTrigger
@@ -104,6 +141,11 @@ const CreatePost = () => {
                           <Button
                             variant="light"
                             className="rounded-circle me-1 p-2"
+                            onClick={
+                              element[0] === "Photo"
+                                ? handleOpenPhotoUploadWindow
+                                : null
+                            }
                           >
                             <Image alt="" src={element[1]} height="24" />
                           </Button>

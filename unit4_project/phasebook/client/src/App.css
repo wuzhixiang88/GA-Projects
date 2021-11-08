@@ -52,3 +52,20 @@
 #post-textarea:focus {
   box-shadow: none;
 }
+
+.img-upload-form {
+  width: 100%;
+  height: 200px;
+}
+
+.img-upload-label {
+  background-color: rgb(250, 250, 250);
+}
+
+.img-upload-label:hover {
+  background-color: rgb(230, 230, 230);
+}
+
+.img-upload-form > input {
+  display: none;
+}
