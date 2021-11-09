@@ -14,7 +14,7 @@ const PostFeed = () => {
   return (
     <>
       <Row className="justify-content-md-center">
-        <Col md={4} className="px-0">
+        <Col md={5} className="px-0">
           <Card className="border-0 rounded-3 mb-3">
             <Card.Body className="d-flex text-start py-0">
               <Col md="auto">

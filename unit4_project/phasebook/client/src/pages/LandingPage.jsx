@@ -26,7 +26,7 @@ const LandingPage = () => {
   return (
     <Container fluid className="bg-light">
       <Row className="d-flex justify-content-center py-5">
-        <Col md={2} className="me-5">
+        <Col md={3} className="me-5">
           <Row className="text-primary fs-1 fw-bold text-start mb-3">
             Phasebook
           </Row>

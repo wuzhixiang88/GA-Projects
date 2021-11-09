@@ -32,7 +32,7 @@ const Header = () => {
               />
             </Navbar.Brand>
           </Col>
-          <Col md={1}>
+          <Col md="auto">
             <Form.Group>
               <Form.Control
                 type="search"

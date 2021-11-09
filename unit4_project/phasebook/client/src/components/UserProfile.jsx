@@ -9,16 +9,19 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 
-const Profile = () => {
+const UserProfile = () => {
   return (
     <Container fluid>
       <Row className="justify-content-md-center">
-        <Col md={4} className="px-0">
+        <Col md={5} className="px-0">
           <Card>
             <Card.Img
               src={seedCoverPhoto}
               alt=""
-              style={{ height: "400px", objectFit: "cover" }}
+              style={{
+                maxHeight: "600px",
+                objectFit: "cover",
+              }}
             />
             <Card.ImgOverlay>
               <Button className="position-absolute bottom-0 end-0 me-3 mb-3">
@@ -29,29 +32,37 @@ const Profile = () => {
         </Col>
       </Row>
       <Row className="justify-content-md-center mt-3">
-        <Col md="auto">
-          <Image
-            alt=""
-            src={seedProfilePhoto}
-            height="200"
-            className="border rounded-circle"
-          />
-        </Col>
-        <Col md={2} className="d-flex align-items-start flex-column mt-5">
-          <div className="fs-2 fw-bold">Zhixiang Wu</div>
-          <div className="fs-6">685 Friends</div>
-        </Col>
-        <Col md={1} className="position-relative">
-          <Button
-            variant="secondary"
-            className="position-absolute bottom-0 end-0 me-1"
-          >
-            Edit Profile
-          </Button>
+        <Col md={5} className="px-0">
+          <Card className="d-flex flex-row border-0">
+            <Col md="auto">
+              <Image
+                alt=""
+                src={seedProfilePhoto}
+                height="150"
+                className="border rounded-circle"
+              />
+            </Col>
+            <Col md="auto" className="d-flex flex-column align-self-center">
+              <Col md={12} className="fs-2 fw-bold ms-3">
+                Zhixiang Wu
+              </Col>
+              <Col md={12} className="fs-6">
+                685 Friends
+              </Col>
+            </Col>
+            <Col md="auto">
+              <Button
+                variant="secondary"
+                className="position-absolute bottom-0 end-0"
+              >
+                Edit Profile
+              </Button>
+            </Col>
+          </Card>
         </Col>
       </Row>
       <Row className="justify-content-md-center mt-3">
-        <Col md={4} className="d-flex justify-content-start border-top px-0">
+        <Col md={5} className="d-flex justify-content-start border-top px-0">
           <Button variant="outline-primary" className="fw-bold border-0 mt-3">
             Posts
           </Button>
@@ -70,4 +81,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserProfile;
