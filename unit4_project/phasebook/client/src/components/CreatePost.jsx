@@ -32,20 +32,24 @@ const CreatePost = () => {
         <Col md={5} className="px-0">
           <Card className="border-0 rounded-3 my-3">
             <Card.Body className="d-flex py-0">
-              <Image
-                alt=""
-                src={seedProfilePhoto}
-                width="40"
-                height="40"
-                className="border rounded-circle my-3 me-2"
-              />
-              <Button
-                variant="light"
-                onClick={handleShow}
-                className="flex-grow-1 text-start rounded-pill text-muted my-3"
-              >
-                What's on your mind?
-              </Button>
+              <Col md="auto" className="my-3 me-2">
+                <Image
+                  alt=""
+                  src={seedProfilePhoto}
+                  width="40"
+                  height="40"
+                  className="border rounded-circle"
+                />
+              </Col>
+              <Col className="d-flex">
+                <Button
+                  variant="light"
+                  onClick={handleShow}
+                  className="flex-grow-1 text-start rounded-pill text-muted my-3"
+                >
+                  What's on your mind?
+                </Button>
+              </Col>
             </Card.Body>
           </Card>
         </Col>

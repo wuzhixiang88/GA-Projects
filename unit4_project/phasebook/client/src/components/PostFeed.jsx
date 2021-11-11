@@ -17,13 +17,13 @@ const PostFeed = () => {
         <Col md={5} className="px-0">
           <Card className="border-0 rounded-3 mb-3">
             <Card.Body className="d-flex text-start py-0">
-              <Col md="auto">
+              <Col md="auto" className="my-3 me-2">
                 <Image
                   alt=""
                   src={seedProfilePhoto}
                   width="40"
                   height="40"
-                  className="border rounded-circle my-3 me-2"
+                  className="border rounded-circle"
                 />
               </Col>
               <Col className="d-flex flex-column align-self-center">
@@ -36,7 +36,16 @@ const PostFeed = () => {
 
             <Card.Body className="pt-0">
               <Card.Text className="text-start">
-                Time flies! Hope you all are doing well!
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled it to make a type specimen book. It has
+                survived not only five centuries, but also the leap into
+                electronic typesetting, remaining essentially unchanged. It was
+                popularised in the 1960s with the release of Letraset sheets
+                containing Lorem Ipsum passages, and more recently with desktop
+                publishing software like Aldus PageMaker including versions of
+                Lorem Ipsum.
               </Card.Text>
             </Card.Body>
 
@@ -74,20 +83,24 @@ const PostFeed = () => {
             </Card.Body>
 
             <Card.Body className="d-flex py-0">
-              <Image
-                alt=""
-                src={seedProfilePhoto}
-                width="40"
-                height="40"
-                className="border rounded-circle mb-3 me-2"
-              />
-              <Form.Group className="flex-grow-1 align-self-center">
-                <Form.Control
-                  type="text"
-                  placeholder="Write a comment..."
-                  className="mb-3 rounded-pill"
+              <Col md="auto" className="me-2">
+                <Image
+                  alt=""
+                  src={seedProfilePhoto}
+                  width="40"
+                  height="40"
+                  className="border rounded-circle"
                 />
-              </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="flex-grow-1 align-self-center">
+                  <Form.Control
+                    type="text"
+                    placeholder="Write a comment..."
+                    className="mb-3 rounded-pill"
+                  />
+                </Form.Group>
+              </Col>
             </Card.Body>
           </Card>
         </Col>

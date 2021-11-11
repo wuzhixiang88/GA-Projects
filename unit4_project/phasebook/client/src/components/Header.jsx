@@ -42,15 +42,20 @@ const Header = () => {
             </Form.Group>
           </Col>
           <Col md="auto" className="d-flex ms-auto">
-            <Button variant="primary" className="rounded-pill me-2 ps-1 py-0">
-              <Image
-                alt=""
-                src={seedProfilePhoto}
-                width="25"
-                height="25"
-                className="border rounded-circle me-2"
-              />
-              Zhixiang
+            <Button
+              variant="primary"
+              className="d-flex rounded-pill me-2 ps-1 py-0"
+            >
+              <Col md="auto" className="me-2 align-self-center">
+                <Image
+                  alt=""
+                  src={seedProfilePhoto}
+                  width="25"
+                  height="25"
+                  className="border rounded-circle"
+                />
+              </Col>
+              <Col className="align-self-center">Zhixiang</Col>
             </Button>
 
             <DropdownButton
