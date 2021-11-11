@@ -1,8 +1,10 @@
 import React from "react";
 // LOGO/IMAGE IMPORTS
 import likeIcon from "../like.png";
+import likeIcon2 from "../like2.png";
 import commentIcon from "../comment.png";
 import seedProfilePhoto from "../seed_profile_photo.jpg";
+import lorenIpsumPhoto from "../lorem-ipsum.png";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Row from "react-bootstrap/Row";
@@ -51,8 +53,27 @@ const PostFeed = () => {
               </Card.Text>
             </Card.Body>
 
+            <Card.Body className="mx-3 mb-3 p-0">
+              <Image fluid rounded alt="" src={lorenIpsumPhoto} />
+            </Card.Body>
+
+            <Card.Body className="d-flex pt-0">
+              <Col md="auto">
+                <Image
+                  alt=""
+                  src={likeIcon2}
+                  height="20"
+                  className="mb-1 me-2"
+                />
+                22
+              </Col>
+              <Col md="auto" className="ms-auto">
+                7 Comments
+              </Col>
+            </Card.Body>
+
             <Card.Body className="d-flex border-top border-bottom mx-3 mb-3 px-0 py-1">
-              <Col md={6} className="d-flex px-1">
+              <Col md={6} className="d-flex">
                 <Button
                   variant="light"
                   className="flex-grow-1 border-0"
@@ -67,7 +88,7 @@ const PostFeed = () => {
                   Like
                 </Button>
               </Col>
-              <Col md={6} className="d-flex pe-1">
+              <Col md={6} className="d-flex">
                 <Button
                   variant="light"
                   className="flex-grow-1 border-0"
