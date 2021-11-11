@@ -1,10 +1,12 @@
+import React from "react";
+// LOGO/IMAGE IMPORTS
 import logo from "../logo.svg";
 import profileIcon from "../profile.png";
 import displayIcon from "../moon.png";
 import settingsIcon from "../settings.png";
 import logoutIcon from "../logout.png";
 import seedProfilePhoto from "../seed_profile_photo.jpg";
-import React from "react";
+// BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";

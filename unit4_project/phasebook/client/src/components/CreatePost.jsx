@@ -1,9 +1,11 @@
+import React, { useState } from "react";
+// LOGO/IMAGE IMPORTS
 import photoIcon from "../photos.png";
 import peopleIcon from "../users.png";
 import locationIcon from "../placeholder.png";
 import uploadIcon from "../upload.png";
 import seedProfilePhoto from "../seed_profile_photo.jpg";
-import React, { useState } from "react";
+// BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

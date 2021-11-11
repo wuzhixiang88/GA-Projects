@@ -1,7 +1,9 @@
+import React from "react";
+// LOGO/IMAGE IMPORTS
 import likeIcon from "../like.png";
 import commentIcon from "../comment.png";
 import seedProfilePhoto from "../seed_profile_photo.jpg";
-import React from "react";
+// BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";

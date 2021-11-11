@@ -1,6 +1,8 @@
+import React from "react";
+// LOGO/IMAGE IMPORTS
 import seedCoverPhoto from "../seed_cover_photo.jpg";
 import seedProfilePhoto from "../seed_profile_photo.jpg";
-import React from "react";
+// BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

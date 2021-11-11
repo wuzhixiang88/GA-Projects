@@ -1,10 +1,12 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Container from "react-bootstrap/Container";
+// REACT COMPONENT IMPORTS
 import Header from "../components/Header";
 import UserProfile from "../components/UserProfile";
 import CreatePost from "../components/CreatePost";
 import PostFeed from "../components/PostFeed";
+// BOOTSTRAP COMPONENT IMPORTS
+import "bootstrap/dist/css/bootstrap.min.css";
+import Container from "react-bootstrap/Container";
 
 const UserMainPage = () => {
   return (
