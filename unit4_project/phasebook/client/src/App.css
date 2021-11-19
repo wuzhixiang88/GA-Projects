@@ -49,7 +49,20 @@
   resize: none;
 }
 
-#post-textarea:focus {
+#post-textarea:focus,
+#like-comment-button:focus {
+  box-shadow: none;
+}
+
+#like-reply-button {
+  text-decoration: none;
+}
+
+#like-reply-button:hover {
+  text-decoration: underline;
+}
+
+#like-reply-button:focus {
   box-shadow: none;
 }
 
@@ -82,4 +95,9 @@
 
 #like-comment-button {
   background-color: white;
+}
+
+#user-comment-col {
+  background-color: rgb(240, 240, 240);
+  border-radius: 20px;
 }

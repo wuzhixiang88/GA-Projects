@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // LOGO/IMAGE IMPORTS
 import likeIcon from "../like.png";
 import likeIcon2 from "../like2.png";
@@ -15,6 +15,17 @@ import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 
 const PostFeed = () => {
+  const [postLikeCounter, setPostLikeCounter] = useState(0);
+  const [postCommentCounter, setPostCommentCounter] = useState(0);
+
+  const handlePostLikeCounter = () => {
+    setPostLikeCounter(postLikeCounter + 1);
+  };
+  const handlePostCommentCounter = (e) => {
+    e.preventDefault();
+    setPostCommentCounter(postCommentCounter + 1);
+  };
+
   return (
     <>
       <Row className="justify-content-md-center">
@@ -57,20 +68,30 @@ const PostFeed = () => {
               <Image fluid rounded alt="" src={lorenIpsumPhoto} />
             </Card.Body>
 
-            <Card.Body className="d-flex pt-0">
-              <Col md="auto">
-                <Image
-                  alt=""
-                  src={likeIcon2}
-                  height="20"
-                  className="mb-1 me-2"
-                />
-                22
-              </Col>
-              <Col md="auto" className="ms-auto">
-                7 Comments
-              </Col>
-            </Card.Body>
+            {postLikeCounter || postCommentCounter ? (
+              <>
+                <Card.Body className="d-flex pt-0">
+                  <Col md="auto">
+                    {postLikeCounter ? (
+                      <>
+                        <Image
+                          alt=""
+                          src={likeIcon2}
+                          height="20"
+                          className="mb-1 me-2"
+                        />
+                        {postLikeCounter}
+                      </>
+                    ) : null}
+                  </Col>
+                  <Col md="auto" className="ms-auto">
+                    {postCommentCounter
+                      ? `${postCommentCounter} Comments`
+                      : null}
+                  </Col>
+                </Card.Body>
+              </>
+            ) : null}
 
             <Card.Body className="d-flex border-top border-bottom mx-3 mb-3 px-0 py-1">
               <Col md={6} className="d-flex">
@@ -78,6 +99,7 @@ const PostFeed = () => {
                   variant="light"
                   className="flex-grow-1 border-0"
                   id="like-comment-button"
+                  onClick={handlePostLikeCounter}
                 >
                   <Image
                     alt=""
@@ -105,6 +127,123 @@ const PostFeed = () => {
               </Col>
             </Card.Body>
 
+            <Card.Body className="d-flex text-start py-0">
+              <Col md="auto" className="me-2">
+                <Image
+                  alt=""
+                  src={seedProfilePhoto}
+                  width="40"
+                  height="40"
+                  className="border rounded-circle"
+                />
+              </Col>
+              <Col>
+                <Col
+                  className="d-flex flex-column align-self-center"
+                  id="user-comment-col"
+                >
+                  <Card.Text className="fw-bold mb-0 ps-3">
+                    Zhixiang Wu
+                  </Card.Text>
+                  <Card.Text className="px-3">
+                    Contrary to popular belief, Lorem Ipsum is not simply random
+                    text. It has roots in a piece of classical Latin literature
+                    from 45 BC, making it over 2000 years old. Richard
+                    McClintock, a Latin professor at Hampden-Sydney College in
+                    Virginia, looked up one of the more obscure Latin words,
+                    consectetur, from a Lorem Ipsum passage, and going through
+                    the cites of the word in classical literature, discovered
+                    the undoubtable source. Lorem Ipsum comes from sections
+                    1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The
+                    Extremes of Good and Evil) by Cicero, written in 45 BC. This
+                    book is a treatise on the theory of ethics, very popular
+                    during the Renaissance. The first line of Lorem Ipsum,
+                    "Lorem ipsum dolor sit amet..", comes from a line in section
+                    1.10.32.
+                  </Card.Text>
+                </Col>
+                <Col className="mt-0">
+                  <Button variant="link" id="like-reply-button">
+                    Like
+                  </Button>
+                  <Button variant="link" id="like-reply-button">
+                    Reply
+                  </Button>
+                </Col>
+                <Col className="d-flex text-start ps-2 py-0">
+                  <Col md="auto" className="me-2">
+                    <Image
+                      alt=""
+                      src={seedProfilePhoto}
+                      width="30"
+                      height="30"
+                      className="border rounded-circle"
+                    />
+                  </Col>
+                  <Col
+                    className="d-flex flex-column align-self-center mb-3"
+                    id="user-comment-col"
+                  >
+                    <Card.Text className="fw-bold mb-0 ps-3">
+                      Zhixiang Wu
+                    </Card.Text>
+                    <Card.Text className="px-3">
+                      It is a long established fact that a reader will be
+                      distracted by the readable content of a page when looking
+                      at its layout.
+                    </Card.Text>
+                  </Col>
+                </Col>
+                <Col className="d-flex ps-2 py-0">
+                  <Col md="auto" className="me-2">
+                    <Image
+                      alt=""
+                      src={seedProfilePhoto}
+                      width="30"
+                      height="30"
+                      className="border rounded-circle"
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Group className="flex-grow-1 align-self-center">
+                      <Form.Control
+                        type="text"
+                        placeholder="Write a reply..."
+                        className="mb-3 rounded-pill"
+                      />
+                    </Form.Group>
+                  </Col>
+                </Col>
+              </Col>
+            </Card.Body>
+
+            {/* PLACEHOLDER FOR MULTIPLE COMMENTS - TO BE DELETED WHEN USING MAP FUNCTION */}
+            <Card.Body className="d-flex text-start py-0">
+              <Col md="auto" className="me-2">
+                <Image
+                  alt=""
+                  src={seedProfilePhoto}
+                  width="40"
+                  height="40"
+                  className="border rounded-circle"
+                />
+              </Col>
+              <Col
+                className="d-flex flex-column align-self-center mb-3"
+                id="user-comment-col"
+              >
+                <Card.Text className="fw-bold mb-0 ps-3">Zhixiang Wu</Card.Text>
+                <Card.Text className="px-3">
+                  The standard chunk of Lorem Ipsum used since the 1500s is
+                  reproduced below for those interested. Sections 1.10.32 and
+                  1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are
+                  also reproduced in their exact original form, accompanied by
+                  English versions from the 1914 translation by H. Rackham.
+                </Card.Text>
+              </Col>
+            </Card.Body>
+            {/* PLACEHOLDER FOR MULTIPLE COMMENTS - TO BE DELETED WHEN USING MAP FUNCTION */}
+
             <Card.Body className="d-flex py-0">
               <Col md="auto" className="me-2">
                 <Image
@@ -116,13 +255,15 @@ const PostFeed = () => {
                 />
               </Col>
               <Col>
-                <Form.Group className="flex-grow-1 align-self-center">
-                  <Form.Control
-                    type="text"
-                    placeholder="Write a comment..."
-                    className="mb-3 rounded-pill"
-                  />
-                </Form.Group>
+                <Form onSubmit={handlePostCommentCounter}>
+                  <Form.Group className="flex-grow-1 align-self-center">
+                    <Form.Control
+                      type="text"
+                      placeholder="Write a comment..."
+                      className="mb-3 rounded-pill"
+                    />
+                  </Form.Group>
+                </Form>
               </Col>
             </Card.Body>
           </Card>

@@ -48,7 +48,7 @@ const UserProfile = () => {
               <Col md={12} className="fs-2 fw-bold ms-3">
                 Zhixiang Wu
               </Col>
-              <Col md={12} className="fs-6">
+              <Col md={12} className="text-start fs-6 ms-3 ps-2">
                 685 Friends
               </Col>
             </Col>
