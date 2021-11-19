@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 // LOGO/IMAGE IMPORTS
 import likeIcon from "../like.png";
 import likeIcon2 from "../like2.png";
@@ -18,12 +18,18 @@ const PostFeed = () => {
   const [postLikeCounter, setPostLikeCounter] = useState(0);
   const [postCommentCounter, setPostCommentCounter] = useState(0);
 
+  const mainPostCommentInput = useRef();
+
   const handlePostLikeCounter = () => {
     setPostLikeCounter(postLikeCounter + 1);
   };
   const handlePostCommentCounter = (e) => {
     e.preventDefault();
     setPostCommentCounter(postCommentCounter + 1);
+  };
+
+  const focusMainPostCommentInput = () => {
+    mainPostCommentInput.current.focus();
   };
 
   return (
@@ -115,6 +121,7 @@ const PostFeed = () => {
                   variant="light"
                   className="flex-grow-1 border-0"
                   id="like-comment-button"
+                  onClick={focusMainPostCommentInput}
                 >
                   <Image
                     alt=""
@@ -258,6 +265,7 @@ const PostFeed = () => {
                 <Form onSubmit={handlePostCommentCounter}>
                   <Form.Group className="flex-grow-1 align-self-center">
                     <Form.Control
+                      ref={mainPostCommentInput}
                       type="text"
                       placeholder="Write a comment..."
                       className="mb-3 rounded-pill"
