@@ -156,10 +156,10 @@ const PostFeed = () => {
               </Col>
               <Col>
                 <Col id="user-comment-col">
-                  <Card.Text className="fw-bold mb-0 ps-3">
+                  <Card.Text className="fw-bold mb-0 ps-3 pt-2">
                     Zhixiang Wu
                   </Card.Text>
-                  <Card.Text className="px-3">
+                  <Card.Text className="px-3 pb-2">
                     Contrary to popular belief, Lorem Ipsum is not simply random
                     text. It has roots in a piece of classical Latin literature
                     from 45 BC, making it over 2000 years old. Richard
@@ -201,10 +201,10 @@ const PostFeed = () => {
                   </Col>
                   <Col>
                     <Col id="user-comment-col">
-                      <Card.Text className="fw-bold mb-0 ps-3">
+                      <Card.Text className="fw-bold mb-0 ps-3 pt-2">
                         Zhixiang Wu
                       </Card.Text>
-                      <Card.Text className="px-3">
+                      <Card.Text className="px-3 pb-2">
                         It is a long established fact that a reader will be
                         distracted by the readable content of a page when
                         looking at its layout.
@@ -264,10 +264,10 @@ const PostFeed = () => {
               </Col>
               <Col>
                 <Col id="user-comment-col">
-                  <Card.Text className="fw-bold mb-0 ps-3">
+                  <Card.Text className="fw-bold mb-0 ps-3 pt-2">
                     Zhixiang Wu
                   </Card.Text>
-                  <Card.Text className="px-3">
+                  <Card.Text className="px-3 pb-2">
                     The standard chunk of Lorem Ipsum used since the 1500s is
                     reproduced below for those interested. Sections 1.10.32 and
                     1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are
