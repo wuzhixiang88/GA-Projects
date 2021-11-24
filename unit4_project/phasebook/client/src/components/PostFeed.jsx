@@ -19,6 +19,7 @@ const PostFeed = () => {
   const [postCommentCounter, setPostCommentCounter] = useState(0);
 
   const postCommentInput = useRef();
+  const postCommentReplyInput = useRef();
 
   const handlePostLikeCounter = () => {
     setPostLikeCounter(postLikeCounter + 1);
@@ -30,6 +31,9 @@ const PostFeed = () => {
 
   const focusPostCommentInput = () => {
     postCommentInput.current.focus();
+  };
+  const focusPostCommentReplyInput = () => {
+    postCommentReplyInput.current.focus();
   };
 
   return (
@@ -176,7 +180,11 @@ const PostFeed = () => {
                   <Button variant="link" id="like-reply-button">
                     Like
                   </Button>
-                  <Button variant="link" id="like-reply-button">
+                  <Button
+                    variant="link"
+                    id="like-reply-button"
+                    onClick={focusPostCommentReplyInput}
+                  >
                     Reply
                   </Button>
                 </Col>
@@ -206,7 +214,11 @@ const PostFeed = () => {
                       <Button variant="link" id="like-reply-button">
                         Like
                       </Button>
-                      <Button variant="link" id="like-reply-button">
+                      <Button
+                        variant="link"
+                        id="like-reply-button"
+                        onClick={focusPostCommentReplyInput}
+                      >
                         Reply
                       </Button>
                     </Col>
@@ -224,13 +236,16 @@ const PostFeed = () => {
                     />
                   </Col>
                   <Col>
-                    <Form.Group className="flex-grow-1 align-self-center">
-                      <Form.Control
-                        type="text"
-                        placeholder="Write a reply..."
-                        className="mb-3 rounded-pill"
-                      />
-                    </Form.Group>
+                    <Form>
+                      <Form.Group className="flex-grow-1 align-self-center">
+                        <Form.Control
+                          ref={postCommentReplyInput}
+                          type="text"
+                          placeholder="Write a reply..."
+                          className="mb-3 rounded-pill"
+                        />
+                      </Form.Group>
+                    </Form>
                   </Col>
                 </Col>
               </Col>
