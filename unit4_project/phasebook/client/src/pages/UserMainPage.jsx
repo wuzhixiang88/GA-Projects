@@ -7,6 +7,8 @@ import PostFeed from "../components/PostFeed";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const UserMainPage = () => {
   return (
@@ -15,7 +17,11 @@ const UserMainPage = () => {
       <UserProfile />
       <Container fluid className="main-container">
         <CreatePost />
-        <PostFeed />
+        <Row className="justify-content-md-center">
+          <Col md={5} className="px-0">
+            <PostFeed showPostImage={true} />
+          </Col>
+        </Row>
       </Container>
     </>
   );

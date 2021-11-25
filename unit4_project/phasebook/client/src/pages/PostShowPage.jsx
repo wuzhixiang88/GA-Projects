@@ -1,5 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+// REACT COMPONENT IMPORTS
+import PostFeed from "../components/PostFeed";
 // LOGO/IMAGE IMPORTS
 import lorenIpsumPhoto from "../lorem-ipsum.png";
 // BOOTSTRAP COMPONENT IMPORTS
@@ -20,6 +22,7 @@ const PostShowPage = () => {
   return (
     <Container fluid>
       <Row>
+        {/* POST SHOW PAGE - PHOTO */}
         <Col md={9} className="post-show-photo-div position-relative">
           <CloseButton
             variant="white"
@@ -34,7 +37,11 @@ const PostShowPage = () => {
             className="position-absolute top-50 start-50 translate-middle"
           />
         </Col>
-        <Col md={3}>Comments</Col>
+
+        {/* POST SHOW PAGE - TEXT & COMMENTS */}
+        <Col md={3}>
+          <PostFeed showPostImage={false} />
+        </Col>
       </Row>
     </Container>
   );
