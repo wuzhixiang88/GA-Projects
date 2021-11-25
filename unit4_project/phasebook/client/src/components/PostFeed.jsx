@@ -31,6 +31,7 @@ const PostFeed = ({ showPostImage }) => {
   const handlePostCommentCounter = (e) => {
     e.preventDefault();
     setPostCommentCounter(postCommentCounter + 1);
+    postCommentInput.current.value = "";
   };
 
   const focusPostCommentInput = () => {
@@ -101,7 +102,11 @@ const PostFeed = ({ showPostImage }) => {
               ) : null}
             </Col>
             <Col md="auto" className="ms-auto">
-              {postCommentCounter ? `${postCommentCounter} Comments` : null}
+              {postCommentCounter
+                ? postCommentCounter === 1
+                  ? `${postCommentCounter} Comment`
+                  : `${postCommentCounter} Comments`
+                : null}
             </Col>
           </Card.Body>
         </>
