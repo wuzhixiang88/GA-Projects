@@ -15,23 +15,42 @@ import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 
 const PostFeed = ({ showPostImage }) => {
+  const [postComments, setPostComments] = useState([
+    {
+      user: "Zhixiang Wu",
+      body: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
+    },
+    {
+      user: "Zhixiang Wu",
+      body: 'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
+    },
+  ]);
   const [postLikeCounter, setPostLikeCounter] = useState(0);
   const [postCommentCounter, setPostCommentCounter] = useState(0);
 
   const postCommentInput = useRef();
   const postCommentReplyInput = useRef();
 
-  const postShowPageLocation = {
-    pathname: "photo/1",
+  const handlePostComments = (e) => {
+    e.preventDefault();
+
+    setPostComments([
+      ...postComments,
+      {
+        user: "Zhixiang Wu",
+        body: postCommentInput.current.value,
+      },
+    ]);
+    postCommentInput.current.value = "";
+
+    handlePostCommentCounter(e);
   };
 
   const handlePostLikeCounter = () => {
     setPostLikeCounter(postLikeCounter + 1);
   };
   const handlePostCommentCounter = (e) => {
-    e.preventDefault();
     setPostCommentCounter(postCommentCounter + 1);
-    postCommentInput.current.value = "";
   };
 
   const focusPostCommentInput = () => {
@@ -39,6 +58,10 @@ const PostFeed = ({ showPostImage }) => {
   };
   const focusPostCommentReplyInput = () => {
     postCommentReplyInput.current.focus();
+  };
+
+  const postShowPageLocation = {
+    pathname: "photo/1",
   };
 
   return (
@@ -139,145 +162,103 @@ const PostFeed = ({ showPostImage }) => {
       </Card.Body>
 
       {/* POST - COMMENTS */}
-      <Card.Body className="d-flex text-start py-0">
-        <Col md="auto" className="me-2">
-          <Image
-            alt=""
-            src={seedProfilePhoto}
-            width="40"
-            height="40"
-            className="border rounded-circle"
-          />
-        </Col>
-        <Col>
-          <Col id="user-comment-col">
-            <Card.Text className="fw-bold mb-0 ps-3 pt-2">
-              Zhixiang Wu
-            </Card.Text>
-            <Card.Text className="px-3 pb-2">
-              Contrary to popular belief, Lorem Ipsum is not simply random text.
-              It has roots in a piece of classical Latin literature from 45 BC,
-              making it over 2000 years old. Richard McClintock, a Latin
-              professor at Hampden-Sydney College in Virginia, looked up one of
-              the more obscure Latin words, consectetur, from a Lorem Ipsum
-              passage, and going through the cites of the word in classical
-              literature, discovered the undoubtable source. Lorem Ipsum comes
-              from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et
-              Malorum" (The Extremes of Good and Evil) by Cicero, written in 45
-              BC. This book is a treatise on the theory of ethics, very popular
-              during the Renaissance. The first line of Lorem Ipsum, "Lorem
-              ipsum dolor sit amet..", comes from a line in section 1.10.32.
-            </Card.Text>
-          </Col>
-          <Col className="mt-0">
-            <Button variant="link" id="like-reply-button">
-              Like
-            </Button>
-            <Button
-              variant="link"
-              id="like-reply-button"
-              onClick={focusPostCommentReplyInput}
-            >
-              Reply
-            </Button>
-          </Col>
-          {/* COMMENTS REPLIES */}
-          <Col className="d-flex text-start ps-2 py-0">
-            <Col md="auto" className="me-2">
-              <Image
-                alt=""
-                src={seedProfilePhoto}
-                width="30"
-                height="30"
-                className="border rounded-circle"
-              />
-            </Col>
-            <Col>
-              <Col id="user-comment-col">
-                <Card.Text className="fw-bold mb-0 ps-3 pt-2">
-                  Zhixiang Wu
-                </Card.Text>
-                <Card.Text className="px-3 pb-2">
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                </Card.Text>
+      <Card.Body className="text-start py-0">
+        {postComments.map((element) => (
+          <>
+            <Col className="d-flex">
+              <Col md="auto" className="me-2">
+                <Image
+                  alt=""
+                  src={seedProfilePhoto}
+                  width="40"
+                  height="40"
+                  className="border rounded-circle"
+                />
               </Col>
-              <Col className="mt-0">
-                <Button variant="link" id="like-reply-button">
-                  Like
-                </Button>
-                <Button
-                  variant="link"
-                  id="like-reply-button"
-                  onClick={focusPostCommentReplyInput}
-                >
-                  Reply
-                </Button>
+              <Col>
+                <Col id="user-comment-col">
+                  <Card.Text className="fw-bold mb-0 ps-3 pt-2">
+                    {element.user}
+                  </Card.Text>
+                  <Card.Text className="px-3 pb-2">{element.body}</Card.Text>
+                </Col>
+                <Col className="mt-0">
+                  <Button variant="link" id="like-reply-button">
+                    Like
+                  </Button>
+                  <Button
+                    variant="link"
+                    id="like-reply-button"
+                    onClick={focusPostCommentReplyInput}
+                  >
+                    Reply
+                  </Button>
+                </Col>
+                {/* COMMENTS REPLIES */}
+                <Col className="d-flex text-start ps-2 py-0">
+                  <Col md="auto" className="me-2">
+                    <Image
+                      alt=""
+                      src={seedProfilePhoto}
+                      width="30"
+                      height="30"
+                      className="border rounded-circle"
+                    />
+                  </Col>
+                  <Col>
+                    <Col id="user-comment-col">
+                      <Card.Text className="fw-bold mb-0 ps-3 pt-2">
+                        Zhixiang Wu
+                      </Card.Text>
+                      <Card.Text className="px-3 pb-2">
+                        It is a long established fact that a reader will be
+                        distracted by the readable content of a page when
+                        looking at its layout.
+                      </Card.Text>
+                    </Col>
+                    <Col className="mt-0">
+                      <Button variant="link" id="like-reply-button">
+                        Like
+                      </Button>
+                      <Button
+                        variant="link"
+                        id="like-reply-button"
+                        onClick={focusPostCommentReplyInput}
+                      >
+                        Reply
+                      </Button>
+                    </Col>
+                  </Col>
+                </Col>
+                {/* COMMENTS REPLY INPUT */}
+                <Col className="d-flex ps-2 py-0">
+                  <Col md="auto" className="me-2">
+                    <Image
+                      alt=""
+                      src={seedProfilePhoto}
+                      width="30"
+                      height="30"
+                      className="border rounded-circle"
+                    />
+                  </Col>
+                  <Col>
+                    <Form>
+                      <Form.Group className="flex-grow-1 align-self-center">
+                        <Form.Control
+                          ref={postCommentReplyInput}
+                          type="text"
+                          placeholder="Write a reply..."
+                          className="mb-3 rounded-pill"
+                        />
+                      </Form.Group>
+                    </Form>
+                  </Col>
+                </Col>
               </Col>
             </Col>
-          </Col>
-          {/* COMMENTS REPLY INPUT */}
-          <Col className="d-flex ps-2 py-0">
-            <Col md="auto" className="me-2">
-              <Image
-                alt=""
-                src={seedProfilePhoto}
-                width="30"
-                height="30"
-                className="border rounded-circle"
-              />
-            </Col>
-            <Col>
-              <Form>
-                <Form.Group className="flex-grow-1 align-self-center">
-                  <Form.Control
-                    ref={postCommentReplyInput}
-                    type="text"
-                    placeholder="Write a reply..."
-                    className="mb-3 rounded-pill"
-                  />
-                </Form.Group>
-              </Form>
-            </Col>
-          </Col>
-        </Col>
+          </>
+        ))}
       </Card.Body>
-
-      {/* PLACEHOLDER FOR MULTIPLE COMMENTS - TO BE DELETED WHEN USING MAP FUNCTION */}
-      <Card.Body className="d-flex text-start py-0">
-        <Col md="auto" className="me-2">
-          <Image
-            alt=""
-            src={seedProfilePhoto}
-            width="40"
-            height="40"
-            className="border rounded-circle"
-          />
-        </Col>
-        <Col>
-          <Col id="user-comment-col">
-            <Card.Text className="fw-bold mb-0 ps-3 pt-2">
-              Zhixiang Wu
-            </Card.Text>
-            <Card.Text className="px-3 pb-2">
-              The standard chunk of Lorem Ipsum used since the 1500s is
-              reproduced below for those interested. Sections 1.10.32 and
-              1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also
-              reproduced in their exact original form, accompanied by English
-              versions from the 1914 translation by H. Rackham.
-            </Card.Text>
-          </Col>
-          <Col className="mt-0">
-            <Button variant="link" id="like-reply-button">
-              Like
-            </Button>
-            <Button variant="link" id="like-reply-button">
-              Reply
-            </Button>
-          </Col>
-        </Col>
-      </Card.Body>
-      {/* PLACEHOLDER FOR MULTIPLE COMMENTS - TO BE DELETED WHEN USING MAP FUNCTION */}
 
       {/* POST - COMMENTS INPUT */}
       <Card.Body className="d-flex py-0">
@@ -291,7 +272,7 @@ const PostFeed = ({ showPostImage }) => {
           />
         </Col>
         <Col>
-          <Form onSubmit={handlePostCommentCounter}>
+          <Form onSubmit={handlePostComments}>
             <Form.Group className="flex-grow-1 align-self-center">
               <Form.Control
                 ref={postCommentInput}
