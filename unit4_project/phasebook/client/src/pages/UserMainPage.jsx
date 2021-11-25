@@ -2,7 +2,6 @@ import React from "react";
 // REACT COMPONENT IMPORTS
 import Header from "../components/Header";
 import UserProfile from "../components/UserProfile";
-import CreatePost from "../components/CreatePost";
 import PostFeed from "../components/PostFeed";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,7 +15,6 @@ const UserMainPage = () => {
       <Header />
       <UserProfile />
       <Container fluid className="main-container">
-        <CreatePost />
         <Row className="justify-content-md-center">
           <Col md={5} className="px-0">
             <PostFeed showPostImage={true} />

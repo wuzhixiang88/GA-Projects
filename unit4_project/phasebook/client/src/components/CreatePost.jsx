@@ -30,8 +30,8 @@ const CreatePost = () => {
 
   return (
     <>
-      <Row className="justify-content-md-center mt-3">
-        <Col md={5} className="px-0">
+      <Row className="justify-content-md-center">
+        <Col className="">
           <Card className="border-0 rounded-3 my-3">
             <Card.Body className="d-flex py-0">
               <Col md="auto" className="my-3 me-2">
