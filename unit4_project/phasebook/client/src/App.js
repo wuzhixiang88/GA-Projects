@@ -2,6 +2,7 @@ import "./App.css";
 import { Route, Switch } from "react-router";
 import LandingPage from "./pages/LandingPage";
 import UserMainPage from "./pages/UserMainPage";
+import PostShowPage from "./pages/PostShowPage";
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
         </Route>
         <Route exact path="/:id">
           <UserMainPage />
+        </Route>
+        <Route exact path="/photo/:id">
+          <PostShowPage />
         </Route>
       </Switch>
     </div>

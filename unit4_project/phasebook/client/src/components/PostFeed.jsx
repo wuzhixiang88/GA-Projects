@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 // LOGO/IMAGE IMPORTS
 import likeIcon from "../like.png";
 import likeIcon2 from "../like2.png";
@@ -20,6 +21,10 @@ const PostFeed = () => {
 
   const postCommentInput = useRef();
   const postCommentReplyInput = useRef();
+
+  const postShowPageLocation = {
+    pathname: "photo/1",
+  };
 
   const handlePostLikeCounter = () => {
     setPostLikeCounter(postLikeCounter + 1);
@@ -78,7 +83,9 @@ const PostFeed = () => {
 
             {/* POST BODY - IMAGE */}
             <Card.Body className="mx-3 mb-3 p-0">
-              <Image fluid rounded alt="" src={lorenIpsumPhoto} />
+              <Link to={postShowPageLocation}>
+                <Image fluid rounded alt="" src={lorenIpsumPhoto} />
+              </Link>
             </Card.Body>
 
             {/* POST - LIKE & COMMENT COUNTER */}

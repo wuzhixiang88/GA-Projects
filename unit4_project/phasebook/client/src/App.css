@@ -101,3 +101,8 @@
   background-color: rgb(240, 240, 240);
   border-radius: 20px;
 }
+
+.post-show-photo-div {
+  background-color: black;
+  height: 100vh;
+}
