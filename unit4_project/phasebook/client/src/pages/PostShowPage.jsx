@@ -1,7 +1,7 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 // REACT COMPONENT IMPORTS
-import PostFeed from "../components/PostFeed";
+import Posts from "../components/Posts";
 // LOGO/IMAGE IMPORTS
 import lorenIpsumPhoto from "../lorem-ipsum.png";
 // BOOTSTRAP COMPONENT IMPORTS
@@ -13,6 +13,9 @@ import Image from "react-bootstrap/Image";
 import CloseButton from "react-bootstrap/CloseButton";
 
 const PostShowPage = () => {
+  const location = useLocation();
+  const { post } = location.state;
+
   const history = useHistory();
 
   const handleClickCloseButton = () => {
@@ -40,7 +43,7 @@ const PostShowPage = () => {
 
         {/* POST SHOW PAGE - TEXT & COMMENTS */}
         <Col md={3}>
-          <PostFeed showPostImage={false} />
+          <Posts posts={post} showPostImage={false} />
         </Col>
       </Row>
     </Container>
