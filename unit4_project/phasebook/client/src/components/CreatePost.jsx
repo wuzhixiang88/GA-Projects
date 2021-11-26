@@ -72,6 +72,7 @@ const CreatePost = ({ posts, setPosts }) => {
         </Col>
       </Row>
 
+      {/* CREATE POST MODAL SECTION */}
       <Modal
         show={createPostModal}
         onHide={handleHideCreatePostModal}
@@ -81,9 +82,11 @@ const CreatePost = ({ posts, setPosts }) => {
         <Modal.Header closeButton>
           <Modal.Title>Create Post</Modal.Title>
         </Modal.Header>
+
         <Form>
           <Modal.Body className="show-grid">
             <Container>
+              {/* USER DETAILS SECTION */}
               <Row>
                 <Col md="auto" className="px-0">
                   <Image
@@ -97,6 +100,7 @@ const CreatePost = ({ posts, setPosts }) => {
                 <Col className="ps-0">Zhixiang Wu</Col>
               </Row>
 
+              {/* POST BODY INPUT SECTION */}
               <Row>
                 <Col className="px-0">
                   <Form.Group>
@@ -111,6 +115,7 @@ const CreatePost = ({ posts, setPosts }) => {
                 </Col>
               </Row>
 
+              {/* POST IMAGE UPLOAD SECTION */}
               {photoUploadWindow ? (
                 <Row>
                   <Col className="px-0">
@@ -143,6 +148,7 @@ const CreatePost = ({ posts, setPosts }) => {
                 </Row>
               ) : null}
 
+              {/* ADDITIONAL TOOLBAR SECTION */}
               <Row>
                 <Col className="px-0">
                   <Card className="rounded-3">
@@ -184,6 +190,7 @@ const CreatePost = ({ posts, setPosts }) => {
               </Row>
             </Container>
           </Modal.Body>
+
           <Modal.Footer className="d-flex justify-content-center border-0">
             <Button
               variant="primary"

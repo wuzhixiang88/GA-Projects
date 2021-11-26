@@ -80,6 +80,7 @@ const LandingPage = () => {
             </Button>
           </div>
 
+          {/* ACCOUNT REGISTERATION MODAL SECTION */}
           <Modal
             show={show}
             onHide={handleClose}
@@ -90,6 +91,7 @@ const LandingPage = () => {
             <Modal.Header closeButton>
               <Modal.Title>Sign Up</Modal.Title>
             </Modal.Header>
+
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Modal.Body className="show-grid">
                 <Container>
@@ -163,6 +165,7 @@ const LandingPage = () => {
                   </Row>
                 </Container>
               </Modal.Body>
+
               <Modal.Footer className="d-flex justify-content-center">
                 <Button
                   variant="success"

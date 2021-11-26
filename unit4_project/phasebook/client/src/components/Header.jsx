@@ -23,6 +23,7 @@ const Header = () => {
     <Container fluid>
       <Row>
         <Navbar bg="light" variant="dark" fixed="top">
+          {/* LOGO SECTION */}
           <Col md="auto">
             <Navbar.Brand href="/" className="me-0">
               <Image
@@ -34,6 +35,8 @@ const Header = () => {
               />
             </Navbar.Brand>
           </Col>
+
+          {/* SEARCH BAR SECTION */}
           <Col md="auto">
             <Form.Group>
               <Form.Control
@@ -43,7 +46,9 @@ const Header = () => {
               />
             </Form.Group>
           </Col>
+
           <Col md="auto" className="d-flex ms-auto">
+            {/* USER DETAILS SECTION */}
             <Button
               variant="primary"
               className="d-flex rounded-pill me-2 ps-1 py-0"
@@ -60,6 +65,7 @@ const Header = () => {
               <Col className="align-self-center">Zhixiang</Col>
             </Button>
 
+            {/* DROPDOWN MENU SECTION */}
             <DropdownButton
               title=""
               variant="secondary"

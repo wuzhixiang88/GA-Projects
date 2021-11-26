@@ -25,7 +25,7 @@ const PostShowPage = () => {
   return (
     <Container fluid>
       <Row>
-        {/* POST SHOW PAGE - PHOTO */}
+        {/* POST IMAGE SECTION */}
         <Col md={9} className="post-show-photo-div position-relative">
           <CloseButton
             variant="white"
@@ -41,7 +41,7 @@ const PostShowPage = () => {
           />
         </Col>
 
-        {/* POST SHOW PAGE - TEXT & COMMENTS */}
+        {/* POST TEXT & COMMENTS SECTION */}
         <Col md={3}>
           <Posts posts={post} showPostImage={false} />
         </Col>

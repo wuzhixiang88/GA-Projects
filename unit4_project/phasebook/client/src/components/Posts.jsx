@@ -65,7 +65,7 @@ const Posts = ({ posts, showPostImage }) => {
     <>
       {posts.map((post) => (
         <Card className="border-0 rounded-3 mb-3">
-          {/* POST USER DETAILS & DATE OF POST */}
+          {/* POST USER DETAILS & DATE OF POST SECTION */}
           <Card.Body className="d-flex text-start py-0">
             <Col md="auto" className="my-3 me-2">
               <Image
@@ -82,12 +82,12 @@ const Posts = ({ posts, showPostImage }) => {
             </Col>
           </Card.Body>
 
-          {/* POST BODY - TEXT */}
+          {/* POST BODY (TEXT) SECTION */}
           <Card.Body className="pt-0">
             <Card.Text className="text-start">{post.body}</Card.Text>
           </Card.Body>
 
-          {/* POST BODY - IMAGE */}
+          {/* POST BODY (IMAGE) SECTION */}
           {showPostImage ? (
             <Card.Body className="mx-3 mb-3 p-0">
               <Link
@@ -101,7 +101,7 @@ const Posts = ({ posts, showPostImage }) => {
             </Card.Body>
           ) : null}
 
-          {/* POST LIKE & COMMENT COUNTER */}
+          {/* POST LIKE & COMMENT COUNTER SECTION */}
           {postLikeCounter || postCommentCounter ? (
             <>
               <Card.Body className="d-flex pt-0">
@@ -129,7 +129,7 @@ const Posts = ({ posts, showPostImage }) => {
             </>
           ) : null}
 
-          {/* POST LIKE & COMMENT BUTTON */}
+          {/* POST LIKE & COMMENT BUTTON SECTION */}
           <Card.Body className="d-flex border-top border-bottom mx-3 mb-3 px-0 py-1">
             <Col md={6} className="d-flex">
               <Button
@@ -160,7 +160,7 @@ const Posts = ({ posts, showPostImage }) => {
             </Col>
           </Card.Body>
 
-          {/* POST COMMENTS */}
+          {/* POST COMMENTS SECTION */}
           <Card.Body className="text-start py-0">
             {postComments.map((postComment) => (
               <>
@@ -195,7 +195,7 @@ const Posts = ({ posts, showPostImage }) => {
                         Reply
                       </Button>
                     </Col>
-                    {/* COMMENTS REPLIES */}
+                    {/* COMMENTS REPLIES SECTION */}
                     <Col className="d-flex text-start ps-2 py-0">
                       <Col md="auto" className="me-2">
                         <Image
@@ -231,7 +231,7 @@ const Posts = ({ posts, showPostImage }) => {
                         </Col>
                       </Col>
                     </Col>
-                    {/* COMMENTS REPLIES INPUT */}
+                    {/* COMMENTS REPLIES INPUT SECTION */}
                     <Col className="d-flex ps-2 py-0">
                       <Col md="auto" className="me-2">
                         <Image
@@ -261,7 +261,7 @@ const Posts = ({ posts, showPostImage }) => {
             ))}
           </Card.Body>
 
-          {/* POST COMMENTS INPUT */}
+          {/* POST COMMENTS INPUT SECTION */}
           <Card.Body className="d-flex py-0">
             <Col md="auto" className="me-2">
               <Image
