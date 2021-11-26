@@ -14,7 +14,7 @@ const PostFeed = () => {
 
   return (
     <>
-      <CreatePost setPosts={setPosts} />
+      <CreatePost posts={posts} setPosts={setPosts} />
       <Posts posts={posts} showPostImage={true} />
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 // LOGO/IMAGE IMPORTS
 import photoIcon from "../photos.png";
 import peopleIcon from "../users.png";
@@ -19,14 +19,29 @@ import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-const CreatePost = () => {
-  const [show, setShow] = useState(false);
+const CreatePost = ({ posts, setPosts }) => {
+  const [createPostModal, setCreatePostModal] = useState(false);
   const [photoUploadWindow, setPhotoUploadWindow] = useState(false);
+  const postBodyInput = useRef();
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleOpenPhotoUploadWindow = () => setPhotoUploadWindow(true);
-  const handleClosePhotoUploadWindow = () => setPhotoUploadWindow(false);
+  const handleShowCreatePostModal = () => setCreatePostModal(true);
+  const handleHideCreatePostModal = () => setCreatePostModal(false);
+  const handleShowPhotoUploadWindow = () => setPhotoUploadWindow(true);
+  const handleHidePhotoUploadWindow = () => setPhotoUploadWindow(false);
+
+  const handleClickPostButton = (e) => {
+    e.preventDefault();
+    handleHideCreatePostModal();
+
+    setPosts([
+      ...posts,
+      {
+        user: "Zhixiang Wu",
+        body: postBodyInput.current.value,
+        date: "25 November 2021",
+      },
+    ]);
+  };
 
   return (
     <>
@@ -46,7 +61,7 @@ const CreatePost = () => {
               <Col className="d-flex">
                 <Button
                   variant="light"
-                  onClick={handleShow}
+                  onClick={handleShowCreatePostModal}
                   className="flex-grow-1 text-start rounded-pill text-muted my-3"
                 >
                   What's on your mind?
@@ -57,7 +72,12 @@ const CreatePost = () => {
         </Col>
       </Row>
 
-      <Modal show={show} onHide={handleClose} centered={true}>
+      <Modal
+        show={createPostModal}
+        onHide={handleHideCreatePostModal}
+        onEntered={() => postBodyInput.current.focus()}
+        centered={true}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Create Post</Modal.Title>
         </Modal.Header>
@@ -81,6 +101,7 @@ const CreatePost = () => {
                 <Col className="px-0">
                   <Form.Group>
                     <Form.Control
+                      ref={postBodyInput}
                       as="textarea"
                       placeholder="What's on your mind?"
                       className="fs-5 border-0 px-0"
@@ -102,7 +123,7 @@ const CreatePost = () => {
                           >
                             <CloseButton
                               className="position-absolute top-0 end-0 m-2"
-                              onClick={handleClosePhotoUploadWindow}
+                              onClick={handleHidePhotoUploadWindow}
                             />
                             <Image
                               src={uploadIcon}
@@ -149,7 +170,7 @@ const CreatePost = () => {
                             className="rounded-circle me-1 p-2"
                             onClick={
                               element[0] === "Photo"
-                                ? handleOpenPhotoUploadWindow
+                                ? handleShowPhotoUploadWindow
                                 : null
                             }
                           >
@@ -168,6 +189,7 @@ const CreatePost = () => {
               variant="primary"
               type="submit"
               className="flex-grow-1 fw-bold px-5"
+              onClick={handleClickPostButton}
             >
               Post
             </Button>
