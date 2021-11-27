@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+// EXTERNAL PLUGIN IMPORTS
+import axios from "axios";
+import Cookies from "js-cookie";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
@@ -9,19 +13,69 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 const LandingPage = () => {
-  const [show, setShow] = useState(false);
+  const [registerDetails, setRegisterDetails] = useState({
+    username: "",
+    firstName: "",
+    surname: "",
+    email: "",
+    registerPassword: "",
+  });
+
+  const [registerModal, setRegisterModal] = useState(false);
   const [validated, setValidated] = useState(false);
+  const history = useHistory();
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
+  const handleRegisterDetails = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+
+    setRegisterDetails({
+      ...registerDetails,
+      [key]: value,
+    });
+  };
+
+  const handleShowRegisterModal = () => setRegisterModal(true);
+  const handleHideRegisterModal = () => setRegisterModal(false);
+
+  const handleFormSubmit = async (e) => {
+    const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
     }
-
     setValidated(true);
+
+    if (form.getAttribute("data-name") === "registerForm") {
+      const csrftoken = Cookies.get("csrftoken");
+
+      try {
+        const response = await axios({
+          method: "POST",
+          url: "/accounts/api/register",
+          mode: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          data: {
+            username: registerDetails.email,
+            first_name: registerDetails.firstName,
+            last_name: registerDetails.surname,
+            email: registerDetails.email,
+            password: registerDetails.registerPassword,
+          },
+        });
+        if (response.statusText === "Created") {
+          handleHideRegisterModal();
+          history.push("/");
+        }
+      } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+    }
   };
 
   return (
@@ -39,7 +93,8 @@ const LandingPage = () => {
           <Form
             noValidate
             validated={validated}
-            onSubmit={handleSubmit}
+            data-name="loginForm"
+            onSubmit={handleFormSubmit}
             className="mt-3"
           >
             <Form.Group className="mb-3">
@@ -73,7 +128,7 @@ const LandingPage = () => {
             <Button
               variant="success"
               type="submit"
-              onClick={handleShow}
+              onClick={handleShowRegisterModal}
               className="fw-bold"
             >
               Create New Account
@@ -82,8 +137,8 @@ const LandingPage = () => {
 
           {/* ACCOUNT REGISTERATION MODAL SECTION */}
           <Modal
-            show={show}
-            onHide={handleClose}
+            show={registerModal}
+            onHide={handleHideRegisterModal}
             backdrop="static"
             centered={true}
             keyboard={false}
@@ -92,7 +147,12 @@ const LandingPage = () => {
               <Modal.Title>Sign Up</Modal.Title>
             </Modal.Header>
 
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form
+              noValidate
+              validated={validated}
+              data-name="registerForm"
+              onSubmit={handleFormSubmit}
+            >
               <Modal.Body className="show-grid">
                 <Container>
                   <Row>
@@ -101,7 +161,10 @@ const LandingPage = () => {
                         <Form.Control
                           required
                           type="text"
+                          name="firstName"
                           placeholder="First Name"
+                          value={registerDetails.firstName}
+                          onChange={handleRegisterDetails}
                         />
                         <Form.Control.Feedback
                           type="invalid"
@@ -116,7 +179,10 @@ const LandingPage = () => {
                         <Form.Control
                           required
                           type="text"
+                          name="surname"
                           placeholder="Surname"
+                          value={registerDetails.surname}
+                          onChange={handleRegisterDetails}
                         />
                         <Form.Control.Feedback
                           type="invalid"
@@ -134,7 +200,10 @@ const LandingPage = () => {
                         <Form.Control
                           required
                           type="email"
+                          name="email"
                           placeholder="Email Address"
+                          value={registerDetails.email}
+                          onChange={handleRegisterDetails}
                         />
                         <Form.Control.Feedback
                           type="invalid"
@@ -152,7 +221,10 @@ const LandingPage = () => {
                         <Form.Control
                           required
                           type="password"
+                          name="registerPassword"
                           placeholder="Password"
+                          value={registerDetails.password}
+                          onChange={handleRegisterDetails}
                         />
                         <Form.Control.Feedback
                           type="invalid"
