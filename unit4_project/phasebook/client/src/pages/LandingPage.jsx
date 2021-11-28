@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import useQuery from "../hooks/useQuery";
 // EXTERNAL PLUGIN IMPORTS
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -11,6 +12,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Alert from "react-bootstrap/Alert";
 
 const LandingPage = () => {
   const [loginDetails, setLoginDetails] = useState({
@@ -29,6 +31,7 @@ const LandingPage = () => {
   const [loginFormValidation, setLoginFormValidation] = useState(false);
   const [registerFormValidation, setRegisterFormValidation] = useState(false);
   const history = useHistory();
+  const query = useQuery();
 
   const handleLoginAndRegisterDetails = (e) => {
     const key = e.target.name;
@@ -106,7 +109,15 @@ const LandingPage = () => {
         });
 
         if (response.statusText === "Created") {
-          window.location.reload();
+          handleHideRegisterModal();
+          setRegisterFormValidation(false);
+          setRegisterDetails({
+            firstName: "",
+            surname: "",
+            registerEmail: "",
+            registerPassword: "",
+          });
+          history.push("/?registration=success");
         }
       } catch (error) {
         console.log(error.response.data);
@@ -119,6 +130,12 @@ const LandingPage = () => {
   return (
     <Container fluid className="bg-light">
       <Row className="d-flex justify-content-center py-5">
+        {query.get("registration") === "success" ? (
+          <Alert variant="success">
+            Your account has been created successfully!
+          </Alert>
+        ) : null}
+
         <Col md={3} className="me-5">
           <Row className="text-primary fs-1 fw-bold text-start mb-3">
             Phasebook
@@ -143,6 +160,7 @@ const LandingPage = () => {
                 placeholder="Email Address"
                 value={loginDetails.loginEmail}
                 onChange={handleLoginAndRegisterDetails}
+                autoFocus
               />
               <Form.Control.Feedback type="invalid" className="text-start">
                 Please enter a email address.
