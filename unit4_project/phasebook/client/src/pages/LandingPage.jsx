@@ -13,21 +13,31 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 const LandingPage = () => {
+  const [loginDetails, setLoginDetails] = useState({
+    loginEmail: "",
+    loginPassword: "",
+  });
   const [registerDetails, setRegisterDetails] = useState({
     username: "",
     firstName: "",
     surname: "",
-    email: "",
+    registerEmail: "",
     registerPassword: "",
   });
 
   const [registerModal, setRegisterModal] = useState(false);
-  const [validated, setValidated] = useState(false);
+  const [loginFormValidation, setLoginFormValidation] = useState(false);
+  const [registerFormValidation, setRegisterFormValidation] = useState(false);
   const history = useHistory();
 
-  const handleRegisterDetails = (e) => {
+  const handleLoginAndRegisterDetails = (e) => {
     const key = e.target.name;
     const value = e.target.value;
+
+    setLoginDetails({
+      ...loginDetails,
+      [key]: value,
+    });
 
     setRegisterDetails({
       ...registerDetails,
@@ -39,14 +49,42 @@ const LandingPage = () => {
   const handleHideRegisterModal = () => setRegisterModal(false);
 
   const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();
     }
-    setValidated(true);
+
+    if (form.getAttribute("data-name") === "loginForm") {
+      setLoginFormValidation(true);
+
+      try {
+        const response = await axios({
+          method: "POST",
+          url: "/accounts/api/token",
+          mode: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: {
+            username: loginDetails.loginEmail,
+            password: loginDetails.loginPassword,
+          },
+        });
+
+        if (response.statusText === "OK") {
+          history.push("/ZX");
+        }
+      } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+    }
 
     if (form.getAttribute("data-name") === "registerForm") {
+      setRegisterFormValidation(true);
       const csrftoken = Cookies.get("csrftoken");
 
       try {
@@ -59,16 +97,16 @@ const LandingPage = () => {
             "X-CSRFToken": csrftoken,
           },
           data: {
-            username: registerDetails.email,
+            username: registerDetails.registerEmail,
             first_name: registerDetails.firstName,
             last_name: registerDetails.surname,
-            email: registerDetails.email,
+            email: registerDetails.registerEmail,
             password: registerDetails.registerPassword,
           },
         });
+
         if (response.statusText === "Created") {
-          handleHideRegisterModal();
-          history.push("/");
+          window.location.reload();
         }
       } catch (error) {
         console.log(error.response.data);
@@ -92,7 +130,7 @@ const LandingPage = () => {
         <Col md={2} className="bg-white rounded">
           <Form
             noValidate
-            validated={validated}
+            validated={loginFormValidation}
             data-name="loginForm"
             onSubmit={handleFormSubmit}
             className="mt-3"
@@ -101,8 +139,10 @@ const LandingPage = () => {
               <Form.Control
                 required
                 type="email"
+                name="loginEmail"
                 placeholder="Email Address"
-                autoFocus={true}
+                value={loginDetails.loginEmail}
+                onChange={handleLoginAndRegisterDetails}
               />
               <Form.Control.Feedback type="invalid" className="text-start">
                 Please enter a email address.
@@ -110,7 +150,14 @@ const LandingPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Control required type="password" placeholder="Password" />
+              <Form.Control
+                required
+                type="password"
+                name="loginPassword"
+                placeholder="Password"
+                value={loginDetails.loginPassword}
+                onChange={handleLoginAndRegisterDetails}
+              />
               <Form.Control.Feedback type="invalid" className="text-start">
                 Please enter a password.
               </Form.Control.Feedback>
@@ -149,7 +196,7 @@ const LandingPage = () => {
 
             <Form
               noValidate
-              validated={validated}
+              validated={registerFormValidation}
               data-name="registerForm"
               onSubmit={handleFormSubmit}
             >
@@ -164,7 +211,7 @@ const LandingPage = () => {
                           name="firstName"
                           placeholder="First Name"
                           value={registerDetails.firstName}
-                          onChange={handleRegisterDetails}
+                          onChange={handleLoginAndRegisterDetails}
                         />
                         <Form.Control.Feedback
                           type="invalid"
@@ -182,7 +229,7 @@ const LandingPage = () => {
                           name="surname"
                           placeholder="Surname"
                           value={registerDetails.surname}
-                          onChange={handleRegisterDetails}
+                          onChange={handleLoginAndRegisterDetails}
                         />
                         <Form.Control.Feedback
                           type="invalid"
@@ -200,10 +247,10 @@ const LandingPage = () => {
                         <Form.Control
                           required
                           type="email"
-                          name="email"
+                          name="registerEmail"
                           placeholder="Email Address"
-                          value={registerDetails.email}
-                          onChange={handleRegisterDetails}
+                          value={registerDetails.registerEmail}
+                          onChange={handleLoginAndRegisterDetails}
                         />
                         <Form.Control.Feedback
                           type="invalid"
@@ -224,7 +271,7 @@ const LandingPage = () => {
                           name="registerPassword"
                           placeholder="Password"
                           value={registerDetails.password}
-                          onChange={handleRegisterDetails}
+                          onChange={handleLoginAndRegisterDetails}
                         />
                         <Form.Control.Feedback
                           type="invalid"
