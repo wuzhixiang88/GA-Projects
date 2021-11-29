@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 // LOGO/IMAGE IMPORTS
 import logo from "../logo.svg";
 import profileIcon from "../profile.png";
@@ -19,6 +20,14 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 
 const Header = () => {
+  const history = useHistory();
+
+  const handleClickLogout = async () => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    history.push("/");
+  };
+
   return (
     <Container fluid>
       <Row>
@@ -80,7 +89,12 @@ const Header = () => {
               ].map((element) => (
                 <>
                   {element[0] === "Log Out" ? <Dropdown.Divider /> : null}
-                  <Dropdown.Item href="">
+                  <Dropdown.Item
+                    href=""
+                    onClick={
+                      element[0] === "Log Out" ? handleClickLogout : null
+                    }
+                  >
                     <Image
                       alt=""
                       src={element[1]}

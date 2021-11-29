@@ -77,6 +77,8 @@ const LandingPage = () => {
         });
 
         if (response.statusText === "OK") {
+          localStorage.setItem("access", response.data.access);
+          localStorage.setItem("refresh", response.data.refresh);
           history.push("/ZX");
         }
       } catch (error) {
