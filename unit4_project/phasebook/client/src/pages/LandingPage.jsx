@@ -26,6 +26,8 @@ const LandingPage = () => {
     registerEmail: "",
     registerPassword: "",
   });
+  const [loginError, setLoginError] = useState(null);
+  const [registerError, setRegisterError] = useState(null);
 
   const [registerModal, setRegisterModal] = useState(false);
   const [loginFormValidation, setLoginFormValidation] = useState(false);
@@ -46,6 +48,9 @@ const LandingPage = () => {
       ...registerDetails,
       [key]: value,
     });
+
+    setLoginError(null);
+    setRegisterError(null);
   };
 
   const handleShowRegisterModal = () => setRegisterModal(true);
@@ -82,9 +87,9 @@ const LandingPage = () => {
           history.push("/ZX");
         }
       } catch (error) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+        if (error.response.status === 401) {
+          setLoginError(error.response.data.detail);
+        }
       }
     }
 
@@ -122,9 +127,12 @@ const LandingPage = () => {
           history.push("/?registration=success");
         }
       } catch (error) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+        if (
+          error.response.data.username[0] ===
+          "A user with that username already exists."
+        ) {
+          setRegisterError("A user with that email address already exists.");
+        }
       }
     }
   };
@@ -177,9 +185,10 @@ const LandingPage = () => {
                 placeholder="Password"
                 value={loginDetails.loginPassword}
                 onChange={handleLoginAndRegisterDetails}
+                isInvalid={!!loginError}
               />
               <Form.Control.Feedback type="invalid" className="text-start">
-                Please enter a password.
+                {loginError ? loginError : "Please enter a password."}
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -292,12 +301,15 @@ const LandingPage = () => {
                           placeholder="Password"
                           value={registerDetails.password}
                           onChange={handleLoginAndRegisterDetails}
+                          isInvalid={!!registerError}
                         />
                         <Form.Control.Feedback
                           type="invalid"
                           className="text-start"
                         >
-                          Please enter a password.
+                          {registerError
+                            ? registerError
+                            : "Please enter a password."}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
