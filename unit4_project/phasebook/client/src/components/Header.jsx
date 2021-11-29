@@ -1,5 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+// EXTERNAL PLUGIN IMPORTS
+import axios from "axios";
 // LOGO/IMAGE IMPORTS
 import logo from "../logo.svg";
 import profileIcon from "../profile.png";
@@ -23,9 +25,27 @@ const Header = () => {
   const history = useHistory();
 
   const handleClickLogout = async () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    history.push("/");
+    try {
+      const response = await axios({
+        method: "POST",
+        url: "/accounts/api/logout",
+        mode: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      });
+
+      if (response.status === 205) {
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+        history.push("/");
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
   };
 
   return (

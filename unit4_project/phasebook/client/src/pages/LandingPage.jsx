@@ -76,7 +76,7 @@ const LandingPage = () => {
           },
         });
 
-        if (response.statusText === "OK") {
+        if (response.status === 200) {
           localStorage.setItem("access", response.data.access);
           localStorage.setItem("refresh", response.data.refresh);
           history.push("/ZX");
@@ -110,7 +110,7 @@ const LandingPage = () => {
           },
         });
 
-        if (response.statusText === "Created") {
+        if (response.status === 201) {
           handleHideRegisterModal();
           setRegisterFormValidation(false);
           setRegisterDetails({
