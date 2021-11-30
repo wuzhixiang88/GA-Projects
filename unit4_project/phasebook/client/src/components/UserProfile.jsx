@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 // LOGO/IMAGE IMPORTS
-import seedCoverPhoto from "../seed_cover_photo.jpg";
-import seedProfilePhoto from "../seed_profile_photo.jpg";
+import emptyImage from "../empty.png";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
@@ -10,38 +9,95 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+import Form from "react-bootstrap/Form";
 
 const UserProfile = () => {
+  const [userPhotos, setUserPhotos] = useState({
+    coverPhoto: "",
+    profilePhoto: "",
+  });
+
+  const coverPhotoInput = useRef();
+  const profilePhotoInput = useRef();
+
+  const handleClickEditCoverPhoto = () => {
+    coverPhotoInput.current.click();
+  };
+  const handleClickEditProfile = () => {
+    profilePhotoInput.current.click();
+  };
+
+  const handleCoverPhoto = (e) => {
+    setUserPhotos({
+      ...userPhotos,
+      coverPhoto: e.target.files[0],
+    });
+  };
+
+  const handleProfilePhoto = (e) => {
+    setUserPhotos({
+      ...userPhotos,
+      profilePhoto: e.target.files[0],
+    });
+  };
+
   return (
     <Container fluid>
+      {/* COVER PHOTO SECTION */}
       <Row className="justify-content-md-center">
         <Col md={5} className="px-0">
           <Card>
             <Card.Img
-              src={seedCoverPhoto}
+              src={
+                userPhotos.coverPhoto
+                  ? URL.createObjectURL(userPhotos.coverPhoto)
+                  : emptyImage
+              }
               alt=""
               style={{
-                maxHeight: "600px",
+                height: "400px",
                 objectFit: "cover",
               }}
             />
             <Card.ImgOverlay>
-              <Button className="position-absolute bottom-0 end-0 me-3 mb-3">
-                Edit Cover Photo
-              </Button>
+              <Form>
+                <Form.Control
+                  ref={coverPhotoInput}
+                  type="file"
+                  accept="image/*"
+                  id="user-cover-photo-input"
+                  onChange={handleCoverPhoto}
+                />
+                <Button
+                  className="position-absolute bottom-0 end-0 me-3 mb-3"
+                  onClick={handleClickEditCoverPhoto}
+                >
+                  Edit Cover Photo
+                </Button>
+              </Form>
             </Card.ImgOverlay>
           </Card>
         </Col>
       </Row>
+
+      {/* PROFILE PHOTO SECTION */}
       <Row className="justify-content-md-center mt-3">
         <Col md={5} className="px-0">
           <Card className="d-flex flex-row border-0">
             <Col md="auto">
-              <Image
+              <Card.Img
+                src={
+                  userPhotos.profilePhoto
+                    ? URL.createObjectURL(userPhotos.profilePhoto)
+                    : emptyImage
+                }
                 alt=""
-                src={seedProfilePhoto}
-                height="150"
                 className="border rounded-circle"
+                style={{
+                  height: "150px",
+                  width: "150px",
+                  objectFit: "cover",
+                }}
               />
             </Col>
             <Col md="auto" className="d-flex flex-column align-self-center">
@@ -53,12 +109,22 @@ const UserProfile = () => {
               </Col>
             </Col>
             <Col md="auto">
-              <Button
-                variant="secondary"
-                className="position-absolute bottom-0 end-0"
-              >
-                Edit Profile
-              </Button>
+              <Form>
+                <Form.Control
+                  ref={profilePhotoInput}
+                  type="file"
+                  accept="image/*"
+                  id="user-profile-photo-input"
+                  onChange={handleProfilePhoto}
+                />
+                <Button
+                  variant="secondary"
+                  className="position-absolute bottom-0 end-0"
+                  onClick={handleClickEditProfile}
+                >
+                  Edit Profile
+                </Button>
+              </Form>
             </Col>
           </Card>
         </Col>

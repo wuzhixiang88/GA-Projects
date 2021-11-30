@@ -36,6 +36,8 @@
   }
 }
 
+/* CUSTOM CSS SECTION */
+
 #header-dropdown-button {
   border-radius: 20px;
 }
@@ -71,6 +73,10 @@
   height: 200px;
 }
 
+.img-upload-form > input {
+  display: none;
+}
+
 .img-upload-label {
   background-color: rgb(250, 250, 250);
 }
@@ -78,10 +84,6 @@
 #like-comment-button:hover,
 .img-upload-label:hover {
   background-color: rgb(230, 230, 230);
-}
-
-.img-upload-form > input {
-  display: none;
 }
 
 .post-feed-user {
@@ -100,6 +102,11 @@
 #user-comment-col {
   background-color: rgb(240, 240, 240);
   border-radius: 20px;
+}
+
+#user-cover-photo-input,
+#user-profile-photo-input {
+  opacity: 0;
 }
 
 .post-show-photo-div {
