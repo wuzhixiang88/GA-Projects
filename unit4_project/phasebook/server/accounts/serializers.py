@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from accounts.models import UserProfile
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -21,3 +22,16 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         user.save()
 
         return user
+
+class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = [
+            'cover_photo',
+            'profile_photo',
+        ]
+    
+    def create(self, validated_data):
+        profile = UserProfile.objects.create(**validated_data)
+
+        return profile

@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+// EXTERNAL PLUGIN IMPORTS
+import axios from "axios";
 // LOGO/IMAGE IMPORTS
 import emptyImage from "../empty.png";
 // BOOTSTRAP COMPONENT IMPORTS
@@ -19,25 +21,44 @@ const UserProfile = () => {
   const coverPhotoInput = useRef();
   const profilePhotoInput = useRef();
 
-  const handleClickEditCoverPhoto = () => {
+  const handleClickEditCoverPhoto = (e) => {
     coverPhotoInput.current.click();
   };
   const handleClickEditProfile = () => {
     profilePhotoInput.current.click();
   };
 
-  const handleCoverPhoto = (e) => {
-    setUserPhotos({
-      ...userPhotos,
-      coverPhoto: e.target.files[0],
-    });
-  };
+  const handleUserPhotos = async (e) => {
+    const key = e.target.getAttribute("data-name");
+    const value = e.target.files[0];
 
-  const handleProfilePhoto = (e) => {
     setUserPhotos({
       ...userPhotos,
-      profilePhoto: e.target.files[0],
+      [key]: value,
     });
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append(
+        key === "coverPhoto"
+          ? "cover_photo"
+          : key === "profilePhoto"
+          ? "profile_photo"
+          : null,
+        e.target.files[0],
+        e.target.files[0].name
+      );
+
+      await axios.post("/accounts/api/profile", uploadData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      });
+    } catch (error) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
   };
 
   return (
@@ -65,7 +86,8 @@ const UserProfile = () => {
                   type="file"
                   accept="image/*"
                   id="user-cover-photo-input"
-                  onChange={handleCoverPhoto}
+                  data-name="coverPhoto"
+                  onChange={handleUserPhotos}
                 />
                 <Button
                   className="position-absolute bottom-0 end-0 me-3 mb-3"
@@ -114,7 +136,8 @@ const UserProfile = () => {
                   type="file"
                   accept="image/*"
                   id="user-profile-photo-input"
-                  onChange={handleProfilePhoto}
+                  data-name="profilePhoto"
+                  onChange={handleUserPhotos}
                 />
                 <Button
                   variant="secondary"
