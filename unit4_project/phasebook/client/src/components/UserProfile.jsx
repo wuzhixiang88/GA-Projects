@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // EXTERNAL PLUGIN IMPORTS
 import axios from "axios";
 // LOGO/IMAGE IMPORTS
@@ -48,6 +48,7 @@ const UserProfile = () => {
         e.target.files[0],
         e.target.files[0].name
       );
+      uploadData.append("user", "wuzhixiang88@gmail.com");
 
       await axios.post("/accounts/api/profile", uploadData, {
         headers: {
@@ -61,6 +62,22 @@ const UserProfile = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get("/accounts/api/profile/2");
+        console.log(response);
+        if (response.status === 200) {
+          setUserPhotos({
+            coverPhoto: response.data.cover_photo,
+          });
+        }
+      } catch (error) {}
+    };
+
+    fetchUserProfile();
+  }, []);
+
   return (
     <Container fluid>
       {/* COVER PHOTO SECTION */}
@@ -68,11 +85,7 @@ const UserProfile = () => {
         <Col md={5} className="px-0">
           <Card>
             <Card.Img
-              src={
-                userPhotos.coverPhoto
-                  ? URL.createObjectURL(userPhotos.coverPhoto)
-                  : emptyImage
-              }
+              src={userPhotos.coverPhoto ? userPhotos.coverPhoto : emptyImage}
               alt=""
               style={{
                 height: "400px",
@@ -108,9 +121,7 @@ const UserProfile = () => {
             <Col md="auto">
               <Card.Img
                 src={
-                  userPhotos.profilePhoto
-                    ? URL.createObjectURL(userPhotos.profilePhoto)
-                    : emptyImage
+                  userPhotos.profilePhoto ? userPhotos.profilePhoto : emptyImage
                 }
                 alt=""
                 className="border rounded-circle"

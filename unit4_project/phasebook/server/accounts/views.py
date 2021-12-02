@@ -1,10 +1,13 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import status
-from accounts.serializers import UserSerializer, UserProfileSerializer
+from accounts.serializers import UserSerializer, UserProfileSerializer, CustomTokenObtainPairSerializer
+from accounts.models import User
 
 # Create your views here.
 class Register(APIView):
@@ -21,6 +24,12 @@ class Register(APIView):
 class UserProfile(APIView):
     permissions_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
+
+    def get(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
+        serializer = UserSerializer(user)
+
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = UserProfileSerializer(data=request.data)
@@ -41,3 +50,7 @@ class Logout(APIView):
             BlacklistedToken.objects.get_or_create(token=token)
 
         return Response(status=status.HTTP_205_RESET_CONTENT)
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    # Replace the serializer with your custom
+    serializer_class = CustomTokenObtainPairSerializer

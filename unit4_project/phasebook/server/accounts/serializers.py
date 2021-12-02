@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
+from django.db.models import Q
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from accounts.models import UserProfile
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
@@ -23,15 +25,32 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
         return user
 
-class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        read_only=False,
+        queryset=User.objects.all(),
+        slug_field="username"
+    )
+
     class Meta:
         model = UserProfile
         fields = [
             'cover_photo',
             'profile_photo',
+            'user'
         ]
     
     def create(self, validated_data):
         profile = UserProfile.objects.create(**validated_data)
 
         return profile
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        # The default result (access/refresh tokens)
+        data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
+        # Custom data you want to include
+        data.update({'username': self.user.username})
+        data.update({'id': self.user.id})
+
+        return data

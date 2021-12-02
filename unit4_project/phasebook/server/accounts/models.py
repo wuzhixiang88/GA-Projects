@@ -15,5 +15,10 @@ def profile_photos_upload_path(instance, filename):
     ])
 
 class UserProfile(models.Model):
+    user = models.OneToOneField(
+        to=User,
+        on_delete=models.CASCADE,
+    )
+
     cover_photo = models.ImageField(blank=True, null=True, upload_to=cover_photos_upload_path)
     profile_photo = models.ImageField(blank=True, null=True, upload_to=profile_photos_upload_path )
