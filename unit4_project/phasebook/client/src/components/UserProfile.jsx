@@ -14,8 +14,8 @@ import Form from "react-bootstrap/Form";
 
 const UserProfile = () => {
   const [userPhotos, setUserPhotos] = useState({
-    coverPhoto: "",
-    profilePhoto: "",
+    coverPhoto: null,
+    profilePhoto: null,
   });
 
   const coverPhotoInput = useRef();
@@ -37,46 +37,99 @@ const UserProfile = () => {
       [key]: value,
     });
 
-    try {
-      const uploadData = new FormData();
-      uploadData.append(
-        key === "coverPhoto"
-          ? "cover_photo"
-          : key === "profilePhoto"
-          ? "profile_photo"
-          : null,
-        e.target.files[0],
-        e.target.files[0].name
-      );
-      uploadData.append("user", "wuzhixiang88@gmail.com");
+    if (!userPhotos.coverPhoto && !userPhotos.profilePhoto) {
+      try {
+        const uploadData = new FormData();
+        uploadData.append(
+          key === "coverPhoto"
+            ? "cover_photo"
+            : key === "profilePhoto"
+            ? "profile_photo"
+            : null,
+          e.target.files[0],
+          e.target.files[0].name
+        );
+        uploadData.append("user", localStorage.getItem("username"));
 
-      await axios.post("/accounts/api/profile", uploadData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      });
-    } catch (error) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
+        const response = await axios.post("/accounts/api/profile", uploadData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        });
+
+        if (response.status === 201) {
+          window.location.reload();
+        }
+      } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+    } else {
+      try {
+        const uploadData = new FormData();
+        uploadData.append(
+          key === "coverPhoto"
+            ? "user_profile.cover_photo"
+            : key === "profilePhoto"
+            ? "user_profile.profile_photo"
+            : null,
+          e.target.files[0],
+          e.target.files[0].name
+        );
+        uploadData.append("user", localStorage.getItem("username"));
+
+        const response = await axios.patch(
+          `/accounts/api/profile/edit/${localStorage.getItem("id")}`,
+          uploadData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access")}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          window.location.reload();
+        }
+      } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
     }
   };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get("/accounts/api/profile/2");
-        console.log(response);
+        const response = await axios.get(
+          `/accounts/api/profile/${localStorage.getItem("id")}`
+        );
+
         if (response.status === 200) {
-          setUserPhotos({
-            coverPhoto: response.data.cover_photo,
-          });
+          response.data.user_profile &&
+            setUserPhotos({
+              ...userPhotos,
+              coverPhoto:
+                response.data.user_profile.cover_photo !== null
+                  ? response.data.user_profile.cover_photo
+                  : null,
+              profilePhoto:
+                response.data.user_profile.profile_photo !== null
+                  ? response.data.user_profile.profile_photo
+                  : null,
+            });
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
     };
 
     fetchUserProfile();
-  }, []);
+  }, [userPhotos]);
 
   return (
     <Container fluid>
@@ -85,7 +138,12 @@ const UserProfile = () => {
         <Col md={5} className="px-0">
           <Card>
             <Card.Img
-              src={userPhotos.coverPhoto ? userPhotos.coverPhoto : emptyImage}
+              src={
+                userPhotos.coverPhoto &&
+                typeof userPhotos.coverPhoto === "string"
+                  ? userPhotos.coverPhoto
+                  : emptyImage
+              }
               alt=""
               style={{
                 height: "400px",
@@ -121,7 +179,10 @@ const UserProfile = () => {
             <Col md="auto">
               <Card.Img
                 src={
-                  userPhotos.profilePhoto ? userPhotos.profilePhoto : emptyImage
+                  userPhotos.profilePhoto &&
+                  typeof userPhotos.profilePhoto === "string"
+                    ? userPhotos.profilePhoto
+                    : emptyImage
                 }
                 alt=""
                 className="border rounded-circle"

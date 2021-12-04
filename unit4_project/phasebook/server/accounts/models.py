@@ -18,6 +18,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(
         to=User,
         on_delete=models.CASCADE,
+        related_name='user_profile'
     )
 
     cover_photo = models.ImageField(blank=True, null=True, upload_to=cover_photos_upload_path)

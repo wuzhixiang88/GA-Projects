@@ -84,8 +84,8 @@ const LandingPage = () => {
         if (response.status === 200) {
           localStorage.setItem("access", response.data.access);
           localStorage.setItem("refresh", response.data.refresh);
-          localStorage.setItem("username", response.data.refresh);
-          localStorage.setItem("id", response.data.refresh);
+          localStorage.setItem("username", response.data.username);
+          localStorage.setItem("id", response.data.id);
           history.push("/ZX");
         }
       } catch (error) {
@@ -130,11 +130,13 @@ const LandingPage = () => {
         }
       } catch (error) {
         if (
+          error.response.data.username &&
           error.response.data.username[0] ===
-          "A user with that username already exists."
+            "A user with that username already exists."
         ) {
           setRegisterError("A user with that email address already exists.");
         }
+        console.log(error.response);
       }
     }
   };

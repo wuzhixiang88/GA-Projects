@@ -4,27 +4,6 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from accounts.models import UserProfile
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'username', 
-            'first_name', 
-            'last_name', 
-            'email', 
-            'password'
-        ]
-        extra_kwargs = {
-            'password': { 'write_only': True }
-        }
-        
-    def create(self, validated_data):
-        user = User.objects.create(**validated_data)
-        user.set_password(validated_data['password'])
-        user.save()
-
-        return user
-
 class UserProfileSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         read_only=False,
@@ -44,6 +23,44 @@ class UserProfileSerializer(serializers.ModelSerializer):
         profile = UserProfile.objects.create(**validated_data)
 
         return profile
+
+class UserSerializer(serializers.ModelSerializer):
+    user_profile = UserProfileSerializer(required=False)
+    print("DATA DATA DATA")
+    print(user_profile)
+
+    class Meta:
+        model = User
+        fields = [
+            'username', 
+            'first_name', 
+            'last_name', 
+            'email', 
+            'password',
+            'user_profile'
+        ]
+        extra_kwargs = {
+            'password': { 'write_only': True }
+        }
+        
+    def create(self, validated_data):
+        user = User.objects.create(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
+
+    def update(self, instance, validated_data):
+        user_profile = validated_data.pop('user_profile')
+        instance = super().update(instance, validated_data)
+
+        if "cover_photo" in user_profile:
+            instance.user_profile.cover_photo = user_profile.get("cover_photo", instance.user_profile.cover_photo)
+        if "profile_photo" in user_profile:
+            instance.user_profile.profile_photo = user_profile.get("profile_photo", instance.user_profile.profile_photo)
+            
+        instance.user_profile.save()            
+        return instance
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):

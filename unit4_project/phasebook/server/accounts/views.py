@@ -1,7 +1,7 @@
-from django.shortcuts import get_object_or_404
+from django import http
 from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -21,25 +21,27 @@ class Register(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserProfile(APIView):
+class GetUserProfile(RetrieveAPIView):
     permissions_classes = [IsAuthenticated]
-    parser_classes = (MultiPartParser, FormParser)
 
-    def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        serializer = UserSerializer(user)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-        return Response(serializer.data)
+class SetUserProfile(CreateAPIView):
+    permissions_classes = [IsAuthenticated]
 
-    def post(self, request):
-        serializer = UserProfileSerializer(data=request.data)
+    queryset = User.objects.all()
+    serializer_class = UserProfileSerializer
 
-        if serializer.is_valid():
-            serializer.save()
+class UpdateUserProfile(UpdateAPIView):
+    permissions_classes = [IsAuthenticated]
 
-            return Response(serializer.errors, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer 
+    http_method_names  = ['patch']
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
 
 class Logout(APIView):
     permission_classes = [IsAuthenticated]
