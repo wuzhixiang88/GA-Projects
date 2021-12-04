@@ -129,7 +129,7 @@ const UserProfile = () => {
     };
 
     fetchUserProfile();
-  }, [userPhotos]);
+  }, []);
 
   return (
     <Container fluid>

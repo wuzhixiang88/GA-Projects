@@ -38,10 +38,6 @@ const Header = () => {
 
       if (response.status === 205) {
         localStorage.clear();
-        // localStorage.removeItem("access");
-        // localStorage.removeItem("refresh");
-        // localStorage.removeItem("username");
-        // localStorage.removeItem("id");
         history.push("/");
       }
     } catch (error) {

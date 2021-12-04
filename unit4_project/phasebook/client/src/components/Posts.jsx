@@ -44,13 +44,13 @@ const Posts = ({ posts, showPostImage }) => {
     ]);
     postCommentInput.current.value = "";
 
-    handlePostCommentCounter(e);
+    handlePostCommentCounter();
   };
 
   const handlePostLikeCounter = () => {
     setPostLikeCounter(postLikeCounter + 1);
   };
-  const handlePostCommentCounter = (e) => {
+  const handlePostCommentCounter = () => {
     setPostCommentCounter(postCommentCounter + 1);
   };
 
