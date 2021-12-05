@@ -136,7 +136,6 @@ const LandingPage = () => {
         ) {
           setRegisterError("A user with that email address already exists.");
         }
-        console.log(error.response);
       }
     }
   };

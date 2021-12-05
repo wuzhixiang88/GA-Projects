@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+// EXTERNAL PLUGIN IMPORTS
+import axios from "axios";
 // LOGO/IMAGE IMPORTS
 import photoIcon from "../photos.png";
 import peopleIcon from "../users.png";
@@ -29,18 +31,31 @@ const CreatePost = ({ userPhotos, posts, setPosts }) => {
   const handleShowPhotoUploadWindow = () => setPhotoUploadWindow(true);
   const handleHidePhotoUploadWindow = () => setPhotoUploadWindow(false);
 
-  const handleClickPostButton = (e) => {
+  const handleClickPostButton = async (e) => {
     e.preventDefault();
     handleHideCreatePostModal();
 
-    setPosts([
-      ...posts,
-      {
-        user: "Zhixiang Wu",
+    try {
+      const uploadData = {
         body: postBodyInput.current.value,
-        date: "25 November 2021",
-      },
-    ]);
+        photo: null,
+        like: [],
+      };
+
+      const response = await axios.post(`/api/post/`, uploadData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      });
+
+      if (response.status === 201) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
   };
 
   return (
