@@ -55,7 +55,7 @@ const UserMainPage = () => {
       <Container fluid className="main-container">
         <Row className="justify-content-md-center">
           <Col md={5} className="px-0">
-            <PostFeed />
+            <PostFeed userPhotos={userPhotos} />
           </Col>
         </Row>
       </Container>

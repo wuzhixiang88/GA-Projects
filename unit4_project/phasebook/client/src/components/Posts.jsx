@@ -5,7 +5,7 @@ import likeIcon from "../like.png";
 import likeButtonIcon from "../like-button.png";
 import unlikeButtonIcon from "../unlike-button.png";
 import commentIcon from "../comment.png";
-import seedProfilePhoto from "../seed_profile_photo.jpg";
+import emptyImage from "../empty.png";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Col from "react-bootstrap/Col";
@@ -14,7 +14,7 @@ import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 
-const Posts = ({ posts, setPosts, showPostImage }) => {
+const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
   const username = localStorage.getItem("username");
 
   const [postComments, setPostComments] = useState([
@@ -82,7 +82,12 @@ const Posts = ({ posts, setPosts, showPostImage }) => {
                 <Col md="auto" className="my-3 me-2">
                   <Image
                     alt=""
-                    src={seedProfilePhoto}
+                    src={
+                      userPhotos.profilePhoto &&
+                      typeof userPhotos.profilePhoto === "string"
+                        ? userPhotos.profilePhoto
+                        : emptyImage
+                    }
                     width="40"
                     height="40"
                     className="border rounded-circle"
@@ -196,7 +201,12 @@ const Posts = ({ posts, setPosts, showPostImage }) => {
                       <Col md="auto" className="me-2">
                         <Image
                           alt=""
-                          src={seedProfilePhoto}
+                          src={
+                            userPhotos.profilePhoto &&
+                            typeof userPhotos.profilePhoto === "string"
+                              ? userPhotos.profilePhoto
+                              : emptyImage
+                          }
                           width="40"
                           height="40"
                           className="border rounded-circle"
@@ -228,7 +238,12 @@ const Posts = ({ posts, setPosts, showPostImage }) => {
                           <Col md="auto" className="me-2">
                             <Image
                               alt=""
-                              src={seedProfilePhoto}
+                              src={
+                                userPhotos.profilePhoto &&
+                                typeof userPhotos.profilePhoto === "string"
+                                  ? userPhotos.profilePhoto
+                                  : emptyImage
+                              }
                               width="30"
                               height="30"
                               className="border rounded-circle"
@@ -264,7 +279,12 @@ const Posts = ({ posts, setPosts, showPostImage }) => {
                           <Col md="auto" className="me-2">
                             <Image
                               alt=""
-                              src={seedProfilePhoto}
+                              src={
+                                userPhotos.profilePhoto &&
+                                typeof userPhotos.profilePhoto === "string"
+                                  ? userPhotos.profilePhoto
+                                  : emptyImage
+                              }
                               width="30"
                               height="30"
                               className="border rounded-circle"
@@ -294,7 +314,12 @@ const Posts = ({ posts, setPosts, showPostImage }) => {
                 <Col md="auto" className="me-2">
                   <Image
                     alt=""
-                    src={seedProfilePhoto}
+                    src={
+                      userPhotos.profilePhoto &&
+                      typeof userPhotos.profilePhoto === "string"
+                        ? userPhotos.profilePhoto
+                        : emptyImage
+                    }
                     width="40"
                     height="40"
                     className="border rounded-circle"

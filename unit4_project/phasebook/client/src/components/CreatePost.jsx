@@ -4,7 +4,7 @@ import photoIcon from "../photos.png";
 import peopleIcon from "../users.png";
 import locationIcon from "../placeholder.png";
 import uploadIcon from "../upload.png";
-import seedProfilePhoto from "../seed_profile_photo.jpg";
+import emptyImage from "../empty.png";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
@@ -19,7 +19,7 @@ import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-const CreatePost = ({ posts, setPosts }) => {
+const CreatePost = ({ userPhotos, posts, setPosts }) => {
   const [createPostModal, setCreatePostModal] = useState(false);
   const [photoUploadWindow, setPhotoUploadWindow] = useState(false);
   const postBodyInput = useRef();
@@ -52,7 +52,12 @@ const CreatePost = ({ posts, setPosts }) => {
               <Col md="auto" className="my-3 me-2">
                 <Image
                   alt=""
-                  src={seedProfilePhoto}
+                  src={
+                    userPhotos.profilePhoto &&
+                    typeof userPhotos.profilePhoto === "string"
+                      ? userPhotos.profilePhoto
+                      : emptyImage
+                  }
                   width="40"
                   height="40"
                   className="border rounded-circle"
@@ -91,7 +96,12 @@ const CreatePost = ({ posts, setPosts }) => {
                 <Col md="auto" className="px-0">
                   <Image
                     alt=""
-                    src={seedProfilePhoto}
+                    src={
+                      userPhotos.profilePhoto &&
+                      typeof userPhotos.profilePhoto === "string"
+                        ? userPhotos.profilePhoto
+                        : emptyImage
+                    }
                     width="40"
                     height="40"
                     className="border rounded-circle mb-3 me-2"
