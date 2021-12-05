@@ -52,7 +52,8 @@
 }
 
 #post-textarea:focus,
-#like-comment-button:focus {
+#like-comment-button:focus,
+#unlike-comment-button:focus {
   box-shadow: none;
 }
 
@@ -64,7 +65,8 @@
   text-decoration: underline;
 }
 
-#like-reply-button:focus {
+#like-reply-button:focus,
+#unlike-reply-button:focus {
   box-shadow: none;
 }
 
@@ -82,6 +84,7 @@
 }
 
 #like-comment-button:hover,
+#unlike-comment-button:hover,
 .img-upload-label:hover {
   background-color: rgb(230, 230, 230);
 }
@@ -97,6 +100,12 @@
 
 #like-comment-button {
   background-color: white;
+  color: black;
+}
+
+#unlike-comment-button {
+  background-color: white;
+  color: blue;
 }
 
 #user-comment-col {

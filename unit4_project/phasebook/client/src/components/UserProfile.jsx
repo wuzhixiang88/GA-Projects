@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 // EXTERNAL PLUGIN IMPORTS
 import axios from "axios";
 // LOGO/IMAGE IMPORTS
@@ -12,12 +12,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const UserProfile = () => {
-  const [userPhotos, setUserPhotos] = useState({
-    coverPhoto: null,
-    profilePhoto: null,
-  });
-
+const UserProfile = ({ userPhotos, setUserPhotos }) => {
   const coverPhotoInput = useRef();
   const profilePhotoInput = useRef();
 
@@ -99,37 +94,6 @@ const UserProfile = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await axios.get(
-          `/accounts/api/profile/${localStorage.getItem("id")}`
-        );
-
-        if (response.status === 200) {
-          response.data.user_profile &&
-            setUserPhotos({
-              ...userPhotos,
-              coverPhoto:
-                response.data.user_profile.cover_photo !== null
-                  ? response.data.user_profile.cover_photo
-                  : null,
-              profilePhoto:
-                response.data.user_profile.profile_photo !== null
-                  ? response.data.user_profile.profile_photo
-                  : null,
-            });
-        }
-      } catch (error) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      }
-    };
-
-    fetchUserProfile();
-  }, []);
 
   return (
     <Container fluid>

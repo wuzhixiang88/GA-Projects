@@ -2,7 +2,8 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 // LOGO/IMAGE IMPORTS
 import likeIcon from "../like.png";
-import likeIcon2 from "../like2.png";
+import likeButtonIcon from "../like-button.png";
+import unlikeButtonIcon from "../unlike-button.png";
 import commentIcon from "../comment.png";
 import seedProfilePhoto from "../seed_profile_photo.jpg";
 // BOOTSTRAP COMPONENT IMPORTS
@@ -14,7 +15,8 @@ import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 
 const Posts = ({ posts, setPosts, showPostImage }) => {
-  // console.log(posts);
+  const username = localStorage.getItem("username");
+
   const [postComments, setPostComments] = useState([
     {
       user: "Zhixiang Wu",
@@ -50,19 +52,14 @@ const Posts = ({ posts, setPosts, showPostImage }) => {
     const postIndex = e.target.getAttribute("data-index");
     const postsArr = [...posts];
 
-    if (
-      postsArr[postIndex]["like"].includes(localStorage.getItem("username"))
-    ) {
-      const index = postsArr[postIndex]["like"].indexOf(
-        localStorage.getItem("username")
-      );
+    if (postsArr[postIndex]["like"].includes(username)) {
+      const index = postsArr[postIndex]["like"].indexOf(username);
       postsArr[postIndex]["like"].splice(index, 1);
     } else {
-      postsArr[postIndex]["like"].push(localStorage.getItem("username"));
+      postsArr[postIndex]["like"].push(username);
     }
 
     setPosts(postsArr);
-    console.log(posts);
   };
   const handlePostCommentCounter = () => {
     setPostCommentCounter(postCommentCounter + 1);
@@ -127,7 +124,7 @@ const Posts = ({ posts, setPosts, showPostImage }) => {
                         <>
                           <Image
                             alt=""
-                            src={likeIcon2}
+                            src={likeIcon}
                             height="20"
                             className="mb-1 me-2"
                           />
@@ -152,13 +149,21 @@ const Posts = ({ posts, setPosts, showPostImage }) => {
                   <Button
                     variant="light"
                     className="flex-grow-1 border-0"
-                    id="like-comment-button"
+                    id={
+                      post.like.includes(username)
+                        ? "unlike-comment-button"
+                        : "like-comment-button"
+                    }
                     data-index={index}
                     onClick={handlePostLikeCounter}
                   >
                     <Image
                       alt=""
-                      src={likeIcon}
+                      src={
+                        post.like.includes(username)
+                          ? unlikeButtonIcon
+                          : likeButtonIcon
+                      }
                       height="20"
                       className="mb-1 me-2"
                     />
