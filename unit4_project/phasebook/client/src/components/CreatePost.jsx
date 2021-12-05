@@ -21,10 +21,11 @@ import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-const CreatePost = ({ userPhotos, posts, setPosts }) => {
+const CreatePost = ({ userPhotos }) => {
   const [createPostModal, setCreatePostModal] = useState(false);
   const [photoUploadWindow, setPhotoUploadWindow] = useState(false);
   const postBodyInput = useRef();
+  const postPhotoInput = useRef();
 
   const handleShowCreatePostModal = () => setCreatePostModal(true);
   const handleHideCreatePostModal = () => setCreatePostModal(false);
@@ -36,11 +37,15 @@ const CreatePost = ({ userPhotos, posts, setPosts }) => {
     handleHideCreatePostModal();
 
     try {
-      const uploadData = {
-        body: postBodyInput.current.value,
-        photo: null,
-        like: [],
-      };
+      const uploadData = new FormData();
+      uploadData.append("body", postBodyInput.current.value);
+      if (postPhotoInput.current.files[0]) {
+        uploadData.append(
+          "photo",
+          postPhotoInput.current.files[0],
+          postPhotoInput.current.files[0].name
+        );
+      }
 
       const response = await axios.post(`/api/post/`, uploadData, {
         headers: {
@@ -52,9 +57,7 @@ const CreatePost = ({ userPhotos, posts, setPosts }) => {
         window.location.reload();
       }
     } catch (error) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
+      console.log(error);
     }
   };
 
@@ -161,6 +164,7 @@ const CreatePost = ({ userPhotos, posts, setPosts }) => {
                             />
                           </Form.Label>
                           <Form.Control
+                            ref={postPhotoInput}
                             type="file"
                             accept="image/*"
                             id="file-input"

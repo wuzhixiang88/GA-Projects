@@ -39,7 +39,7 @@ const PostFeed = ({ userPhotos }) => {
 
   return (
     <>
-      <CreatePost userPhotos={userPhotos} posts={posts} setPosts={setPosts} />
+      <CreatePost userPhotos={userPhotos} />
       <Posts
         userPhotos={userPhotos}
         posts={posts}

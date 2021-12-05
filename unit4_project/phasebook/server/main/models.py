@@ -22,6 +22,6 @@ class Post(models.Model):
     
     body = models.TextField(max_length=300)
     photo = models.ImageField(blank=True, null=True, upload_to=post_photos_upload_path)
-    like = ArrayField(models.CharField(max_length=50, blank=True, null=True), blank=True, default=None)
+    like = ArrayField(models.CharField(max_length=50, blank=True, null=True), default=list)
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(blank=True, null=True, default=None)
