@@ -21,7 +21,7 @@ const UserProfile = () => {
   const coverPhotoInput = useRef();
   const profilePhotoInput = useRef();
 
-  const handleClickEditCoverPhoto = (e) => {
+  const handleClickEditCoverPhoto = () => {
     coverPhotoInput.current.click();
   };
   const handleClickEditProfile = () => {

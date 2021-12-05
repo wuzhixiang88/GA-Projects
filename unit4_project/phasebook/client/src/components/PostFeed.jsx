@@ -1,21 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+// EXTERNAL PLUGIN IMPORTS
+import axios from "axios";
 // REACT COMPONENT IMPORTS
 import CreatePost from "./CreatePost";
 import Posts from "./Posts";
 
 const PostFeed = () => {
-  const [posts, setPosts] = useState([
-    {
-      user: "Zhixiang Wu",
-      body: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      date: "7 October 2021",
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        const response = await axios.get(`/api/post`);
+
+        if (response.status === 200) {
+          const listOfPosts = [];
+          for (const element of response.data) {
+            const postDetails = {
+              user: `${element.user.first_name} ${element.user.last_name}`,
+              body: element.body,
+              photo: element.photo,
+              like: element.like,
+              date: element.created_at.slice(0, 10),
+            };
+
+            listOfPosts.push(postDetails);
+          }
+
+          setPosts(listOfPosts);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserPosts();
+  }, []);
 
   return (
     <>
       <CreatePost posts={posts} setPosts={setPosts} />
-      <Posts posts={posts} showPostImage={true} />
+      <Posts posts={posts} setPosts={setPosts} showPostImage={true} />
     </>
   );
 };

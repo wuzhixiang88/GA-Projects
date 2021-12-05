@@ -5,7 +5,6 @@ import likeIcon from "../like.png";
 import likeIcon2 from "../like2.png";
 import commentIcon from "../comment.png";
 import seedProfilePhoto from "../seed_profile_photo.jpg";
-import lorenIpsumPhoto from "../lorem-ipsum.png";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Col from "react-bootstrap/Col";
@@ -14,7 +13,8 @@ import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 
-const Posts = ({ posts, showPostImage }) => {
+const Posts = ({ posts, setPosts, showPostImage }) => {
+  // console.log(posts);
   const [postComments, setPostComments] = useState([
     {
       user: "Zhixiang Wu",
@@ -26,7 +26,6 @@ const Posts = ({ posts, showPostImage }) => {
     },
   ]);
 
-  const [postLikeCounter, setPostLikeCounter] = useState(0);
   const [postCommentCounter, setPostCommentCounter] = useState(0);
 
   const postCommentInput = useRef();
@@ -47,8 +46,23 @@ const Posts = ({ posts, showPostImage }) => {
     handlePostCommentCounter();
   };
 
-  const handlePostLikeCounter = () => {
-    setPostLikeCounter(postLikeCounter + 1);
+  const handlePostLikeCounter = (e) => {
+    const postIndex = e.target.getAttribute("data-index");
+    const postsArr = [...posts];
+
+    if (
+      postsArr[postIndex]["like"].includes(localStorage.getItem("username"))
+    ) {
+      const index = postsArr[postIndex]["like"].indexOf(
+        localStorage.getItem("username")
+      );
+      postsArr[postIndex]["like"].splice(index, 1);
+    } else {
+      postsArr[postIndex]["like"].push(localStorage.getItem("username"));
+    }
+
+    setPosts(postsArr);
+    console.log(posts);
   };
   const handlePostCommentCounter = () => {
     setPostCommentCounter(postCommentCounter + 1);
@@ -63,158 +77,133 @@ const Posts = ({ posts, showPostImage }) => {
 
   return (
     <>
-      {posts.map((post) => (
-        <Card className="border-0 rounded-3 mb-3">
-          {/* POST USER DETAILS & DATE OF POST SECTION */}
-          <Card.Body className="d-flex text-start py-0">
-            <Col md="auto" className="my-3 me-2">
-              <Image
-                alt=""
-                src={seedProfilePhoto}
-                width="40"
-                height="40"
-                className="border rounded-circle"
-              />
-            </Col>
-            <Col className="d-flex flex-column align-self-center">
-              <Card.Text className="post-feed-user mb-0">{post.user}</Card.Text>
-              <Card.Text className="post-feed-date">{post.date}</Card.Text>
-            </Col>
-          </Card.Body>
-
-          {/* POST BODY (TEXT) SECTION */}
-          <Card.Body className="pt-0">
-            <Card.Text className="text-start">{post.body}</Card.Text>
-          </Card.Body>
-
-          {/* POST BODY (IMAGE) SECTION */}
-          {showPostImage ? (
-            <Card.Body className="mx-3 mb-3 p-0">
-              <Link
-                to={{
-                  pathname: "/photo/id",
-                  state: { post: [post] },
-                }}
-              >
-                <Image fluid rounded alt="" src={lorenIpsumPhoto} />
-              </Link>
-            </Card.Body>
-          ) : null}
-
-          {/* POST LIKE & COMMENT COUNTER SECTION */}
-          {postLikeCounter || postCommentCounter ? (
-            <>
-              <Card.Body className="d-flex pt-0">
-                <Col md="auto">
-                  {postLikeCounter ? (
-                    <>
-                      <Image
-                        alt=""
-                        src={likeIcon2}
-                        height="20"
-                        className="mb-1 me-2"
-                      />
-                      {postLikeCounter}
-                    </>
-                  ) : null}
+      {posts
+        ? posts.map((post, index) => (
+            <Card className="border-0 rounded-3 mb-3">
+              {/* POST USER DETAILS & DATE OF POST SECTION */}
+              <Card.Body className="d-flex text-start py-0">
+                <Col md="auto" className="my-3 me-2">
+                  <Image
+                    alt=""
+                    src={seedProfilePhoto}
+                    width="40"
+                    height="40"
+                    className="border rounded-circle"
+                  />
                 </Col>
-                <Col md="auto" className="ms-auto">
-                  {postCommentCounter
-                    ? postCommentCounter === 1
-                      ? `${postCommentCounter} Comment`
-                      : `${postCommentCounter} Comments`
-                    : null}
+                <Col className="d-flex flex-column align-self-center">
+                  <Card.Text className="post-feed-user mb-0">
+                    {post.user}
+                  </Card.Text>
+                  <Card.Text className="post-feed-date">{post.date}</Card.Text>
                 </Col>
               </Card.Body>
-            </>
-          ) : null}
 
-          {/* POST LIKE & COMMENT BUTTON SECTION */}
-          <Card.Body className="d-flex border-top border-bottom mx-3 mb-3 px-0 py-1">
-            <Col md={6} className="d-flex">
-              <Button
-                variant="light"
-                className="flex-grow-1 border-0"
-                id="like-comment-button"
-                onClick={handlePostLikeCounter}
-              >
-                <Image
-                  alt=""
-                  src={likeIcon}
-                  height="20"
-                  className="mb-1 me-2"
-                />
-                Like
-              </Button>
-            </Col>
-            <Col md={6} className="d-flex">
-              <Button
-                variant="light"
-                className="flex-grow-1 border-0"
-                id="like-comment-button"
-                onClick={focusPostCommentInput}
-              >
-                <Image alt="" src={commentIcon} height="20" className="me-2" />
-                Comment
-              </Button>
-            </Col>
-          </Card.Body>
+              {/* POST BODY (TEXT) SECTION */}
+              <Card.Body className="pt-0">
+                <Card.Text className="text-start">{post.body}</Card.Text>
+              </Card.Body>
 
-          {/* POST COMMENTS SECTION */}
-          <Card.Body className="text-start py-0">
-            {postComments.map((postComment) => (
-              <>
-                <Col className="d-flex">
-                  <Col md="auto" className="me-2">
+              {/* POST BODY (IMAGE) SECTION */}
+              {showPostImage && post.photo ? (
+                <Card.Body className="mx-3 mb-3 p-0">
+                  <Link
+                    to={{
+                      pathname: "/photo/id",
+                      state: { post: [post] },
+                    }}
+                  >
+                    <Image fluid rounded alt="" src={post.photo} />
+                  </Link>
+                </Card.Body>
+              ) : null}
+
+              {/* POST LIKE & COMMENT COUNTER SECTION */}
+              {post.like.length || postCommentCounter ? (
+                <>
+                  <Card.Body className="d-flex pt-0">
+                    <Col md="auto">
+                      {post.like.length ? (
+                        <>
+                          <Image
+                            alt=""
+                            src={likeIcon2}
+                            height="20"
+                            className="mb-1 me-2"
+                          />
+                          {post.like.length}
+                        </>
+                      ) : null}
+                    </Col>
+                    <Col md="auto" className="ms-auto">
+                      {postCommentCounter
+                        ? postCommentCounter === 1
+                          ? `${postCommentCounter} Comment`
+                          : `${postCommentCounter} Comments`
+                        : null}
+                    </Col>
+                  </Card.Body>
+                </>
+              ) : null}
+
+              {/* POST LIKE & COMMENT BUTTON SECTION */}
+              <Card.Body className="d-flex border-top border-bottom mx-3 mb-3 px-0 py-1">
+                <Col md={6} className="d-flex">
+                  <Button
+                    variant="light"
+                    className="flex-grow-1 border-0"
+                    id="like-comment-button"
+                    data-index={index}
+                    onClick={handlePostLikeCounter}
+                  >
                     <Image
                       alt=""
-                      src={seedProfilePhoto}
-                      width="40"
-                      height="40"
-                      className="border rounded-circle"
+                      src={likeIcon}
+                      height="20"
+                      className="mb-1 me-2"
                     />
-                  </Col>
-                  <Col>
-                    <Col id="user-comment-col">
-                      <Card.Text className="fw-bold mb-0 ps-3 pt-2">
-                        {postComment.user}
-                      </Card.Text>
-                      <Card.Text className="px-3 pb-2">
-                        {postComment.body}
-                      </Card.Text>
-                    </Col>
-                    <Col className="mt-0">
-                      <Button variant="link" id="like-reply-button">
-                        Like
-                      </Button>
-                      <Button
-                        variant="link"
-                        id="like-reply-button"
-                        onClick={focusPostCommentReplyInput}
-                      >
-                        Reply
-                      </Button>
-                    </Col>
-                    {/* COMMENTS REPLIES SECTION */}
-                    <Col className="d-flex text-start ps-2 py-0">
+                    Like
+                  </Button>
+                </Col>
+                <Col md={6} className="d-flex">
+                  <Button
+                    variant="light"
+                    className="flex-grow-1 border-0"
+                    id="like-comment-button"
+                    onClick={focusPostCommentInput}
+                  >
+                    <Image
+                      alt=""
+                      src={commentIcon}
+                      height="20"
+                      className="me-2"
+                    />
+                    Comment
+                  </Button>
+                </Col>
+              </Card.Body>
+
+              {/* POST COMMENTS SECTION */}
+              <Card.Body className="text-start py-0">
+                {postComments.map((postComment) => (
+                  <>
+                    <Col className="d-flex">
                       <Col md="auto" className="me-2">
                         <Image
                           alt=""
                           src={seedProfilePhoto}
-                          width="30"
-                          height="30"
+                          width="40"
+                          height="40"
                           className="border rounded-circle"
                         />
                       </Col>
                       <Col>
                         <Col id="user-comment-col">
                           <Card.Text className="fw-bold mb-0 ps-3 pt-2">
-                            Zhixiang Wu
+                            {postComment.user}
                           </Card.Text>
                           <Card.Text className="px-3 pb-2">
-                            It is a long established fact that a reader will be
-                            distracted by the readable content of a page when
-                            looking at its layout.
+                            {postComment.body}
                           </Card.Text>
                         </Col>
                         <Col className="mt-0">
@@ -229,64 +218,99 @@ const Posts = ({ posts, showPostImage }) => {
                             Reply
                           </Button>
                         </Col>
-                      </Col>
-                    </Col>
-                    {/* COMMENTS REPLIES INPUT SECTION */}
-                    <Col className="d-flex ps-2 py-0">
-                      <Col md="auto" className="me-2">
-                        <Image
-                          alt=""
-                          src={seedProfilePhoto}
-                          width="30"
-                          height="30"
-                          className="border rounded-circle"
-                        />
-                      </Col>
-                      <Col>
-                        <Form>
-                          <Form.Group className="flex-grow-1 align-self-center">
-                            <Form.Control
-                              ref={postCommentReplyInput}
-                              type="text"
-                              placeholder="Write a reply..."
-                              className="mb-3 rounded-pill"
+                        {/* COMMENTS REPLIES SECTION */}
+                        <Col className="d-flex text-start ps-2 py-0">
+                          <Col md="auto" className="me-2">
+                            <Image
+                              alt=""
+                              src={seedProfilePhoto}
+                              width="30"
+                              height="30"
+                              className="border rounded-circle"
                             />
-                          </Form.Group>
-                        </Form>
+                          </Col>
+                          <Col>
+                            <Col id="user-comment-col">
+                              <Card.Text className="fw-bold mb-0 ps-3 pt-2">
+                                Zhixiang Wu
+                              </Card.Text>
+                              <Card.Text className="px-3 pb-2">
+                                It is a long established fact that a reader will
+                                be distracted by the readable content of a page
+                                when looking at its layout.
+                              </Card.Text>
+                            </Col>
+                            <Col className="mt-0">
+                              <Button variant="link" id="like-reply-button">
+                                Like
+                              </Button>
+                              <Button
+                                variant="link"
+                                id="like-reply-button"
+                                onClick={focusPostCommentReplyInput}
+                              >
+                                Reply
+                              </Button>
+                            </Col>
+                          </Col>
+                        </Col>
+                        {/* COMMENTS REPLIES INPUT SECTION */}
+                        <Col className="d-flex ps-2 py-0">
+                          <Col md="auto" className="me-2">
+                            <Image
+                              alt=""
+                              src={seedProfilePhoto}
+                              width="30"
+                              height="30"
+                              className="border rounded-circle"
+                            />
+                          </Col>
+                          <Col>
+                            <Form>
+                              <Form.Group className="flex-grow-1 align-self-center">
+                                <Form.Control
+                                  ref={postCommentReplyInput}
+                                  type="text"
+                                  placeholder="Write a reply..."
+                                  className="mb-3 rounded-pill"
+                                />
+                              </Form.Group>
+                            </Form>
+                          </Col>
+                        </Col>
                       </Col>
                     </Col>
-                  </Col>
-                </Col>
-              </>
-            ))}
-          </Card.Body>
+                  </>
+                ))}
+              </Card.Body>
 
-          {/* POST COMMENTS INPUT SECTION */}
-          <Card.Body className="d-flex py-0">
-            <Col md="auto" className="me-2">
-              <Image
-                alt=""
-                src={seedProfilePhoto}
-                width="40"
-                height="40"
-                className="border rounded-circle"
-              />
-            </Col>
-            <Col>
-              <Form onSubmit={handlePostComments}>
-                <Form.Group className="flex-grow-1 align-self-center">
-                  <Form.Control
-                    ref={postCommentInput}
-                    type="text"
-                    placeholder="Write a comment..."
-                    className="mb-3 rounded-pill"
+              {/* POST COMMENTS INPUT SECTION */}
+              <Card.Body className="d-flex py-0">
+                <Col md="auto" className="me-2">
+                  <Image
+                    alt=""
+                    src={seedProfilePhoto}
+                    width="40"
+                    height="40"
+                    className="border rounded-circle"
                   />
-                </Form.Group>
-              </Form>
-            </Col>
-          </Card.Body>
-        </Card>
-      ))}
+                </Col>
+                <Col>
+                  <Form onSubmit={handlePostComments}>
+                    <Form.Group className="flex-grow-1 align-self-center">
+                      <Form.Control
+                        ref={postCommentInput}
+                        type="text"
+                        placeholder="Write a comment..."
+                        className="mb-3 rounded-pill"
+                      />
+                    </Form.Group>
+                  </Form>
+                </Col>
+              </Card.Body>
+            </Card>
+          ))
+        : null}
     </>
   );
 };

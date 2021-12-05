@@ -25,8 +25,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     user_profile = UserProfileSerializer(required=False)
-    print("DATA DATA DATA")
-    print(user_profile)
 
     class Meta:
         model = User

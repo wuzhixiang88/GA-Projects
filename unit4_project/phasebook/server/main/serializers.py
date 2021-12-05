@@ -22,6 +22,8 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             'body',
+            'photo',
+            'like',
             'created_at',
             'updated_at',
             'user',
