@@ -22,6 +22,7 @@ const PostFeed = ({ userPhotos }) => {
               photo: element.photo,
               like: element.like,
               date: element.created_at.slice(0, 10),
+              comments: element.comments,
             };
 
             listOfPosts.push(postDetails);
