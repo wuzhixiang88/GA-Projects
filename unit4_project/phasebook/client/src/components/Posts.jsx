@@ -26,6 +26,31 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
 
   const handlePostComments = async (e) => {
     e.preventDefault();
+    const postID =
+      Number(postCommentInput.current.getAttribute("data-index")) + 1;
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append("body", postCommentInput.current.value);
+
+      const response = await axios.post(
+        `/api/post/${postID}/comment/`,
+        uploadData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
 
     postCommentInput.current.value = "";
 
@@ -220,24 +245,24 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                           </Button>
                         </Col>
                         {/* COMMENTS REPLIES SECTION */}
-                        <Col className="d-flex text-start ps-2 py-0">
-                          <Col md="auto" className="me-2">
-                            <Image
-                              alt=""
-                              src={
-                                userPhotos.profilePhoto &&
-                                typeof userPhotos.profilePhoto === "string"
-                                  ? userPhotos.profilePhoto
-                                  : emptyImage
-                              }
-                              width="30"
-                              height="30"
-                              className="border rounded-circle"
-                            />
-                          </Col>
-                          <Col>
-                            {postComment.replies.map((postCommentReply) => (
-                              <>
+                        <Col className="text-start ps-2 py-0">
+                          {postComment.replies.map((postCommentReply) => (
+                            <Col className="d-flex">
+                              <Col md="auto" className="me-2">
+                                <Image
+                                  alt=""
+                                  src={
+                                    userPhotos.profilePhoto &&
+                                    typeof userPhotos.profilePhoto === "string"
+                                      ? userPhotos.profilePhoto
+                                      : emptyImage
+                                  }
+                                  width="30"
+                                  height="30"
+                                  className="border rounded-circle"
+                                />
+                              </Col>
+                              <Col>
                                 <Col id="user-comment-col">
                                   <Card.Text className="fw-bold mb-0 ps-3 pt-2">
                                     {`${postCommentReply.user.first_name} ${postCommentReply.user.last_name}`}
@@ -250,17 +275,10 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                                   <Button variant="link" id="like-reply-button">
                                     Like
                                   </Button>
-                                  <Button
-                                    variant="link"
-                                    id="like-reply-button"
-                                    onClick={focusPostCommentReplyInput}
-                                  >
-                                    Reply
-                                  </Button>
                                 </Col>
-                              </>
-                            ))}
-                          </Col>
+                              </Col>
+                            </Col>
+                          ))}
                         </Col>
                         {/* COMMENTS REPLIES INPUT SECTION */}
                         <Col className="d-flex ps-2 py-0">
@@ -320,6 +338,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                         ref={postCommentInput}
                         type="text"
                         placeholder="Write a comment..."
+                        data-index={index}
                         className="mb-3 rounded-pill"
                       />
                     </Form.Group>

@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from server.routers import router
+from server.routers import router, post_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('api/', include(post_router.urls))
 ]
 
 if settings.DEBUG:

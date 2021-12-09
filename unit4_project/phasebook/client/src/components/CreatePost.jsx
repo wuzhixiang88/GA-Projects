@@ -39,7 +39,7 @@ const CreatePost = ({ userPhotos }) => {
     try {
       const uploadData = new FormData();
       uploadData.append("body", postBodyInput.current.value);
-      if (postPhotoInput.current.files[0]) {
+      if (postPhotoInput.current && postPhotoInput.current.files[0]) {
         uploadData.append(
           "photo",
           postPhotoInput.current.files[0],

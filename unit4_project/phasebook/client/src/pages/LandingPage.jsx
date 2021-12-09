@@ -151,10 +151,11 @@ const LandingPage = () => {
 
         <Col md={3} className="me-5">
           <Row className="text-primary fs-1 fw-bold text-start mb-3">
-            Phasebook
+            Simple Social Media
           </Row>
           <Row className="fs-4 text-start">
-            Phasebook helps you connect and share with the people in your life.
+            Simple Social Media helps you connect and share with the people in
+            your life.
           </Row>
         </Col>
         <Col md={2} className="bg-white rounded">

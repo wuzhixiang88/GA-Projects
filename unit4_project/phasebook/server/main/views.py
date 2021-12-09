@@ -19,3 +19,9 @@ class CommentViewSet(ModelViewSet):
 
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
+    def perform_create(self, serializer):
+        post_pk = self.kwargs.get('post_pk')
+        post = get_object_or_404(Post, pk=post_pk)
+
+        serializer.save(user=self.request.user, post=post)

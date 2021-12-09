@@ -69,7 +69,7 @@ const Header = () => {
             <Form.Group>
               <Form.Control
                 type="search"
-                placeholder="Search Phasebook"
+                placeholder="Search"
                 className="rounded-pill"
               />
             </Form.Group>
