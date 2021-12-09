@@ -112,8 +112,8 @@ const Header = ({ userPhotos }) => {
                 ["Display", displayIcon],
                 ["Settings", settingsIcon],
                 ["Log Out", logoutIcon],
-              ].map((element) => (
-                <>
+              ].map((element, index) => (
+                <Col key={index}>
                   {element[0] === "Log Out" ? <Dropdown.Divider /> : null}
                   <Dropdown.Item
                     href=""
@@ -129,7 +129,7 @@ const Header = ({ userPhotos }) => {
                     />
                     {element[0]}
                   </Dropdown.Item>
-                </>
+                </Col>
               ))}
             </DropdownButton>
           </Col>

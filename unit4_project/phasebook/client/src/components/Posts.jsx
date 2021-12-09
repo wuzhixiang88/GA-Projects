@@ -113,7 +113,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
     <>
       {posts
         ? posts.map((post, index) => (
-            <Card className="border-0 rounded-3 mb-3">
+            <Card className="border-0 rounded-3 mb-3" key={index}>
               {/* POST USER DETAILS & DATE OF POST SECTION */}
               <Card.Body className="d-flex text-start py-0">
                 <Col md="auto" className="my-3 me-2">
@@ -233,8 +233,8 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
 
               {/* POST COMMENTS SECTION */}
               <Card.Body className="text-start py-0">
-                {post.comments.map((postComment) => (
-                  <>
+                {post.comments.map((postComment, index) => (
+                  <Col key={index}>
                     <Col className="d-flex">
                       <Col md="auto" className="me-2">
                         <Image
@@ -274,39 +274,45 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                         </Col>
                         {/* COMMENTS REPLIES SECTION */}
                         <Col className="text-start ps-2 py-0">
-                          {postComment.replies.map((postCommentReply) => (
-                            <Col className="d-flex">
-                              <Col md="auto" className="me-2">
-                                <Image
-                                  alt=""
-                                  src={
-                                    userPhotos.profilePhoto &&
-                                    typeof userPhotos.profilePhoto === "string"
-                                      ? userPhotos.profilePhoto
-                                      : emptyImage
-                                  }
-                                  width="30"
-                                  height="30"
-                                  className="border rounded-circle"
-                                />
-                              </Col>
-                              <Col>
-                                <Col id="user-comment-col">
-                                  <Card.Text className="fw-bold mb-0 ps-3 pt-2">
-                                    {`${postCommentReply.user.first_name} ${postCommentReply.user.last_name}`}
-                                  </Card.Text>
-                                  <Card.Text className="px-3 pb-2">
-                                    {postCommentReply.body}
-                                  </Card.Text>
+                          {postComment.replies.map(
+                            (postCommentReply, index) => (
+                              <Col className="d-flex" key={index}>
+                                <Col md="auto" className="me-2">
+                                  <Image
+                                    alt=""
+                                    src={
+                                      userPhotos.profilePhoto &&
+                                      typeof userPhotos.profilePhoto ===
+                                        "string"
+                                        ? userPhotos.profilePhoto
+                                        : emptyImage
+                                    }
+                                    width="30"
+                                    height="30"
+                                    className="border rounded-circle"
+                                  />
                                 </Col>
-                                <Col className="mt-0">
-                                  <Button variant="link" id="like-reply-button">
-                                    Like
-                                  </Button>
+                                <Col>
+                                  <Col id="user-comment-col">
+                                    <Card.Text className="fw-bold mb-0 ps-3 pt-2">
+                                      {`${postCommentReply.user.first_name} ${postCommentReply.user.last_name}`}
+                                    </Card.Text>
+                                    <Card.Text className="px-3 pb-2">
+                                      {postCommentReply.body}
+                                    </Card.Text>
+                                  </Col>
+                                  <Col className="mt-0">
+                                    <Button
+                                      variant="link"
+                                      id="like-reply-button"
+                                    >
+                                      Like
+                                    </Button>
+                                  </Col>
                                 </Col>
                               </Col>
-                            </Col>
-                          ))}
+                            )
+                          )}
                         </Col>
                         {/* COMMENTS REPLIES INPUT SECTION */}
                         <Col className="d-flex ps-2 py-0">
@@ -348,7 +354,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                         </Col>
                       </Col>
                     </Col>
-                  </>
+                  </Col>
                 ))}
               </Card.Body>
 
