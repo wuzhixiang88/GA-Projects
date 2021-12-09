@@ -26,7 +26,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
 
   const handlePostComments = async (e) => {
     e.preventDefault();
-    const postID = Number(e.target.getAttribute("data-postID"));
+    const postID = Number(e.target.getAttribute("data-postid"));
 
     try {
       const uploadData = new FormData();
@@ -53,8 +53,8 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
 
   const handlePostCommentReplies = async (e) => {
     e.preventDefault();
-    const postID = Number(e.target.getAttribute("data-postID"));
-    const commentID = Number(e.target.getAttribute("data-commentID"));
+    const postID = Number(e.target.getAttribute("data-postid"));
+    const commentID = Number(e.target.getAttribute("data-commentid"));
 
     try {
       const uploadData = new FormData();
@@ -101,11 +101,11 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
   };
 
   const focusPostCommentInput = (e) => {
-    const index = e.target.getAttribute("data-postID");
+    const index = e.target.getAttribute("data-postid");
     postCommentInputs.current[index].focus();
   };
   const focusPostCommentReplyInput = (e) => {
-    const index = e.target.getAttribute("data-commentID");
+    const index = e.target.getAttribute("data-commentid");
     postCommentReplyInputs.current[index].focus();
   };
 
@@ -217,7 +217,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                     variant="light"
                     className="flex-grow-1 border-0"
                     id="like-comment-button"
-                    data-postID={post.id}
+                    data-postid={post.id}
                     onClick={focusPostCommentInput}
                   >
                     <Image
@@ -266,7 +266,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                           <Button
                             variant="link"
                             id="like-reply-button"
-                            data-commentID={postComment.id}
+                            data-commentid={postComment.id}
                             onClick={focusPostCommentReplyInput}
                           >
                             Reply
@@ -327,8 +327,8 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                           <Col>
                             <Form
                               onSubmit={handlePostCommentReplies}
-                              data-postID={postComment.post_id}
-                              data-commentID={postComment.id}
+                              data-postid={postComment.post_id}
+                              data-commentid={postComment.id}
                             >
                               <Form.Group className="flex-grow-1 align-self-center">
                                 <Form.Control
@@ -339,7 +339,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                                   }
                                   type="text"
                                   placeholder="Write a reply..."
-                                  data-commentID={postComment.id}
+                                  data-commentid={postComment.id}
                                   className="mb-3 rounded-pill"
                                 />
                               </Form.Group>
@@ -369,7 +369,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                   />
                 </Col>
                 <Col>
-                  <Form onSubmit={handlePostComments} data-postID={post.id}>
+                  <Form onSubmit={handlePostComments} data-postid={post.id}>
                     <Form.Group className="flex-grow-1 align-self-center">
                       <Form.Control
                         ref={(element) =>
@@ -377,7 +377,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                         }
                         type="text"
                         placeholder="Write a comment..."
-                        data-postID={post.id}
+                        data-postid={post.id}
                         className="mb-3 rounded-pill"
                       />
                     </Form.Group>
