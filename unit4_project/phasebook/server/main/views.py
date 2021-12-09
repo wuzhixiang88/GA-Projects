@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
 from main.models import Post, Comment, Reply
 from main.serializers import PostSerializer, CommentSerializer, ReplySerializer
 

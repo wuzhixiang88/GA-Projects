@@ -8,7 +8,7 @@ import profileIcon from "../profile.png";
 import displayIcon from "../moon.png";
 import settingsIcon from "../settings.png";
 import logoutIcon from "../logout.png";
-import seedProfilePhoto from "../seed_profile_photo.jpg";
+import emptyImage from "../empty.png";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "react-bootstrap/Navbar";
@@ -21,7 +21,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 
-const Header = () => {
+const Header = ({ userPhotos }) => {
   const history = useHistory();
 
   const handleClickLogout = async () => {
@@ -84,13 +84,20 @@ const Header = () => {
               <Col md="auto" className="me-2 align-self-center">
                 <Image
                   alt=""
-                  src={seedProfilePhoto}
+                  src={
+                    userPhotos.profilePhoto &&
+                    typeof userPhotos.profilePhoto === "string"
+                      ? userPhotos.profilePhoto
+                      : emptyImage
+                  }
                   width="25"
                   height="25"
                   className="border rounded-circle"
                 />
               </Col>
-              <Col className="align-self-center">Zhixiang</Col>
+              <Col className="align-self-center">
+                {localStorage.getItem("firstname")}
+              </Col>
             </Button>
 
             {/* DROPDOWN MENU SECTION */}

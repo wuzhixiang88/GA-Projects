@@ -50,7 +50,7 @@ const UserMainPage = () => {
 
   return (
     <>
-      <Header />
+      <Header userPhotos={userPhotos} />
       <UserProfile userPhotos={userPhotos} setUserPhotos={setUserPhotos} />
       <Container fluid className="main-container">
         <Row className="justify-content-md-center">

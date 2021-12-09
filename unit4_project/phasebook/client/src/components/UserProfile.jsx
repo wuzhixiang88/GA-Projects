@@ -159,7 +159,9 @@ const UserProfile = ({ userPhotos, setUserPhotos }) => {
             </Col>
             <Col md="auto" className="d-flex flex-column align-self-center">
               <Col md={12} className="fs-2 fw-bold ms-3">
-                Zhixiang Wu
+                {`${localStorage.getItem("firstname")} ${localStorage.getItem(
+                  "lastname"
+                )}`}
               </Col>
               <Col md={12} className="text-start fs-6 ms-3 ps-2">
                 685 Friends
