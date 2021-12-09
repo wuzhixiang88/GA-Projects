@@ -17,6 +17,7 @@ const PostFeed = ({ userPhotos }) => {
           const listOfPosts = [];
           for (const element of response.data) {
             const postDetails = {
+              id: element.id,
               user: `${element.user.first_name} ${element.user.last_name}`,
               body: element.body,
               photo: element.photo,

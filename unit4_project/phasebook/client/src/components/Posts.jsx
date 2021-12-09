@@ -26,12 +26,11 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
 
   const handlePostComments = async (e) => {
     e.preventDefault();
-    const index = e.target.getAttribute("data-index");
-    const postID = Number(index) + 1;
+    const postID = Number(e.target.getAttribute("data-postID"));
 
     try {
       const uploadData = new FormData();
-      uploadData.append("body", postCommentInputs.current[index].value);
+      uploadData.append("body", postCommentInputs.current[postID].value);
       const response = await axios.post(
         `/api/post/${postID}/comment/`,
         uploadData,
@@ -47,8 +46,39 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
     } catch (error) {
       console.log(error);
     }
-    postCommentInputs.current[index].value = "";
+
+    postCommentInputs.current[postID].value = "";
     handlePostCommentCounter();
+  };
+
+  const handlePostCommentReplies = async (e) => {
+    e.preventDefault();
+    const postID = Number(e.target.getAttribute("data-postID"));
+    const commentID = Number(e.target.getAttribute("data-commentID"));
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append(
+        "body",
+        postCommentReplyInputs.current[commentID].value
+      );
+      const response = await axios.post(
+        `/api/post/${postID}/comment/${commentID}/reply/`,
+        uploadData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        }
+      );
+      if (response.status === 201) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    postCommentReplyInputs.current[commentID].value = "";
   };
 
   const handlePostLikeCounter = (e) => {
@@ -71,11 +101,11 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
   };
 
   const focusPostCommentInput = (e) => {
-    const index = e.target.getAttribute("data-index");
+    const index = e.target.getAttribute("data-postID");
     postCommentInputs.current[index].focus();
   };
   const focusPostCommentReplyInput = (e) => {
-    const index = e.target.getAttribute("data-index");
+    const index = e.target.getAttribute("data-commentID");
     postCommentReplyInputs.current[index].focus();
   };
 
@@ -187,7 +217,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                     variant="light"
                     className="flex-grow-1 border-0"
                     id="like-comment-button"
-                    data-index={index}
+                    data-postID={post.id}
                     onClick={focusPostCommentInput}
                   >
                     <Image
@@ -203,7 +233,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
 
               {/* POST COMMENTS SECTION */}
               <Card.Body className="text-start py-0">
-                {post.comments.map((postComment, index) => (
+                {post.comments.map((postComment) => (
                   <>
                     <Col className="d-flex">
                       <Col md="auto" className="me-2">
@@ -236,7 +266,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                           <Button
                             variant="link"
                             id="like-reply-button"
-                            data-index={index}
+                            data-commentID={postComment.id}
                             onClick={focusPostCommentReplyInput}
                           >
                             Reply
@@ -295,16 +325,21 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                             />
                           </Col>
                           <Col>
-                            <Form>
+                            <Form
+                              onSubmit={handlePostCommentReplies}
+                              data-postID={postComment.post_id}
+                              data-commentID={postComment.id}
+                            >
                               <Form.Group className="flex-grow-1 align-self-center">
                                 <Form.Control
                                   ref={(element) =>
-                                    (postCommentReplyInputs.current[index] =
-                                      element)
+                                    (postCommentReplyInputs.current[
+                                      postComment.id
+                                    ] = element)
                                   }
                                   type="text"
                                   placeholder="Write a reply..."
-                                  data-index={index}
+                                  data-commentID={postComment.id}
                                   className="mb-3 rounded-pill"
                                 />
                               </Form.Group>
@@ -334,15 +369,15 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                   />
                 </Col>
                 <Col>
-                  <Form onSubmit={handlePostComments} data-index={index}>
+                  <Form onSubmit={handlePostComments} data-postID={post.id}>
                     <Form.Group className="flex-grow-1 align-self-center">
                       <Form.Control
                         ref={(element) =>
-                          (postCommentInputs.current[index] = element)
+                          (postCommentInputs.current[post.id] = element)
                         }
                         type="text"
                         placeholder="Write a comment..."
-                        data-index={index}
+                        data-postID={post.id}
                         className="mb-3 rounded-pill"
                       />
                     </Form.Group>
