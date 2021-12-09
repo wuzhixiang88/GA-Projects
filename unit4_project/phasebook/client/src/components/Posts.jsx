@@ -27,32 +27,28 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
   const handlePostComments = async (e) => {
     e.preventDefault();
     const index = e.target.getAttribute("data-index");
-    console.log(index);
-    // const postID =
-    //   Number(postCommentInputs.current[index].getAttribute("data-index")) + 1;
-    // console.log(postID);
-    // try {
-    //   const uploadData = new FormData();
-    //   uploadData.append("body", postCommentInput.current.value);
-    //   const response = await axios.post(
-    //     `/api/post/${postID}/comment/`,
-    //     uploadData,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.getItem("access")}`,
-    //       },
-    //     }
-    //   );
-    //   if (response.status === 201) {
-    //     window.location.reload();
-    //   }
-    // } catch (error) {
-    //   console.log(error.response.data);
-    //   console.log(error.response.status);
-    //   console.log(error.response.headers);
-    // }
-    // postCommentInput.current.value = "";
-    // handlePostCommentCounter();
+    const postID = Number(index) + 1;
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append("body", postCommentInputs.current[index].value);
+      const response = await axios.post(
+        `/api/post/${postID}/comment/`,
+        uploadData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        }
+      );
+      if (response.status === 201) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    postCommentInputs.current[index].value = "";
+    handlePostCommentCounter();
   };
 
   const handlePostLikeCounter = (e) => {
@@ -338,7 +334,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                   />
                 </Col>
                 <Col>
-                  <Form onSubmit={handlePostComments}>
+                  <Form onSubmit={handlePostComments} data-index={index}>
                     <Form.Group className="flex-grow-1 align-self-center">
                       <Form.Control
                         ref={(element) =>
