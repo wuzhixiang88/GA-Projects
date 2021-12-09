@@ -9,6 +9,7 @@ class PostUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
+            'id',
             'first_name',
             'last_name'
         )
@@ -21,6 +22,7 @@ class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
         fields = (
+            'id',
             'body',
             'like',
             'created_at',
@@ -39,6 +41,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = (
+            'id',
             'body',
             'like',
             'created_at',
@@ -56,6 +59,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = (
+            'id',
             'body',
             'photo',
             'like',
