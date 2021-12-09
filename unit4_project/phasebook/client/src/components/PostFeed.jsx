@@ -11,7 +11,9 @@ const PostFeed = ({ userPhotos }) => {
   useEffect(() => {
     const fetchUserPosts = async () => {
       try {
-        const response = await axios.get(`/api/post/`);
+        const response = await axios.get(
+          `/api/user/${localStorage.getItem("id")}/post/`
+        );
 
         if (response.status === 200) {
           const listOfPosts = [];

@@ -1,11 +1,21 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from main.models import Post, Comment, Reply
 from main.serializers import PostSerializer, CommentSerializer, ReplySerializer
 
 # Create your views here.
+class UserPostViewSet(ModelViewSet):
+    permissions_classes = [IsAuthenticated]
+
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        user = get_object_or_404(User, pk=self.kwargs.get('user_pk'))
+        return Post.objects.filter(user=user)
+
 class PostViewSet(ModelViewSet):
     permissions_classes = [IsAuthenticated]
 
