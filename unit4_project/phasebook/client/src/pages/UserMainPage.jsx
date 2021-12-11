@@ -13,10 +13,6 @@ import Col from "react-bootstrap/Col";
 
 const UserMainPage = () => {
   const [userProfile, setUserProfile] = useState({});
-  const [userPhotos, setUserPhotos] = useState({
-    coverPhoto: null,
-    profilePhoto: null,
-  });
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -27,19 +23,6 @@ const UserMainPage = () => {
 
         if (response.status === 200) {
           setUserProfile(response.data);
-
-          response.data.user_profile &&
-            setUserPhotos({
-              ...userPhotos,
-              coverPhoto:
-                response.data.user_profile.cover_photo !== null
-                  ? response.data.user_profile.cover_photo
-                  : null,
-              profilePhoto:
-                response.data.user_profile.profile_photo !== null
-                  ? response.data.user_profile.profile_photo
-                  : null,
-            });
         }
       } catch (error) {
         console.log(error.response.data);
@@ -54,11 +37,7 @@ const UserMainPage = () => {
   return (
     <>
       <Header userProfile={userProfile} />
-      <UserProfile
-        userPhotos={userPhotos}
-        setUserPhotos={setUserPhotos}
-        userProfile={userProfile}
-      />
+      <UserProfile userProfile={userProfile} />
       <Container fluid className="main-container">
         <Row className="justify-content-md-center">
           <Col md={5} className="px-0">

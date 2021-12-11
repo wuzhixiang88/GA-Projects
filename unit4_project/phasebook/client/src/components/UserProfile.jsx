@@ -12,7 +12,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const UserProfile = ({ userProfile, userPhotos, setUserPhotos }) => {
+const UserProfile = ({ userProfile }) => {
   const coverPhotoInput = useRef();
   const profilePhotoInput = useRef();
 
@@ -25,14 +25,8 @@ const UserProfile = ({ userProfile, userPhotos, setUserPhotos }) => {
 
   const handleUserPhotos = async (e) => {
     const key = e.target.getAttribute("data-name");
-    const value = e.target.files[0];
 
-    setUserPhotos({
-      ...userPhotos,
-      [key]: value,
-    });
-
-    if (!userPhotos.coverPhoto && !userPhotos.profilePhoto) {
+    if (!userProfile.user_profile) {
       try {
         const uploadData = new FormData();
         uploadData.append(
