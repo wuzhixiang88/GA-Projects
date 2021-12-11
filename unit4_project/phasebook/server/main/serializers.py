@@ -1,11 +1,22 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from accounts.serializers import UserProfileSerializer
 from accounts.models import UserProfile
 from main.models import Post, Comment, Reply
+
+class PostUserProfileSerializer(serializers.ModelSerializer):
+    profile_photo = serializers.ImageField(read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            'profile_photo'
+        ]
 
 class PostUserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(read_only=True)
     last_name = serializers.CharField(read_only=True)
+    user_profile = PostUserProfileSerializer(read_only=True)
 
     class Meta:
         model = User
@@ -13,6 +24,7 @@ class PostUserSerializer(serializers.ModelSerializer):
             'id',
             'first_name',
             'last_name',
+            'user_profile'
         ]
 
 class ReplySerializer(serializers.ModelSerializer):

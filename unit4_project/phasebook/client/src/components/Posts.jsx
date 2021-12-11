@@ -187,9 +187,8 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                   <Image
                     alt=""
                     src={
-                      userProfile.user_profile &&
-                      typeof userProfile.user_profile.profile_photo === "string"
-                        ? userProfile.user_profile.profile_photo
+                      post.user_profile
+                        ? post.user_profile.profile_photo
                         : emptyImage
                     }
                     width="40"
@@ -203,42 +202,46 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                   </Card.Text>
                   <Card.Text className="post-feed-date">{post.date}</Card.Text>
                 </Col>
-                <Col md="auto">
-                  <DropdownButton
-                    title=""
-                    variant="secondary"
-                    id="header-dropdown-button"
-                    drop="start"
-                    className="mt-3"
-                  >
-                    {[
-                      ["Edit Post", null],
-                      ["Delete Post", null],
-                    ].map((element, index) => (
-                      <Col key={index}>
-                        {element[0] === "Log Out" ? <Dropdown.Divider /> : null}
-                        <Dropdown.Item
-                          onClick={
-                            element[0] === "Edit Post"
-                              ? handleShowCreatePostModal
-                              : element[0] === "Delete Post"
-                              ? handleDeletePost
-                              : null
-                          }
-                          data-postid={post.id}
-                        >
-                          <Image
-                            alt=""
-                            src={element[1]}
-                            height="20"
-                            className="mb-1 me-2"
-                          />
-                          {element[0]}
-                        </Dropdown.Item>
-                      </Col>
-                    ))}
-                  </DropdownButton>
-                </Col>
+                {post.user_id === Number(localStorage.getItem("id")) ? (
+                  <Col md="auto">
+                    <DropdownButton
+                      title=""
+                      variant="secondary"
+                      id="header-dropdown-button"
+                      drop="start"
+                      className="mt-3"
+                    >
+                      {[
+                        ["Edit Post", null],
+                        ["Delete Post", null],
+                      ].map((element, index) => (
+                        <Col key={index}>
+                          {element[0] === "Log Out" ? (
+                            <Dropdown.Divider />
+                          ) : null}
+                          <Dropdown.Item
+                            onClick={
+                              element[0] === "Edit Post"
+                                ? handleShowCreatePostModal
+                                : element[0] === "Delete Post"
+                                ? handleDeletePost
+                                : null
+                            }
+                            data-postid={post.id}
+                          >
+                            <Image
+                              alt=""
+                              src={element[1]}
+                              height="20"
+                              className="mb-1 me-2"
+                            />
+                            {element[0]}
+                          </Dropdown.Item>
+                        </Col>
+                      ))}
+                    </DropdownButton>
+                  </Col>
+                ) : null}
               </Card.Body>
 
               {/* POST BODY (TEXT) SECTION */}
@@ -343,10 +346,8 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                         <Image
                           alt=""
                           src={
-                            userProfile.user_profile &&
-                            typeof userProfile.user_profile.profile_photo ===
-                              "string"
-                              ? userProfile.user_profile.profile_photo
+                            postComment.user.user_profile
+                              ? postComment.user.user_profile.profile_photo
                               : emptyImage
                           }
                           width="40"
@@ -385,10 +386,9 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                                   <Image
                                     alt=""
                                     src={
-                                      userProfile.user_profile &&
-                                      typeof userProfile.user_profile
-                                        .profile_photo === "string"
-                                        ? userProfile.user_profile.profile_photo
+                                      postCommentReply.user.user_profile
+                                        ? postCommentReply.user.user_profile
+                                            .profile_photo
                                         : emptyImage
                                     }
                                     width="30"

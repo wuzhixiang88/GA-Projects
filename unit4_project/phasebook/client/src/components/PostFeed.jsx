@@ -5,15 +5,24 @@ import axios from "axios";
 import CreatePost from "./CreatePost";
 import Posts from "./Posts";
 
-const PostFeed = ({ userProfile }) => {
+const PostFeed = ({ userProfile, userOnlyPost }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
+      let url = "";
+      if (userOnlyPost) {
+        url = `/api/user/${localStorage.getItem("id")}/post/`;
+      } else {
+        url = "/api/post";
+      }
+
       try {
-        const response = await axios.get(
-          `/api/user/${localStorage.getItem("id")}/post/`
-        );
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        });
 
         if (response.status === 200) {
           const listOfPosts = [];
@@ -21,6 +30,8 @@ const PostFeed = ({ userProfile }) => {
             const postDetails = {
               id: element.id,
               user: `${element.user.first_name} ${element.user.last_name}`,
+              user_profile: element.user.user_profile,
+              user_id: element.user.id,
               body: element.body,
               photo: element.photo,
               like: element.like,
@@ -39,7 +50,7 @@ const PostFeed = ({ userProfile }) => {
     };
 
     fetchUserPosts();
-  }, []);
+  }, [userOnlyPost]);
 
   return (
     <>
