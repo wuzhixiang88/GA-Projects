@@ -2,8 +2,6 @@ import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 // REACT COMPONENT IMPORTS
 import Posts from "../components/Posts";
-// LOGO/IMAGE IMPORTS
-import lorenIpsumPhoto from "../lorem-ipsum.png";
 // BOOTSTRAP COMPONENT IMPORTS
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
@@ -14,7 +12,9 @@ import CloseButton from "react-bootstrap/CloseButton";
 
 const PostShowPage = () => {
   const location = useLocation();
-  const { post } = location.state;
+  const { post, userProfile } = location.state;
+  console.log(post);
+  console.log(post[0].photo);
 
   const history = useHistory();
 
@@ -36,14 +36,14 @@ const PostShowPage = () => {
             fluid
             rounded
             alt=""
-            src={lorenIpsumPhoto}
+            src={post[0].photo}
             className="position-absolute top-50 start-50 translate-middle"
           />
         </Col>
 
         {/* POST TEXT & COMMENTS SECTION */}
         <Col md={3}>
-          <Posts posts={post} showPostImage={false} />
+          <Posts userProfile={userProfile} posts={post} showPostImage={false} />
         </Col>
       </Row>
     </Container>

@@ -254,8 +254,11 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                 <Card.Body className="mx-3 mb-3 p-0">
                   <Link
                     to={{
-                      pathname: "/photo/id",
-                      state: { post: [post] },
+                      pathname: `/photo/${post.id}`,
+                      state: {
+                        post: [post],
+                        userProfile: userProfile,
+                      },
                     }}
                   >
                     <Image fluid rounded alt="" src={post.photo} />
