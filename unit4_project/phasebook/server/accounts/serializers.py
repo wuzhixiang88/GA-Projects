@@ -1,19 +1,22 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from rest_framework.fields import SerializerMethodField
+# from rest_framework.fields import SerializerMethodField
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from accounts.models import UserProfile, FriendList
+from main.serializers import PostUserProfileSerializer
 
 class SubUserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(read_only=True)
     last_name = serializers.CharField(read_only=True)
+    user_profile = PostUserProfileSerializer(read_only=True)
 
     class Meta:
         model = User
         fields = (
             'id',
             'first_name',
-            'last_name'
+            'last_name',
+            'user_profile'
         )
 
 class FriendListSerializer(serializers.ModelSerializer):
