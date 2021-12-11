@@ -85,7 +85,7 @@ const LandingPage = () => {
           localStorage.setItem("access", response.data.access);
           localStorage.setItem("refresh", response.data.refresh);
           localStorage.setItem("id", response.data.id);
-          history.push(`/user/${localStorage.getItem("id")}`);
+          history.push("/home");
         }
       } catch (error) {
         if (error.response.status === 401) {
