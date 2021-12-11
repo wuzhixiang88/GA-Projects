@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from accounts.models import UserProfile
 from main.models import Post, Comment, Reply
 
 class PostUserSerializer(serializers.ModelSerializer):
@@ -8,11 +9,11 @@ class PostUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = (
+        fields = [
             'id',
             'first_name',
-            'last_name'
-        )
+            'last_name',
+        ]
 
 class ReplySerializer(serializers.ModelSerializer):
     user = PostUserSerializer(read_only=True)
@@ -21,7 +22,7 @@ class ReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reply
-        fields = (
+        fields = [
             'id',
             'body',
             'like',
@@ -29,8 +30,7 @@ class ReplySerializer(serializers.ModelSerializer):
             'updated_at',
             'user',
             'comment_id',
-        )
-
+        ]
 
 class CommentSerializer(serializers.ModelSerializer):
     user = PostUserSerializer(read_only=True)
@@ -40,7 +40,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = (
+        fields = [
             'id',
             'body',
             'like',
@@ -49,7 +49,7 @@ class CommentSerializer(serializers.ModelSerializer):
             'user',
             'post_id',
             'replies',
-        )
+        ]
         
 class PostSerializer(serializers.ModelSerializer):
     user = PostUserSerializer(read_only=True)
@@ -58,7 +58,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = (
+        fields = [
             'id',
             'body',
             'photo',
@@ -67,4 +67,5 @@ class PostSerializer(serializers.ModelSerializer):
             'updated_at',
             'user',
             'comments',
-        )
+        ]
+        ordering = ['-created_at']

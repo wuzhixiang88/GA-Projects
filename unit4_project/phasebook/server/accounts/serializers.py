@@ -1,7 +1,29 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from accounts.models import UserProfile
+from accounts.models import UserProfile, FriendList
+
+class SubUserSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(read_only=True)
+    last_name = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'first_name',
+            'last_name'
+        )
+
+class FriendListSerializer(serializers.ModelSerializer):
+    friends = SubUserSerializer(many=True, read_only=True, required=False)
+
+    class Meta:
+        model = FriendList
+        fields = [
+            'friends'
+        ]
 
 class UserProfileSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
@@ -15,7 +37,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = [
             'cover_photo',
             'profile_photo',
-            'user'
+            'user',
         ]
     
     def create(self, validated_data):
@@ -25,6 +47,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     user_profile = UserProfileSerializer(required=False)
+    # friend_list = serializers.SerializerMethodField("get_friend_list")
+    friend_list = FriendListSerializer(required=False)
 
     class Meta:
         model = User
@@ -34,11 +58,16 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name', 
             'email', 
             'password',
-            'user_profile'
+            'user_profile',
+            'friend_list'
         ]
         extra_kwargs = {
             'password': { 'write_only': True }
         }
+    
+    # def get_friend_list(self, user):
+    #     serializer = FriendListSerializer(instance=user.friend_list)
+    #     return serializer.data["friends"]
         
     def create(self, validated_data):
         user = User.objects.create(**validated_data)
@@ -64,9 +93,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # The default result (access/refresh tokens)
         data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
         # Custom data you want to include
-        data.update({'username': self.user.username})
-        data.update({'firstname': self.user.first_name})
-        data.update({'lastname': self.user.last_name})
         data.update({'id': self.user.id})
 
         return data

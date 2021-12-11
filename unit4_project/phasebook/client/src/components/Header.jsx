@@ -21,7 +21,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 
-const Header = ({ userPhotos }) => {
+const Header = ({ userProfile }) => {
   const history = useHistory();
 
   const handleClickLogout = async () => {
@@ -85,9 +85,9 @@ const Header = ({ userPhotos }) => {
                 <Image
                   alt=""
                   src={
-                    userPhotos.profilePhoto &&
-                    typeof userPhotos.profilePhoto === "string"
-                      ? userPhotos.profilePhoto
+                    userProfile.user_profile &&
+                    typeof userProfile.user_profile.profile_photo === "string"
+                      ? userProfile.user_profile.profile_photo
                       : emptyImage
                   }
                   width="25"
@@ -95,9 +95,7 @@ const Header = ({ userPhotos }) => {
                   className="border rounded-circle"
                 />
               </Col>
-              <Col className="align-self-center">
-                {localStorage.getItem("firstname")}
-              </Col>
+              <Col className="align-self-center">{userProfile.first_name}</Col>
             </Button>
 
             {/* DROPDOWN MENU SECTION */}

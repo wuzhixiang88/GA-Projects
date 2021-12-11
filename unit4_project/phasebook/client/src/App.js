@@ -11,7 +11,7 @@ function App() {
         <Route exact path="/">
           <LandingPage />
         </Route>
-        <Route exact path="/:id">
+        <Route exact path="/user/:id">
           <UserMainPage />
         </Route>
         <Route exact path="/photo/:id">

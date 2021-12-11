@@ -84,11 +84,8 @@ const LandingPage = () => {
         if (response.status === 200) {
           localStorage.setItem("access", response.data.access);
           localStorage.setItem("refresh", response.data.refresh);
-          localStorage.setItem("username", response.data.username);
-          localStorage.setItem("firstname", response.data.firstname);
-          localStorage.setItem("lastname", response.data.lastname);
           localStorage.setItem("id", response.data.id);
-          history.push("/ZX");
+          history.push(`/user/${localStorage.getItem("id")}`);
         }
       } catch (error) {
         if (error.response.status === 401) {

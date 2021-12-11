@@ -5,7 +5,7 @@ import axios from "axios";
 import CreatePost from "./CreatePost";
 import Posts from "./Posts";
 
-const PostFeed = ({ userPhotos }) => {
+const PostFeed = ({ userProfile }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -43,9 +43,9 @@ const PostFeed = ({ userPhotos }) => {
 
   return (
     <>
-      <CreatePost userPhotos={userPhotos} />
+      <CreatePost userProfile={userProfile} />
       <Posts
-        userPhotos={userPhotos}
+        userProfile={userProfile}
         posts={posts}
         setPosts={setPosts}
         showPostImage={true}

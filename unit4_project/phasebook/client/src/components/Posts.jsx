@@ -28,9 +28,7 @@ import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
-  const username = localStorage.getItem("username");
-
+const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
   const [postCommentCounter, setPostCommentCounter] = useState(0);
 
   const postCommentInputs = useRef({});
@@ -108,11 +106,11 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
     const postsArr = [...posts];
 
     if (postsArr[postIndex]) {
-      if (postsArr[postIndex]["like"].includes(username)) {
-        const index = postsArr[postIndex]["like"].indexOf(username);
+      if (postsArr[postIndex]["like"].includes(userProfile.username)) {
+        const index = postsArr[postIndex]["like"].indexOf(userProfile.username);
         postsArr[postIndex]["like"].splice(index, 1);
       } else {
-        postsArr[postIndex]["like"].push(username);
+        postsArr[postIndex]["like"].push(userProfile.username);
       }
     }
 
@@ -189,9 +187,9 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                   <Image
                     alt=""
                     src={
-                      userPhotos.profilePhoto &&
-                      typeof userPhotos.profilePhoto === "string"
-                        ? userPhotos.profilePhoto
+                      userProfile.user_profile &&
+                      typeof userProfile.user_profile.profile_photo === "string"
+                        ? userProfile.user_profile.profile_photo
                         : emptyImage
                     }
                     width="40"
@@ -297,7 +295,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                     variant="light"
                     className="flex-grow-1 border-0"
                     id={
-                      post.like.includes(username)
+                      post.like.includes(userProfile.username)
                         ? "unlike-comment-button"
                         : "like-comment-button"
                     }
@@ -307,7 +305,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                     <Image
                       alt=""
                       src={
-                        post.like.includes(username)
+                        post.like.includes(userProfile.username)
                           ? unlikeButtonIcon
                           : likeButtonIcon
                       }
@@ -345,9 +343,10 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                         <Image
                           alt=""
                           src={
-                            userPhotos.profilePhoto &&
-                            typeof userPhotos.profilePhoto === "string"
-                              ? userPhotos.profilePhoto
+                            userProfile.user_profile &&
+                            typeof userProfile.user_profile.profile_photo ===
+                              "string"
+                              ? userProfile.user_profile.profile_photo
                               : emptyImage
                           }
                           width="40"
@@ -386,10 +385,10 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                                   <Image
                                     alt=""
                                     src={
-                                      userPhotos.profilePhoto &&
-                                      typeof userPhotos.profilePhoto ===
-                                        "string"
-                                        ? userPhotos.profilePhoto
+                                      userProfile.user_profile &&
+                                      typeof userProfile.user_profile
+                                        .profile_photo === "string"
+                                        ? userProfile.user_profile.profile_photo
                                         : emptyImage
                                     }
                                     width="30"
@@ -425,9 +424,10 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                             <Image
                               alt=""
                               src={
-                                userPhotos.profilePhoto &&
-                                typeof userPhotos.profilePhoto === "string"
-                                  ? userPhotos.profilePhoto
+                                userProfile.user_profile &&
+                                typeof userProfile.user_profile
+                                  .profile_photo === "string"
+                                  ? userProfile.user_profile.profile_photo
                                   : emptyImage
                               }
                               width="30"
@@ -469,9 +469,9 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                   <Image
                     alt=""
                     src={
-                      userPhotos.profilePhoto &&
-                      typeof userPhotos.profilePhoto === "string"
-                        ? userPhotos.profilePhoto
+                      userProfile.user_profile &&
+                      typeof userProfile.user_profile.profile_photo === "string"
+                        ? userProfile.user_profile.profile_photo
                         : emptyImage
                     }
                     width="40"
@@ -519,9 +519,9 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                   <Image
                     alt=""
                     src={
-                      userPhotos.profilePhoto &&
-                      typeof userPhotos.profilePhoto === "string"
-                        ? userPhotos.profilePhoto
+                      userProfile.user_profile &&
+                      typeof userProfile.user_profile.profile_photo === "string"
+                        ? userProfile.user_profile.profile_photo
                         : emptyImage
                     }
                     width="40"
@@ -529,7 +529,7 @@ const Posts = ({ userPhotos, posts, setPosts, showPostImage }) => {
                     className="border rounded-circle mb-3 me-2"
                   />
                 </Col>
-                <Col className="ps-0">Zhixiang Wu</Col>
+                <Col className="ps-0">{`${userProfile.first_name} ${userProfile.last_name}`}</Col>
               </Row>
 
               {/* POST BODY INPUT SECTION */}

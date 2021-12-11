@@ -21,7 +21,7 @@ import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-const CreatePost = ({ userPhotos }) => {
+const CreatePost = ({ userProfile }) => {
   const [createPostModal, setCreatePostModal] = useState(false);
   const [photoUploadWindow, setPhotoUploadWindow] = useState(false);
   const postBodyInput = useRef();
@@ -71,9 +71,9 @@ const CreatePost = ({ userPhotos }) => {
                 <Image
                   alt=""
                   src={
-                    userPhotos.profilePhoto &&
-                    typeof userPhotos.profilePhoto === "string"
-                      ? userPhotos.profilePhoto
+                    userProfile.user_profile &&
+                    typeof userProfile.user_profile.profile_photo === "string"
+                      ? userProfile.user_profile.profile_photo
                       : emptyImage
                   }
                   width="40"
@@ -115,9 +115,9 @@ const CreatePost = ({ userPhotos }) => {
                   <Image
                     alt=""
                     src={
-                      userPhotos.profilePhoto &&
-                      typeof userPhotos.profilePhoto === "string"
-                        ? userPhotos.profilePhoto
+                      userProfile.user_profile &&
+                      typeof userProfile.user_profile.profile_photo === "string"
+                        ? userProfile.user_profile.profile_photo
                         : emptyImage
                     }
                     width="40"
@@ -125,7 +125,7 @@ const CreatePost = ({ userPhotos }) => {
                     className="border rounded-circle mb-3 me-2"
                   />
                 </Col>
-                <Col className="ps-0">Zhixiang Wu</Col>
+                <Col className="ps-0">{`${userProfile.first_name} ${userProfile.last_name}`}</Col>
               </Row>
 
               {/* POST BODY INPUT SECTION */}

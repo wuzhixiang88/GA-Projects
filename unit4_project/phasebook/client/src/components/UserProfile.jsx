@@ -12,7 +12,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const UserProfile = ({ userPhotos, setUserPhotos }) => {
+const UserProfile = ({ userProfile, userPhotos, setUserPhotos }) => {
   const coverPhotoInput = useRef();
   const profilePhotoInput = useRef();
 
@@ -44,7 +44,7 @@ const UserProfile = ({ userPhotos, setUserPhotos }) => {
           e.target.files[0],
           e.target.files[0].name
         );
-        uploadData.append("user", localStorage.getItem("username"));
+        uploadData.append("user", userProfile.username);
 
         const response = await axios.post("/accounts/api/profile", uploadData, {
           headers: {
@@ -72,7 +72,7 @@ const UserProfile = ({ userPhotos, setUserPhotos }) => {
           e.target.files[0],
           e.target.files[0].name
         );
-        uploadData.append("user", localStorage.getItem("username"));
+        uploadData.append("user", userProfile.username);
 
         const response = await axios.patch(
           `/accounts/api/profile/edit/${localStorage.getItem("id")}`,
@@ -103,9 +103,9 @@ const UserProfile = ({ userPhotos, setUserPhotos }) => {
           <Card>
             <Card.Img
               src={
-                userPhotos.coverPhoto &&
-                typeof userPhotos.coverPhoto === "string"
-                  ? userPhotos.coverPhoto
+                userProfile.user_profile &&
+                typeof userProfile.user_profile.cover_photo === "string"
+                  ? userProfile.user_profile.cover_photo
                   : emptyImage
               }
               alt=""
@@ -143,9 +143,9 @@ const UserProfile = ({ userPhotos, setUserPhotos }) => {
             <Col md="auto">
               <Card.Img
                 src={
-                  userPhotos.profilePhoto &&
-                  typeof userPhotos.profilePhoto === "string"
-                    ? userPhotos.profilePhoto
+                  userProfile.user_profile &&
+                  typeof userProfile.user_profile.profile_photo === "string"
+                    ? userProfile.user_profile.profile_photo
                     : emptyImage
                 }
                 alt=""
@@ -159,12 +159,14 @@ const UserProfile = ({ userPhotos, setUserPhotos }) => {
             </Col>
             <Col md="auto" className="d-flex flex-column align-self-center">
               <Col md={12} className="fs-2 fw-bold ms-3">
-                {`${localStorage.getItem("firstname")} ${localStorage.getItem(
-                  "lastname"
-                )}`}
+                {`${userProfile.first_name} ${userProfile.last_name}`}
               </Col>
               <Col md={12} className="text-start fs-6 ms-3 ps-2">
-                685 Friends
+                {userProfile.friend_list
+                  ? userProfile.friend_list.friends.length === 1
+                    ? `${userProfile.friend_list.friends.length} Friend`
+                    : `${userProfile.friend_list.friends.length} Friends`
+                  : "0 Friends"}
               </Col>
             </Col>
             <Col md="auto">
