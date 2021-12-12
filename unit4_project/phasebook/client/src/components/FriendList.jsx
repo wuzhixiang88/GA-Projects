@@ -15,7 +15,7 @@ const FriendList = ({ userProfile }) => {
         <Row className="d-flex mb-3 px-4">
           {userProfile.friend_list
             ? userProfile.friend_list.friends.map((friend) => (
-                <Col md="6">
+                <Col md="6" key={friend.first_name}>
                   <Col className="d-flex text-start rounded border mt-3 me-auto">
                     <Col md="auto" className="mx-3 my-3">
                       <Image
