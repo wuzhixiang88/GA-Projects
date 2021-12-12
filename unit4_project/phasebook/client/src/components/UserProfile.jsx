@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 // EXTERNAL PLUGIN IMPORTS
 import axios from "axios";
 // LOGO/IMAGE IMPORTS
@@ -187,15 +188,27 @@ const UserProfile = ({ userProfile }) => {
       </Row>
       <Row className="justify-content-md-center mt-3">
         <Col md={5} className="d-flex justify-content-start border-top px-0">
-          <Button variant="outline-primary" className="fw-bold border-0 mt-3">
-            Posts
-          </Button>
+          <Link
+            to={{
+              pathname: `/user/${localStorage.getItem("id")}`,
+            }}
+          >
+            <Button variant="outline-primary" className="fw-bold border-0 mt-3">
+              Posts
+            </Button>
+          </Link>
           <Button variant="outline-primary" className="fw-bold border-0 mt-3">
             About
           </Button>
-          <Button variant="outline-primary" className="fw-bold border-0 mt-3">
-            Friends
-          </Button>
+          <Link
+            to={{
+              pathname: `/user/${localStorage.getItem("id")}/friends`,
+            }}
+          >
+            <Button variant="outline-primary" className="fw-bold border-0 mt-3">
+              Friends
+            </Button>
+          </Link>
           <Button variant="outline-primary" className="fw-bold border-0 mt-3">
             Photos
           </Button>
