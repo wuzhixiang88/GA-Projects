@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 // EXTERNAL PLUGIN IMPORTS
 import axios from "axios";
@@ -21,8 +21,29 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 
-const Header = ({ userProfile }) => {
+const Header = () => {
+  const [userProfile, setUserProfile] = useState({});
   const history = useHistory();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get(
+          `/accounts/api/profile/${localStorage.getItem("id")}`
+        );
+
+        if (response.status === 200) {
+          setUserProfile(response.data);
+        }
+      } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleClickLogout = async () => {
     try {

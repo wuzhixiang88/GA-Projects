@@ -37,7 +37,7 @@ const UserMainPage = () => {
 
   return (
     <>
-      <Header userProfile={userProfile} />
+      <Header />
       <UserProfile userProfile={userProfile} userID={userID} />
       <Container fluid className="main-container">
         <Row className="justify-content-md-center">

@@ -190,8 +190,8 @@ const UserProfile = ({ userProfile, userID }) => {
         <Col md={5} className="d-flex justify-content-start border-top px-0">
           <Link
             to={{
-              pathname: `/user/${localStorage.getItem("id")}`,
-              state: { userID: `${localStorage.getItem("id")}` },
+              pathname: `/user/${userID}`,
+              state: { userID: userID },
             }}
           >
             <Button variant="outline-primary" className="fw-bold border-0 mt-3">
@@ -203,7 +203,8 @@ const UserProfile = ({ userProfile, userID }) => {
           </Button>
           <Link
             to={{
-              pathname: `/user/${localStorage.getItem("id")}/friends`,
+              pathname: `/user/${userID}/friends`,
+              state: { userID: userID },
             }}
           >
             <Button variant="outline-primary" className="fw-bold border-0 mt-3">
