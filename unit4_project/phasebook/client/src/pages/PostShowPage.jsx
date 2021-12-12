@@ -13,8 +13,6 @@ import CloseButton from "react-bootstrap/CloseButton";
 const PostShowPage = () => {
   const location = useLocation();
   const { post, userProfile } = location.state;
-  console.log(post);
-  console.log(post[0].photo);
 
   const history = useHistory();
 

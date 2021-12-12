@@ -122,3 +122,12 @@
   background-color: black;
   height: 100vh;
 }
+
+#userpage_link {
+  text-decoration: none;
+  color: black;
+}
+
+#userpage_link:hover {
+  text-decoration: underline;
+}

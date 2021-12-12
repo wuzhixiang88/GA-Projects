@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 // EXTERNAL PLUGIN IMPORTS
 import axios from "axios";
 // REACT COMPONENT IMPORTS
@@ -13,13 +14,13 @@ import Col from "react-bootstrap/Col";
 
 const UserMainPage = () => {
   const [userProfile, setUserProfile] = useState({});
+  const location = useLocation();
+  const { userID } = location.state;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(
-          `/accounts/api/profile/${localStorage.getItem("id")}`
-        );
+        const response = await axios.get(`/accounts/api/profile/${userID}`);
 
         if (response.status === 200) {
           setUserProfile(response.data);
@@ -32,16 +33,16 @@ const UserMainPage = () => {
     };
 
     fetchUserProfile();
-  }, []);
+  }, [userID]);
 
   return (
     <>
       <Header userProfile={userProfile} />
-      <UserProfile userProfile={userProfile} />
+      <UserProfile userProfile={userProfile} userID={userID} />
       <Container fluid className="main-container">
         <Row className="justify-content-md-center">
           <Col md={5} className="px-0">
-            <PostFeed userProfile={userProfile} userOnlyPost={true} />
+            <PostFeed userProfile={userProfile} userID={userID} />
           </Col>
         </Row>
       </Container>

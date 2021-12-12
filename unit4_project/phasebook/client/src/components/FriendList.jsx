@@ -9,7 +9,6 @@ import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 
 const FriendList = ({ userProfile }) => {
-  console.log(userProfile);
   return (
     <>
       <Card className="border-0 rounded-3 my-3">

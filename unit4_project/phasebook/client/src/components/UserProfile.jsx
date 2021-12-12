@@ -13,7 +13,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const UserProfile = ({ userProfile }) => {
+const UserProfile = ({ userProfile, userID }) => {
   const coverPhotoInput = useRef();
   const profilePhotoInput = useRef();
 
@@ -191,6 +191,7 @@ const UserProfile = ({ userProfile }) => {
           <Link
             to={{
               pathname: `/user/${localStorage.getItem("id")}`,
+              state: { userID: `${localStorage.getItem("id")}` },
             }}
           >
             <Button variant="outline-primary" className="fw-bold border-0 mt-3">

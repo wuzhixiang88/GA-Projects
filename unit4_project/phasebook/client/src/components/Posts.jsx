@@ -184,21 +184,36 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
               {/* POST USER DETAILS & DATE OF POST SECTION */}
               <Card.Body className="d-flex text-start py-0">
                 <Col md="auto" className="my-3 me-2">
-                  <Image
-                    alt=""
-                    src={
-                      post.user_profile
-                        ? post.user_profile.profile_photo
-                        : emptyImage
-                    }
-                    width="40"
-                    height="40"
-                    className="border rounded-circle"
-                  />
+                  <Link
+                    to={{
+                      pathname: `/user/${post.user_id}`,
+                      state: { userID: `${post.user_id}` },
+                    }}
+                  >
+                    <Image
+                      alt=""
+                      src={
+                        post.user_profile
+                          ? post.user_profile.profile_photo
+                          : emptyImage
+                      }
+                      width="40"
+                      height="40"
+                      className="border rounded-circle"
+                    />
+                  </Link>
                 </Col>
                 <Col className="d-flex flex-column align-self-center">
                   <Card.Text className="post-feed-user mb-0">
-                    {post.user}
+                    <Link
+                      to={{
+                        pathname: `/user/${post.user_id}`,
+                        state: { userID: `${post.user_id}` },
+                      }}
+                      id="userpage_link"
+                    >
+                      {post.user}
+                    </Link>
                   </Card.Text>
                   <Card.Text className="post-feed-date">{post.date}</Card.Text>
                 </Col>
@@ -346,22 +361,37 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                   <Col key={index}>
                     <Col className="d-flex">
                       <Col md="auto" className="me-2">
-                        <Image
-                          alt=""
-                          src={
-                            postComment.user.user_profile
-                              ? postComment.user.user_profile.profile_photo
-                              : emptyImage
-                          }
-                          width="40"
-                          height="40"
-                          className="border rounded-circle"
-                        />
+                        <Link
+                          to={{
+                            pathname: `/user/${postComment.user.id}`,
+                            state: { userID: `${postComment.user.id}` },
+                          }}
+                        >
+                          <Image
+                            alt=""
+                            src={
+                              postComment.user.user_profile
+                                ? postComment.user.user_profile.profile_photo
+                                : emptyImage
+                            }
+                            width="40"
+                            height="40"
+                            className="border rounded-circle"
+                          />
+                        </Link>
                       </Col>
                       <Col>
                         <Col id="user-comment-col">
                           <Card.Text className="fw-bold mb-0 ps-3 pt-2">
-                            {`${postComment.user.first_name} ${postComment.user.last_name}`}
+                            <Link
+                              to={{
+                                pathname: `/user/${postComment.user.id}`,
+                                state: { userID: `${postComment.user.id}` },
+                              }}
+                              id="userpage_link"
+                            >
+                              {`${postComment.user.first_name} ${postComment.user.last_name}`}
+                            </Link>
                           </Card.Text>
                           <Card.Text className="px-3 pb-2">
                             {postComment.body}
@@ -386,23 +416,42 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                             (postCommentReply, index) => (
                               <Col className="d-flex" key={index}>
                                 <Col md="auto" className="me-2">
-                                  <Image
-                                    alt=""
-                                    src={
-                                      postCommentReply.user.user_profile
-                                        ? postCommentReply.user.user_profile
-                                            .profile_photo
-                                        : emptyImage
-                                    }
-                                    width="30"
-                                    height="30"
-                                    className="border rounded-circle"
-                                  />
+                                  <Link
+                                    to={{
+                                      pathname: `/user/${postCommentReply.user.id}`,
+                                      state: {
+                                        userID: `${postCommentReply.user.id}`,
+                                      },
+                                    }}
+                                  >
+                                    <Image
+                                      alt=""
+                                      src={
+                                        postCommentReply.user.user_profile
+                                          ? postCommentReply.user.user_profile
+                                              .profile_photo
+                                          : emptyImage
+                                      }
+                                      width="30"
+                                      height="30"
+                                      className="border rounded-circle"
+                                    />
+                                  </Link>
                                 </Col>
                                 <Col>
                                   <Col id="user-comment-col">
                                     <Card.Text className="fw-bold mb-0 ps-3 pt-2">
-                                      {`${postCommentReply.user.first_name} ${postCommentReply.user.last_name}`}
+                                      <Link
+                                        to={{
+                                          pathname: `/user/${postCommentReply.user.id}`,
+                                          state: {
+                                            userID: `${postCommentReply.user.id}`,
+                                          },
+                                        }}
+                                        id="userpage_link"
+                                      >
+                                        {`${postCommentReply.user.first_name} ${postCommentReply.user.last_name}`}
+                                      </Link>
                                     </Card.Text>
                                     <Card.Text className="px-3 pb-2">
                                       {postCommentReply.body}

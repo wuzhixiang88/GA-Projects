@@ -86,6 +86,7 @@ const Header = ({ userProfile }) => {
             <Link
               to={{
                 pathname: `/user/${localStorage.getItem("id")}`,
+                state: { userID: `${localStorage.getItem("id")}` },
               }}
             >
               <Button

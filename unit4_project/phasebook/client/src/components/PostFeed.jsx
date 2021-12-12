@@ -5,14 +5,14 @@ import axios from "axios";
 import CreatePost from "./CreatePost";
 import Posts from "./Posts";
 
-const PostFeed = ({ userProfile, userOnlyPost }) => {
+const PostFeed = ({ userProfile, userID }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
       let url = "";
-      if (userOnlyPost) {
-        url = `/api/user/${localStorage.getItem("id")}/post/`;
+      if (userID) {
+        url = `/api/user/${userID}/post/`;
       } else {
         url = "/api/post";
       }
@@ -50,7 +50,7 @@ const PostFeed = ({ userProfile, userOnlyPost }) => {
     };
 
     fetchUserPosts();
-  }, [userOnlyPost]);
+  }, [userID]);
 
   return (
     <>
