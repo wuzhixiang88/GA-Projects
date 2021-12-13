@@ -85,6 +85,7 @@ const LandingPage = () => {
           localStorage.setItem("access", response.data.access);
           localStorage.setItem("refresh", response.data.refresh);
           localStorage.setItem("id", response.data.id);
+          localStorage.setItem("username", response.data.username);
           history.push("/home");
         }
       } catch (error) {

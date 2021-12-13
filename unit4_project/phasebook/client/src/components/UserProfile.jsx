@@ -119,12 +119,14 @@ const UserProfile = ({ userProfile, userID }) => {
                   data-name="coverPhoto"
                   onChange={handleUserPhotos}
                 />
-                <Button
-                  className="position-absolute bottom-0 end-0 me-3 mb-3"
-                  onClick={handleClickEditCoverPhoto}
-                >
-                  Edit Cover Photo
-                </Button>
+                {userProfile.email === localStorage.getItem("username") ? (
+                  <Button
+                    className="position-absolute bottom-0 end-0 me-3 mb-3"
+                    onClick={handleClickEditCoverPhoto}
+                  >
+                    Edit Cover Photo
+                  </Button>
+                ) : null}
               </Form>
             </Card.ImgOverlay>
           </Card>
