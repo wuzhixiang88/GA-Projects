@@ -14,12 +14,12 @@ class UserPostViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = get_object_or_404(User, pk=self.kwargs.get('user_pk'))
-        return Post.objects.filter(user=user)
+        return Post.objects.filter(user=user).order_by('-created_at')
 
 class PostViewSet(ModelViewSet):
     permissions_classes = [IsAuthenticated]
 
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):
