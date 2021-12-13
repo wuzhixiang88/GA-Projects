@@ -176,13 +176,15 @@ const UserProfile = ({ userProfile, userID }) => {
                   data-name="profilePhoto"
                   onChange={handleUserPhotos}
                 />
-                <Button
-                  variant="secondary"
-                  className="position-absolute bottom-0 end-0"
-                  onClick={handleClickEditProfile}
-                >
-                  Edit Profile
-                </Button>
+                {userProfile.email === localStorage.getItem("username") ? (
+                  <Button
+                    variant="secondary"
+                    className="position-absolute bottom-0 end-0"
+                    onClick={handleClickEditProfile}
+                  >
+                    Edit Profile
+                  </Button>
+                ) : null}
               </Form>
             </Col>
           </Card>
