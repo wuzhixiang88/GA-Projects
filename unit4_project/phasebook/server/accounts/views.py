@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
@@ -5,8 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import status
-from accounts.serializers import UserSerializer, UserProfileSerializer, CustomTokenObtainPairSerializer
-from accounts.models import User
+from accounts.serializers import UserSerializer, UserProfileSerializer, FriendListSerializer, FriendRequestSerializer, CustomTokenObtainPairSerializer
+from accounts.models import FriendList, FriendRequest, User
 
 # Create your views here.
 class Register(APIView):
@@ -41,6 +42,57 @@ class UpdateUserProfile(UpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
+
+class SetFriendRequest(CreateAPIView):
+    permissions_classes = [IsAuthenticated]
+
+    queryset = User.objects.all()
+    serializer_class = FriendRequestSerializer
+
+    def create(self, request):
+        user = User.objects.get(email=request.data['user'])
+        try:
+            sender = User.objects.get(pk=request.data['user_id'])
+            friend_request = FriendRequest.objects.get(user_id=user.id)
+            friend_request.sender.add(sender)
+
+            return HttpResponse(status=status.HTTP_201_CREATED)
+        except FriendRequest.DoesNotExist:
+            sender = User.objects.get(pk=request.data['user_id'])
+            friend_request = FriendRequest.objects.create(user=user)
+            friend_request.sender.set([sender])
+
+            return HttpResponse(status=status.HTTP_201_CREATED)
+
+class SetFriendList(CreateAPIView):
+    permissions_classes = [IsAuthenticated]
+
+    queryset = User.objects.all()
+    serializer_class = FriendListSerializer
+
+    def create(self, request):
+        user = User.objects.get(email=request.data['user'])
+        try:
+            friend = User.objects.get(pk=request.data['user_id'])
+            friend_list = FriendList.objects.get(user_id=user.id)
+            friend_list.friends.add(friend)
+
+            friend_request = FriendRequest.objects.get(user_id=user.id)
+            friend_request.sender.remove(friend)
+
+            return HttpResponse(status=status.HTTP_201_CREATED)
+        except FriendList.DoesNotExist:
+            friend = User.objects.get(pk=request.data['user_id'])
+            friend_list = FriendList.objects.create(user=user)
+            friend_list.friends.set([friend])
+
+            friend_request = FriendRequest.objects.get(user_id=user.id)
+            friend_request.sender.remove(friend)
+
+            return HttpResponse(status=status.HTTP_201_CREATED)
+
+class UpdateFriendList(CreateAPIView):
+    permissions_classes = [IsAuthenticated]
 
 class Logout(APIView):
     permission_classes = [IsAuthenticated]

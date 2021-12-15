@@ -90,6 +90,52 @@ const UserProfile = ({ userProfile, userID }) => {
     }
   };
 
+  const checkFriendStatus = () => {
+    if (userProfile.friend_list) {
+      for (const element of userProfile.friend_list.friends) {
+        if (localStorage.getItem("username") === element.email) {
+          return true;
+        }
+      }
+    } else {
+      return false;
+    }
+  };
+
+  const checkFriendReqStatus = () => {
+    if (userProfile.friend_request) {
+      for (const element of userProfile.friend_request.sender) {
+        if (localStorage.getItem("username") === element.email) {
+          return true;
+        }
+      }
+    } else {
+      return false;
+    }
+  };
+
+  const handleSendFriendRequest = async () => {
+    try {
+      const data = {
+        user_id: localStorage.getItem("id"),
+        user: userProfile.username,
+      };
+      const response = await axios.post("/accounts/api/friendrequest", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      });
+
+      if (response.status === 201) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
+  };
+
   return (
     <Container fluid>
       {/* COVER PHOTO SECTION */}
@@ -184,7 +230,30 @@ const UserProfile = ({ userProfile, userID }) => {
                   >
                     Edit Profile
                   </Button>
-                ) : null}
+                ) : checkFriendStatus() ? (
+                  <Button
+                    variant="primary"
+                    className="position-absolute bottom-0 end-0"
+                  >
+                    Friends
+                  </Button>
+                ) : checkFriendReqStatus() ? (
+                  <Button
+                    variant="secondary"
+                    className="position-absolute bottom-0 end-0"
+                    onClick={handleSendFriendRequest}
+                  >
+                    Pending Accept
+                  </Button>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    className="position-absolute bottom-0 end-0"
+                    onClick={handleSendFriendRequest}
+                  >
+                    Add Friend
+                  </Button>
+                )}
               </Form>
             </Col>
           </Card>

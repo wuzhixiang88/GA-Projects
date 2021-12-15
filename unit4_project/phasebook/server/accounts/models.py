@@ -37,32 +37,14 @@ class FriendList(models.Model):
     )
 
 class FriendRequest(models.Model):
-    sender = models.ForeignKey(
+    user = models.OneToOneField(
         to=User,
         on_delete=models.CASCADE,
+        related_name='friend_request'
+    )
+    sender = models.ManyToManyField(
+        to=User,
+        blank=True,
         related_name='sender'
     )
-    receiver = models.ForeignKey(
-        to=User,
-        on_delete=models.CASCADE,
-        related_name='receiver'
-    )
     is_active = models.BooleanField(blank=True, null=False, default=True)
-
-    def accept(self):
-        receiver_friend_list = FriendList.objects.get(user=self.receiver)
-        if receiver_friend_list:
-            receiver_friend_list.add_friend(self.sender)
-            sender_friend_list = FriendList.objects.get(user=self.sender)
-            if sender_friend_list:
-                sender_friend_list.add_friend(self.receiver)
-                self.is_active = False
-                self.save()
-
-    def decline(self):
-        self.is_active = False
-        self.save()
-
-    def cancel(self):
-        self.is_active = False
-        self.save()

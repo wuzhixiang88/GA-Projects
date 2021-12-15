@@ -2,12 +2,13 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 # from rest_framework.fields import SerializerMethodField
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from accounts.models import UserProfile, FriendList
+from accounts.models import UserProfile, FriendList, FriendRequest
 from main.serializers import PostUserProfileSerializer
 
 class SubUserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(read_only=True)
     last_name = serializers.CharField(read_only=True)
+    email = serializers.CharField(read_only=True)
     user_profile = PostUserProfileSerializer(read_only=True)
 
     class Meta:
@@ -16,16 +17,54 @@ class SubUserSerializer(serializers.ModelSerializer):
             'id',
             'first_name',
             'last_name',
-            'user_profile'
+            'email',
+            'user_profile',
         )
 
+class FriendReqUserSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(read_only=True)
+    last_name = serializers.CharField(read_only=True)
+    email = serializers.CharField(read_only=True)
+    user_profile = PostUserProfileSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'user_profile',
+        )
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        read_only=False,
+        queryset=User.objects.all(),
+        slug_field="username"
+    )
+    sender = FriendReqUserSerializer(many=True, read_only=True, required=False)
+
+    class Meta:
+        model = FriendRequest
+        fields = [
+            'sender',
+            'user'
+        ]
+
 class FriendListSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        read_only=False,
+        queryset=User.objects.all(),
+        slug_field="username"
+    )
     friends = SubUserSerializer(many=True, read_only=True, required=False)
 
     class Meta:
         model = FriendList
         fields = [
-            'friends'
+            'friends',
+            'user',
         ]
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -50,8 +89,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     user_profile = UserProfileSerializer(required=False)
-    # friend_list = serializers.SerializerMethodField("get_friend_list")
     friend_list = FriendListSerializer(required=False)
+    # friend_list = serializers.SerializerMethodField("get_friend_list")
+    friend_request = FriendRequestSerializer(required=False)
 
     class Meta:
         model = User
@@ -62,7 +102,8 @@ class UserSerializer(serializers.ModelSerializer):
             'email', 
             'password',
             'user_profile',
-            'friend_list'
+            'friend_list',
+            'friend_request',
         ]
         extra_kwargs = {
             'password': { 'write_only': True }
