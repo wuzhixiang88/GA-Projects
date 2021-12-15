@@ -72,8 +72,17 @@ class SetFriendList(CreateAPIView):
 
     def create(self, request):
         user = User.objects.get(email=request.data['user'])
+        friend = User.objects.get(pk=request.data['user_id'])
+
         try:
-            friend = User.objects.get(pk=request.data['user_id'])
+            friend_friend_list = FriendList.objects.get(user_id=friend.id)
+            friend_friend_list.friends.add(user)
+
+        except FriendList.DoesNotExist:
+            friend_friend_list = FriendList.objects.create(user=friend)
+            friend_friend_list.friends.set([user])
+
+        try:            
             friend_list = FriendList.objects.get(user_id=user.id)
             friend_list.friends.add(friend)
 
@@ -81,8 +90,8 @@ class SetFriendList(CreateAPIView):
             friend_request.sender.remove(friend)
 
             return HttpResponse(status=status.HTTP_201_CREATED)
+
         except FriendList.DoesNotExist:
-            friend = User.objects.get(pk=request.data['user_id'])
             friend_list = FriendList.objects.create(user=user)
             friend_list.friends.set([friend])
 
