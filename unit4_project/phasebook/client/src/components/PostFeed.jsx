@@ -54,7 +54,9 @@ const PostFeed = ({ userProfile, userID }) => {
 
   return (
     <>
-      <CreatePost userProfile={userProfile} />
+      {userProfile.username === localStorage.getItem("username") ? (
+        <CreatePost userProfile={userProfile} />
+      ) : null}
       <Posts
         userProfile={userProfile}
         posts={posts}

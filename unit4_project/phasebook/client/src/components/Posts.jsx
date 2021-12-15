@@ -180,7 +180,7 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
     <>
       {posts
         ? posts.map((post, index) => (
-            <Card className="border-0 rounded-3 mb-3" key={index}>
+            <Card className="border-0 rounded-3 mt-3 mb-3" key={index}>
               {/* POST USER DETAILS & DATE OF POST SECTION */}
               <Card.Body className="d-flex text-start py-0">
                 <Col md="auto" className="my-3 me-2">

@@ -64,8 +64,8 @@ const CreatePost = ({ userProfile }) => {
   return (
     <>
       <Row className="justify-content-md-center">
-        <Col className="">
-          <Card className="border-0 rounded-3 my-3">
+        <Col>
+          <Card className="border-0 rounded-3 mt-3">
             <Card.Body className="d-flex py-0">
               <Col md="auto" className="my-3 me-2">
                 <Image
