@@ -29,8 +29,6 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
 const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
-  const [postCommentCounter, setPostCommentCounter] = useState(0);
-
   const postCommentInputs = useRef({});
   const postCommentReplyInputs = useRef({});
 
@@ -68,7 +66,6 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
     }
 
     postCommentInputs.current[postID].value = "";
-    handlePostCommentCounter();
   };
 
   const handlePostCommentReplies = async (e) => {
@@ -119,12 +116,14 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
         postsArr[postIndex]["like"].push(localStorage.getItem("username"));
       }
     }
-
     setPosts(postsArr);
 
     try {
       const data = {
-        like: postsArr[postIndex]["like"] ? postsArr[postIndex]["like"] : [],
+        like:
+          postsArr[postIndex] && postsArr[postIndex]["like"]
+            ? postsArr[postIndex]["like"]
+            : [],
         user: userProfile.username,
       };
 
@@ -138,14 +137,8 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
         // window.location.reload();
       }
     } catch (error) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
+      console.log(error);
     }
-  };
-
-  const handlePostCommentCounter = () => {
-    setPostCommentCounter(postCommentCounter + 1);
   };
 
   const focusPostCommentInput = (e) => {
@@ -310,7 +303,7 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
               ) : null}
 
               {/* POST LIKE & COMMENT COUNTER SECTION */}
-              {post.like.length || postCommentCounter ? (
+              {post.like.length || post.comments.length ? (
                 <>
                   <Card.Body className="d-flex pt-0">
                     <Col md="auto">
@@ -327,10 +320,10 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                       ) : null}
                     </Col>
                     <Col md="auto" className="ms-auto">
-                      {postCommentCounter
-                        ? postCommentCounter === 1
-                          ? `${postCommentCounter} Comment`
-                          : `${postCommentCounter} Comments`
+                      {post.comments.length
+                        ? post.comments.length === 1
+                          ? `${post.comments.length} Comment`
+                          : `${post.comments.length} Comments`
                         : null}
                     </Col>
                   </Card.Body>
@@ -360,6 +353,8 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                           : likeButtonIcon
                       }
                       height="20"
+                      data-index={index}
+                      data-postid={post.id}
                       className="mb-1 me-2"
                     />
                     Like
