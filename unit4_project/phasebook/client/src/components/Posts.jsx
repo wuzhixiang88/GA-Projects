@@ -34,10 +34,18 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
 
   const [createPostModal, setCreatePostModal] = useState(false);
   const [photoUploadWindow, setPhotoUploadWindow] = useState(false);
+  const [modalContent, setModalContent] = useState();
+  const [modalID, setModalID] = useState();
   const postBodyInput = useRef();
   const postPhotoInput = useRef();
 
-  const handleShowCreatePostModal = () => setCreatePostModal(true);
+  const handleShowCreatePostModal = (e) => {
+    const postIndex = e.target.getAttribute("data-index");
+    const postID = e.target.getAttribute("data-postid");
+    setModalContent(posts[postIndex]);
+    setModalID(postID);
+    setCreatePostModal(true);
+  };
   const handleHideCreatePostModal = () => setCreatePostModal(false);
   const handleShowPhotoUploadWindow = () => setPhotoUploadWindow(true);
   const handleHidePhotoUploadWindow = () => setPhotoUploadWindow(false);
@@ -127,15 +135,11 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
         user: userProfile.username,
       };
 
-      const response = await axios.patch(`/api/post/${postID}/`, data, {
+      await axios.patch(`/api/post/${postID}/`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
       });
-
-      if (response.status === 200) {
-        // window.location.reload();
-      }
     } catch (error) {
       console.log(error);
     }
@@ -165,13 +169,13 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
         );
       }
 
-      const response = await axios.post(`/api/post/`, uploadData, {
+      const response = await axios.patch(`/api/post/${modalID}/`, uploadData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         window.location.reload();
       }
     } catch (error) {
@@ -180,18 +184,19 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
   };
 
   const handleDeletePost = async (e) => {
+    const postIndex = e.target.getAttribute("data-index");
     const postID = e.target.getAttribute("data-postid");
 
+    const postsArr = [...posts];
+    postsArr.splice(postIndex, 1);
+    setPosts(postsArr);
+
     try {
-      const response = await axios.delete(`/api/post/${postID}`, {
+      await axios.delete(`/api/post/${postID}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
       });
-
-      if (response.status === 204) {
-        window.location.reload();
-      }
     } catch (error) {
       console.log(error);
     }
@@ -250,8 +255,8 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                       {[
                         ["Edit Post", null],
                         ["Delete Post", null],
-                      ].map((element, index) => (
-                        <Col key={index}>
+                      ].map((element) => (
+                        <Col key={element[0]}>
                           {element[0] === "Log Out" ? (
                             <Dropdown.Divider />
                           ) : null}
@@ -263,6 +268,7 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                                 ? handleDeletePost
                                 : null
                             }
+                            data-index={index}
                             data-postid={post.id}
                           >
                             <Image
@@ -618,6 +624,7 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                       placeholder="What's on your mind?"
                       className="fs-5 border-0 px-0"
                       id="post-textarea"
+                      defaultValue={modalContent ? modalContent.body : null}
                     />
                   </Form.Group>
                 </Col>
@@ -639,8 +646,14 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                               onClick={handleHidePhotoUploadWindow}
                             />
                             <Image
-                              src={uploadIcon}
+                              src={
+                                modalContent.photo
+                                  ? modalContent.photo
+                                  : uploadIcon
+                              }
                               className="position-absolute top-50 start-50 translate-middle"
+                              height={modalContent.photo ? "200" : null}
+                              width={modalContent.photo ? "380" : null}
                             />
                           </Form.Label>
                           <Form.Control
