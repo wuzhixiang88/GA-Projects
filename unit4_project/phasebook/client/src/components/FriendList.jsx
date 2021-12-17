@@ -40,7 +40,8 @@ const FriendList = ({ userProfile }) => {
     <>
       <Card className="border-0 rounded-3 my-3">
         <Row className="d-flex mb-3 px-4">
-          {userProfile.friend_request
+          {userProfile.username === localStorage.getItem("username") &&
+          userProfile.friend_request
             ? userProfile.friend_request.sender.map((sender) => (
                 <Col md="6" key={sender.first_name}>
                   <Col className="d-flex text-start rounded border mt-3 me-auto">
