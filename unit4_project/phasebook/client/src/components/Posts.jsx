@@ -101,21 +101,49 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
     postCommentReplyInputs.current[commentID].value = "";
   };
 
-  const handlePostLikeCounter = (e) => {
+  const handlePostLikeCounter = async (e) => {
     const postIndex = e.target.getAttribute("data-index");
+    const postID = e.target.getAttribute("data-postid");
+
     const postsArr = [...posts];
 
     if (postsArr[postIndex]) {
-      if (postsArr[postIndex]["like"].includes(userProfile.username)) {
-        const index = postsArr[postIndex]["like"].indexOf(userProfile.username);
+      if (
+        postsArr[postIndex]["like"].includes(localStorage.getItem("username"))
+      ) {
+        const index = postsArr[postIndex]["like"].indexOf(
+          localStorage.getItem("username")
+        );
         postsArr[postIndex]["like"].splice(index, 1);
       } else {
-        postsArr[postIndex]["like"].push(userProfile.username);
+        postsArr[postIndex]["like"].push(localStorage.getItem("username"));
       }
     }
 
     setPosts(postsArr);
+
+    try {
+      const data = {
+        like: postsArr[postIndex]["like"] ? postsArr[postIndex]["like"] : [],
+        user: userProfile.username,
+      };
+
+      const response = await axios.patch(`/api/post/${postID}/`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // window.location.reload();
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
   };
+
   const handlePostCommentCounter = () => {
     setPostCommentCounter(postCommentCounter + 1);
   };
@@ -316,17 +344,18 @@ const Posts = ({ userProfile, posts, setPosts, showPostImage }) => {
                     variant="light"
                     className="flex-grow-1 border-0"
                     id={
-                      post.like.includes(userProfile.username)
+                      post.like.includes(localStorage.getItem("username"))
                         ? "unlike-comment-button"
                         : "like-comment-button"
                     }
                     data-index={index}
+                    data-postid={post.id}
                     onClick={handlePostLikeCounter}
                   >
                     <Image
                       alt=""
                       src={
-                        post.like.includes(userProfile.username)
+                        post.like.includes(localStorage.getItem("username"))
                           ? unlikeButtonIcon
                           : likeButtonIcon
                       }
